@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.rodrigo.proyectgranja.MainActivity">
+    <item
+        android:id="@+id/icono"
+        android:orderInCategory="0"
+        android:icon="@mipmap/ic_launcher"
+        app:showAsAction="ifRoom"
+        android:title="icono" />
+
+    <item
+        android:id="@+id/login"
+        android:orderInCategory="100"
+        android:title="Loguearse"
+        app:showAsAction="never" />
+</menu>

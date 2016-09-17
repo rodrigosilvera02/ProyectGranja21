@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.rodrigo.proyectgranja.login"
+    tools:showIn="@layout/activity_login">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/usuario"
+        android:id="@+id/txtusuario"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/EdtPassword"
+        android:layout_below="@+id/txtcontraseña"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="27dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/EdtUsuario"
+        android:layout_marginTop="27dp"
+        android:layout_below="@+id/txtusuario"
+        android:layout_alignStart="@+id/EdtPassword"
+        android:layout_alignEnd="@+id/EdtPassword"
+        android:inputType="none" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/contrase_a"
+        android:id="@+id/txtcontraseña"
+        android:layout_below="@+id/EdtUsuario"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="27dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/loguearse"
+        android:id="@+id/BtnLogin"
+        android:layout_below="@+id/EdtPassword"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="37dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/registrarse"
+        android:id="@+id/txtregistrarse"
+        android:layout_below="@+id/txtErrorlogin"
+        android:layout_centerHorizontal="true" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/el_usuario_o_contrace_a_no_son_correctas"
+        android:id="@+id/txtErrorlogin"
+        android:textColor="#f21519"
+        android:visibility="invisible"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>
