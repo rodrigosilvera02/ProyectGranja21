@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.rodrigo.proyectgranja.modificar"
-    tools:showIn="@layout/activity_modificar">
+    tools:showIn="@layout/app_bar_modificar">
 
     <TextView
         android:layout_width="wrap_content"
