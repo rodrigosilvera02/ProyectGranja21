@@ -5,10 +5,14 @@ import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpResponseException;
 import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 /**
  * Created by Rodrigo on 11/09/2016.
@@ -21,7 +25,58 @@ public class WSUsuario {
     public WSUsuario(){
 
     }
+   public void modificarUsuario (Usuario u1) throws IOException, XmlPullParserException, InterruptedException {
 
+        SoapObject soap = new SoapObject("http://Servicio/","modificarUsuario");
+        soap.addProperty("idUsuario",u1.getId());
+        soap.addProperty("nickName",u1.getNickName());
+        soap.addProperty("nombre",u1.getNombre());
+        soap.addProperty("apellido",u1.getApellido());
+        soap.addProperty("email",u1.getEmail());
+        soap.addProperty("direccion",u1.getDireccion());
+        soap.addProperty("telefono",u1.getTelefono());
+
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
+        envelope.setOutputSoapObject(soap);
+
+        HttpTransportSE httotrans = new HttpTransportSE(dato.getDatoIP()+"UsuarioWS?WSDL");
+        httotrans.call("",envelope);
+
+
+
+
+   }
+
+
+
+
+
+   public Usuario infoUsuario(String nickName) throws IOException, XmlPullParserException,HttpResponseException{
+       Usuario u1 =  new Usuario();
+       SoapObject soap = new SoapObject("http://Servicio/","infoUsuario ");
+       soap.addProperty("nickName",nickName);
+       SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
+       envelope.setOutputSoapObject(soap);
+       ArrayList<String> informacionUsuario = null;
+       HttpTransportSE httotrans = new HttpTransportSE(dato.getDatoIP()+"UsuarioWS?WSDL");
+      httotrans.call("infoUsuario ",envelope);
+       Vector<Object> informacionUsuario1= (Vector<Object>) envelope.getResponse();
+       SoapPrimitive id = (SoapPrimitive) informacionUsuario1.get(0);
+       SoapPrimitive nombre = (SoapPrimitive) informacionUsuario1.get(2);
+       SoapPrimitive apellido = (SoapPrimitive) informacionUsuario1.get(3);
+       SoapPrimitive email = (SoapPrimitive) informacionUsuario1.get(4);
+       SoapPrimitive direccion = (SoapPrimitive) informacionUsuario1.get(5);
+       SoapPrimitive telefono = (SoapPrimitive) informacionUsuario1.get(6);
+
+       u1.setId((Integer.parseInt(String.valueOf(id))));
+       u1.setNickName(String.valueOf(nickName));
+       u1.setNombre(String.valueOf(nombre));
+       u1.setApellido(String.valueOf(apellido));
+       u1.setEmail(String.valueOf(email));
+       u1.setDireccion(String.valueOf(direccion));
+       u1.setTelefono(String.valueOf(telefono));
+       return u1;
+   }
 
 
 

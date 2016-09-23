@@ -26,4 +26,7 @@
     <string name="el_usuario_o_contrace_a_no_son_correctas">el_usuario_o_contrace_a_no_son_correctas</string>
     <string name="registrarse">Registrarse</string>
     <string name="hola_mundo">Hola MUNDO</string>
+    <string name="android_studio">Android Studio</string>
+    <string name="android_studio_android_com">android.studio@android.com</string>
+    <string name="modificarusuario">ModificarUsuario</string>
 </resources>

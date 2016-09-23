@@ -1,6 +1,8 @@
 package com.example.rodrigo.proyectgranja;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -92,6 +94,7 @@ public class login extends AppCompatActivity implements GridView.OnClickListener
     public void onClick(View view) {
         Thread t = new Thread(this);
         t.start();
+        ErrorLogin.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -107,8 +110,12 @@ public class login extends AppCompatActivity implements GridView.OnClickListener
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
+                        SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedpreferences.edit();
+                        editor.putString("Name", nickname);
+                        editor.commit();
+                        finish();
                         Intent ListSong = new Intent(login.this, Main2Activity.class);
-                        ListSong.putExtra("nickname",nickname);
                         startActivity(ListSong);
 
                     }

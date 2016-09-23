@@ -104,11 +104,16 @@ public class Registrarse extends AppCompatActivity  implements GridView.OnClickL
     public void onClick(View view) {
         Thread t = new Thread(this);
         t.start();
+        txtErrorregistrar = (TextView)findViewById(R.id.txtUsuarioExiste);
+        txtErrorregistrar.setVisibility(View.INVISIBLE);
+        txtErrorregistrar = (TextView)findViewById(R.id.txtpasswordnoconinciden);
+        txtErrorregistrar.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void run() {
         try {
+
             String nombre = String.valueOf(Nombre.getText().toString());
             String apellido = String.valueOf(Apellido.getText().toString());
             String nickname = String.valueOf(Nickname.getText().toString());
@@ -118,14 +123,15 @@ public class Registrarse extends AppCompatActivity  implements GridView.OnClickL
             String Telefono = String.valueOf(telefono.getText().toString());
             String Direccion = String.valueOf(direccion.getText().toString());
             WSUsuario ws = new WSUsuario();
+            String validar = ws.validarNickName(nickname);
             if (password.equals(password1)) {
-                String validar = ws.validarNickName(nickname);
-                if(validar.equals("false")){
+
+                if (validar.equals("false")) {
                     final String resultado = String.valueOf(ws.agregarUsuario(nickname, password, nombre, apellido, email, Direccion, Telefono));
                     final int idUsuario = ws.traerIdUsuario(nickname);
                     WScliente ws1 = new WScliente();
                     final String resultadocliente = ws1.nuevoUsuarioCliente(idUsuario);
-                    if(resultadocliente.equals("true")){
+                    if (resultadocliente.equals("true")) {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
@@ -135,23 +141,22 @@ public class Registrarse extends AppCompatActivity  implements GridView.OnClickL
                             }
                         });
                     }
-                    else{
 
-                    }
                 }
-                if(validar.equals("true")){
+
+                if(validar.equals("true")) {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            txtErrorregistrar = (TextView)findViewById(R.id.txtUsuarioExiste);
+                            txtErrorregistrar = (TextView) findViewById(R.id.txtUsuarioExiste);
                             txtErrorregistrar.setVisibility(VISIBLE);
 
                         }
                     });
 
-
                 }
-            }
+                }
+
             else{
                 handler.post(new Runnable() {
                     @Override
@@ -160,7 +165,17 @@ public class Registrarse extends AppCompatActivity  implements GridView.OnClickL
                         txtErrorregistrar.setVisibility(VISIBLE);
                     }
                 });
+                if(validar.equals("true")) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            txtErrorregistrar = (TextView) findViewById(R.id.txtUsuarioExiste);
+                            txtErrorregistrar.setVisibility(VISIBLE);
 
+                        }
+                    });
+
+                }
 
             }
         }catch(Exception ex){
