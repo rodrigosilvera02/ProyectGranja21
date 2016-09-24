@@ -17,13 +17,23 @@ public class MainActivity extends AppCompatActivity {
     public static final String Name = "nameKey";
 
     SharedPreferences sharedpreferences;
+    private String texto1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
+        texto1 = sharedpreferences.getString("Name","nameKey");
+        if(texto1.equals("nameKey")) {
+            setContentView(R.layout.activity_main);
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+        }
+        else{
+            Intent ListSong = new Intent(MainActivity.this, Main2Activity.class);
+            startActivity(ListSong);
+        }
+
 
     }
 

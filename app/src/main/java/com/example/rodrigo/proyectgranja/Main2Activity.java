@@ -88,7 +88,15 @@ public class Main2Activity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.Cerrarsesión) {
-            return true;
+            SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+
+            editor.clear();
+            editor.commit();
+            finish();
+            Intent ListSong = new Intent(Main2Activity.this, MainActivity.class);
+            startActivity(ListSong);
+
         }
 
         return super.onOptionsItemSelected(item);
