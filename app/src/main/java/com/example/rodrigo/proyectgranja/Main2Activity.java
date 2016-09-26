@@ -26,8 +26,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import static android.view.View.VISIBLE;
 
-public class Main2Activity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class Main2Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private TextView textol;
     private Handler handler = new Handler();
 
