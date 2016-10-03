@@ -30,4 +30,5 @@
     <string name="android_studio_android_com">android.studio@android.com</string>
     <string name="modificarusuario">ModificarUsuario</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_filtros">activity_filtros</string>
 </resources>
