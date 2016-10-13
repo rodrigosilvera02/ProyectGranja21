@@ -1,4 +1,6 @@
 package com.example.rodrigo.proyectgranja;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.support.multidex.MultiDex;
 import android.content.Context;
@@ -12,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ListViewCompat;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,10 +31,13 @@ import android.widget.Toast;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.security.PublicKey;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements GridView.OnClickListener, Runnable, OnQueryTextListener, OnActionExpandListener  {
+public class MainActivity extends AppCompatActivity implements GridView.OnClickListener, Runnable, OnQueryTextListener, OnActionExpandListener {
     public static final String MyPREFERENCES = "MyPrefs" ;
     public static final String Name = "nameKey";
     public static final String Granja = "granja";
@@ -44,6 +50,8 @@ public static final ArrayList<GranjaProducto> prod1 = null;
     private String texto1;
     private ListView lista;
     private Handler handler = new Handler();
+    private ArrayList<GranjaProducto> ListaDeGranjaProducto;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +61,7 @@ public static final ArrayList<GranjaProducto> prod1 = null;
         if(texto1.equals("nameKey")) {
             setContentView(R.layout.activity_main);
     lista = (ListView)findViewById(R.id.ListProductoGranjasl);
+
             Thread t = new Thread(this);
             t.start();
 
@@ -69,6 +78,7 @@ public static final ArrayList<GranjaProducto> prod1 = null;
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem searchItem = menu.findItem(R.id.menu3_buscar);
+
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(this);
 
@@ -98,33 +108,79 @@ public static final ArrayList<GranjaProducto> prod1 = null;
 
     }
 
+
     @Override
     public void run() {
+
+
         WSGranjaProducto granjap =  new WSGranjaProducto();
         try {
-           ArrayList<GranjaProducto> g1 = granjap.traerGranjaProducto();
+            Filtros filtro =  new Filtros();
+            ArrayList<GranjaProducto> g1 = granjap.traerGranjaProducto();
+            sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+            String departamento  = sharedpreferences.getString("Departamento","departamento");
+            ListaDeGranjaProducto = g1 ;
+            if(!departamento.equals("")&&!departamento.equals("departamento")){
+                ArrayList<GranjaProducto> g2 = ListaDeGranjaProducto;
+                ListaDeGranjaProducto = filtro.filtrarporLocalidad(g2,departamento);
+            }
+
+            String nombreGranjaSE =sharedpreferences.getString("Granja","granja");
+            if(!nombreGranjaSE.equals("")&&!nombreGranjaSE.equals("granja")){
+                ArrayList<GranjaProducto> g2 = ListaDeGranjaProducto;
+                ListaDeGranjaProducto = filtro.filtrarporGranja(g2,nombreGranjaSE);
+            }
+            String TipoProductoSE =sharedpreferences.getString("tipoProducto","tipoP");
+            if(!TipoProductoSE.equals("")&&!TipoProductoSE.equals("tipoP")){
+                ArrayList<GranjaProducto> g2 = ListaDeGranjaProducto;
+                ListaDeGranjaProducto = filtro.filtrarporTipo(g2,TipoProductoSE);
+            }
+            String ProductoSE =sharedpreferences.getString("Producto","producto");
+            if(!ProductoSE.equals("")&&!ProductoSE.equals("producto")){
+                ArrayList<GranjaProducto> g2 = ListaDeGranjaProducto;
+                ListaDeGranjaProducto = filtro.filtrarporProducto(g2,ProductoSE);
+            }
+
+            float Distanciakm =sharedpreferences.getFloat("Kilometros",0);
+            if(Distanciakm < 0){
+
+            }
+
+
             final ArrayList<listadoProducto> listaProducto = new ArrayList<listadoProducto>();
             listadoProducto p1 ;
-                for(int i = 0;i<g1.size();i++){
+                for(int i = 0;i<ListaDeGranjaProducto.size();i++){
               p1 =new listadoProducto();
-                    p1.setNombreProducto(g1.get(i).getNomProd());
-                    p1.setTipoProducto(g1.get(i).getTipoProducto());
-                    p1.setCalidadProducto(g1.get(i).getCalidad());
-                    p1.setNombreGranja(g1.get(i).getNombreGranja());
-                    p1.setImgProducto(g1.get(i).getImgProg());
-                    p1.setPrecioProducto(String.valueOf(g1.get(i).getPrecio()));
+                    p1.setNombreProducto(ListaDeGranjaProducto.get(i).getNomProd());
+                    p1.setTipoProducto(ListaDeGranjaProducto.get(i).getTipoProducto());
+                    p1.setCalidadProducto(ListaDeGranjaProducto.get(i).getCalidad());
+                    p1.setNombreGranja(ListaDeGranjaProducto.get(i).getNombreGranja());
+                    String src = ListaDeGranjaProducto.get(i).getImgProg();
+                    p1.setImgProducto(src);
+                    p1.setPrecioProducto(String.valueOf(ListaDeGranjaProducto.get(i).getPrecio()));
                     listaProducto.add(p1);
                 }
             lista = (ListView)findViewById(R.id.ListProductoGranjasl);
-            handler.post(new Runnable() {
+
+            final adaptadorListadoProducto adapter = new adaptadorListadoProducto(this, listaProducto);
+
+
+
+            Thread thread4 = new Thread(){
                 @Override
                 public void run() {
-                    Thread t = new Thread(this);
-                    t.start();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            lista.setAdapter(adapter);
+                        }
+                    });
+                };
+            };
+            thread4.start();
 
-                }
-            });
-            lista.setAdapter(new adaptadorListadoProducto(this,R.layout.listaproducto,listaProducto));
+
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -135,26 +191,45 @@ public static final ArrayList<GranjaProducto> prod1 = null;
 
     @Override
     public boolean onMenuItemActionExpand(MenuItem item) {
-        Toast.makeText(getApplicationContext(), "EXPAND", Toast.LENGTH_SHORT).show();
+     //  Toast.makeText(getApplicationContext(), "EXPAND", Toast.LENGTH_SHORT).show();
+
         return true;
 
     }
 
     @Override
     public boolean onMenuItemActionCollapse(MenuItem item) {
-        return false;
+
+        return true;
 
     }
-
+//arreglar el tema del buscado en los filtros y el s
     @Override
     public boolean onQueryTextSubmit(String query) {
 
-
-        return false;
+        return true;
     }
+
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        return false;
+if (newText.equals("")){
+    SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+    SharedPreferences.Editor editor = sharedpreferences.edit();
+    editor.putString("Producto","");
+    editor.commit();
+    Thread t = new Thread(this);
+    t.start();
+}
+        if (!newText.equals("")) {
+            SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            final String Producto = String.valueOf(newText);
+            editor.putString("Producto", Producto);
+            editor.commit();
+            Thread t = new Thread(this);
+            t.start();
+        }
+        return true;
     }
 }

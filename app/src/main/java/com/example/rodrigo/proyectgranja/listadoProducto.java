@@ -1,5 +1,7 @@
 package com.example.rodrigo.proyectgranja;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Rodrigo on 30/09/2016.
  */
@@ -11,6 +13,14 @@ public class listadoProducto {
     private String NombreGranja;
     private String PrecioProducto;
     private String ImgProducto;
+
+    public String getImgProducto() {
+        return ImgProducto;
+    }
+
+    public void setImgProducto(String imgProducto) {
+        ImgProducto = imgProducto;
+    }
 
     public String getNombreProducto() {
         return NombreProducto;
@@ -52,16 +62,6 @@ public class listadoProducto {
         PrecioProducto = precioProducto;
     }
 
-    public String getImgProducto() {
-        return ImgProducto;
-    }
-
-    public void setImgProducto(String imgProducto) {
-        ImgProducto = imgProducto;
-    }
-
-    public listadoProducto() {
-    }
 
     public listadoProducto(String nombreProducto, String tipoProducto, String calidadProducto, String nombreGranja, String precioProducto, String imgProducto) {
         NombreProducto = nombreProducto;
@@ -71,5 +71,10 @@ public class listadoProducto {
         PrecioProducto = precioProducto;
         ImgProducto = imgProducto;
     }
+
+    public listadoProducto() {
+    }
+
+
 
 }

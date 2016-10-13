@@ -37,7 +37,9 @@ public class WSGranjaProducto {
 
             prodg.setIdGranja(Integer.parseInt(String.valueOf(listarProdGranja.get(a+3))));
             prodg.setNombreGranja(String.valueOf(listarProdGranja.get(a+4)));
-            prodg.setLocalidad(String.valueOf(listarProdGranja.get(a+5)));
+            String localidad = String.valueOf(listarProdGranja.get(a+5));
+
+            prodg.setLocalidad(localidad.substring(8));
             prodg.setGeoLat(Float.valueOf(String.valueOf(listarProdGranja.get(a+6))));
             prodg.setGeoLong(Float.valueOf(String.valueOf(listarProdGranja.get(a+7))));
 

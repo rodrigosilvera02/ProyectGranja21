@@ -138,6 +138,8 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         return true;
     }
 
+
+
     @Override
     public boolean onMenuItemActionExpand(MenuItem item) {
         Toast.makeText(getApplicationContext(), "EXPAND", Toast.LENGTH_SHORT).show();
