@@ -20,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,12 +28,20 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
 import static android.view.View.VISIBLE;
 
 public class Main2Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Runnable, SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
     private TextView textol;
+    SharedPreferences sharedpreferences;
+    private String texto1;
+    private ListView lista;
     private Handler handler = new Handler();
-
+    private ArrayList<GranjaProducto> ListaDeGranjaProducto;
     @Override
 
     protected void onCreate(final Bundle savedInstanceState) {
@@ -50,17 +59,19 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        textol = (TextView)findViewById(R.id.textView11) ;
 
+        SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+        Thread t = new Thread(this);
+        t.start();
 
-        handler.post(new Runnable() {
+     /*   handler.post(new Runnable() {
             @Override
             public void run() {
                 SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
-            //    textol.setText(sharedpreferences.getString("prod1",null));
+                //    textol.setText(sharedpreferences.getString("prod1",null));
 
             }
-        });
+        });*/
 
     }
 
@@ -141,28 +152,126 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
 
 
     @Override
+    public void run() {
+
+
+        WSGranjaProducto granjap =  new WSGranjaProducto();
+        try {
+            SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+            Filtros filtro =  new Filtros();
+            ArrayList<GranjaProducto> g1 = granjap.traerGranjaProducto();
+            String departamento  = sharedpreferences.getString("Departamento","departamento");
+            ListaDeGranjaProducto = g1 ;
+            if(!departamento.equals("")&&!departamento.equals("departamento")){
+                ArrayList<GranjaProducto> g2 = ListaDeGranjaProducto;
+                ListaDeGranjaProducto = filtro.filtrarporLocalidad(g2,departamento);
+            }
+
+            String nombreGranjaSE =sharedpreferences.getString("Granja","granja");
+            if(!nombreGranjaSE.equals("")&&!nombreGranjaSE.equals("granja")){
+                ArrayList<GranjaProducto> g2 = ListaDeGranjaProducto;
+                ListaDeGranjaProducto = filtro.filtrarporGranja(g2,nombreGranjaSE);
+            }
+            String TipoProductoSE =sharedpreferences.getString("tipoProducto","tipoP");
+            if(!TipoProductoSE.equals("")&&!TipoProductoSE.equals("tipoP")){
+                ArrayList<GranjaProducto> g2 = ListaDeGranjaProducto;
+                ListaDeGranjaProducto = filtro.filtrarporTipo(g2,TipoProductoSE);
+            }
+            String ProductoSE =sharedpreferences.getString("Producto","producto");
+            if(!ProductoSE.equals("")&&!ProductoSE.equals("producto")){
+                ArrayList<GranjaProducto> g2 = ListaDeGranjaProducto;
+                ListaDeGranjaProducto = filtro.filtrarporProducto(g2,ProductoSE);
+            }
+
+            float Distanciakm =sharedpreferences.getFloat("Kilometros",0);
+            if(Distanciakm < 0){
+
+            }
+
+
+            final ArrayList<listadoProducto> listaProducto = new ArrayList<listadoProducto>();
+            listadoProducto p1 ;
+            for(int i = 0;i<ListaDeGranjaProducto.size();i++){
+                p1 =new listadoProducto();
+                p1.setNombreProducto(ListaDeGranjaProducto.get(i).getNomProd());
+                p1.setTipoProducto(ListaDeGranjaProducto.get(i).getTipoProducto());
+                p1.setCalidadProducto(ListaDeGranjaProducto.get(i).getCalidad());
+                p1.setNombreGranja(ListaDeGranjaProducto.get(i).getNombreGranja());
+                String src = ListaDeGranjaProducto.get(i).getImgProg();
+                p1.setImgProducto(src);
+                p1.setPrecioProducto(String.valueOf(ListaDeGranjaProducto.get(i).getPrecio()));
+                listaProducto.add(p1);
+            }
+            lista = (ListView)findViewById(R.id.listProductosCariito);
+
+            final adaptadorlistadoProCarrito adapter = new adaptadorlistadoProCarrito(this, listaProducto);
+
+
+
+            Thread thread4 = new Thread(){
+                @Override
+                public void run() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            lista.setAdapter(adapter);
+                        }
+                    });
+                };
+            };
+            thread4.start();
+
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public boolean onMenuItemActionExpand(MenuItem item) {
-        Toast.makeText(getApplicationContext(), "EXPAND", Toast.LENGTH_SHORT).show();
+        //  Toast.makeText(getApplicationContext(), "EXPAND", Toast.LENGTH_SHORT).show();
+
         return true;
+
     }
 
     @Override
     public boolean onMenuItemActionCollapse(MenuItem item) {
-        return false;
-    }
 
+        return true;
+
+    }
+    //arreglar el tema del buscado en los filtros y el s
     @Override
     public boolean onQueryTextSubmit(String query) {
-        return false;
+
+        return true;
     }
+
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        return false;
-    }
-
-    @Override
-    public void run() {
-
+        if (newText.equals("")){
+            SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putString("Producto","");
+            editor.commit();
+            Thread t = new Thread(this);
+            t.start();
+        }
+        if (!newText.equals("")) {
+            SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            final String Producto = String.valueOf(newText);
+            editor.putString("Producto", Producto);
+            editor.commit();
+            Thread t = new Thread(this);
+            t.start();
+        }
+        return true;
     }
 }

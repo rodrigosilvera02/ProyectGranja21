@@ -149,17 +149,17 @@ public static final ArrayList<GranjaProducto> prod1 = null;
 
             final ArrayList<listadoProducto> listaProducto = new ArrayList<listadoProducto>();
             listadoProducto p1 ;
-                for(int i = 0;i<ListaDeGranjaProducto.size();i++){
-              p1 =new listadoProducto();
-                    p1.setNombreProducto(ListaDeGranjaProducto.get(i).getNomProd());
-                    p1.setTipoProducto(ListaDeGranjaProducto.get(i).getTipoProducto());
-                    p1.setCalidadProducto(ListaDeGranjaProducto.get(i).getCalidad());
-                    p1.setNombreGranja(ListaDeGranjaProducto.get(i).getNombreGranja());
-                    String src = ListaDeGranjaProducto.get(i).getImgProg();
-                    p1.setImgProducto(src);
-                    p1.setPrecioProducto(String.valueOf(ListaDeGranjaProducto.get(i).getPrecio()));
-                    listaProducto.add(p1);
-                }
+            for(int i = 0;i<ListaDeGranjaProducto.size();i++){
+                p1 =new listadoProducto();
+                p1.setNombreProducto(ListaDeGranjaProducto.get(i).getNomProd());
+                p1.setTipoProducto(ListaDeGranjaProducto.get(i).getTipoProducto());
+                p1.setCalidadProducto(ListaDeGranjaProducto.get(i).getCalidad());
+                p1.setNombreGranja(ListaDeGranjaProducto.get(i).getNombreGranja());
+                String src = ListaDeGranjaProducto.get(i).getImgProg();
+                p1.setImgProducto(src);
+                p1.setPrecioProducto(String.valueOf(ListaDeGranjaProducto.get(i).getPrecio()));
+                listaProducto.add(p1);
+            }
             lista = (ListView)findViewById(R.id.ListProductoGranjasl);
 
             final adaptadorListadoProducto adapter = new adaptadorListadoProducto(this, listaProducto);
@@ -191,7 +191,7 @@ public static final ArrayList<GranjaProducto> prod1 = null;
 
     @Override
     public boolean onMenuItemActionExpand(MenuItem item) {
-     //  Toast.makeText(getApplicationContext(), "EXPAND", Toast.LENGTH_SHORT).show();
+        //  Toast.makeText(getApplicationContext(), "EXPAND", Toast.LENGTH_SHORT).show();
 
         return true;
 
@@ -203,7 +203,7 @@ public static final ArrayList<GranjaProducto> prod1 = null;
         return true;
 
     }
-//arreglar el tema del buscado en los filtros y el s
+    //arreglar el tema del buscado en los filtros y el s
     @Override
     public boolean onQueryTextSubmit(String query) {
 
@@ -213,14 +213,14 @@ public static final ArrayList<GranjaProducto> prod1 = null;
 
     @Override
     public boolean onQueryTextChange(String newText) {
-if (newText.equals("")){
-    SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
-    SharedPreferences.Editor editor = sharedpreferences.edit();
-    editor.putString("Producto","");
-    editor.commit();
-    Thread t = new Thread(this);
-    t.start();
-}
+        if (newText.equals("")){
+            SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putString("Producto","");
+            editor.commit();
+            Thread t = new Thread(this);
+            t.start();
+        }
         if (!newText.equals("")) {
             SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedpreferences.edit();

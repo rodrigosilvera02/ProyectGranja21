@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp"
+        android:id="@+id/imageView5"
+        android:cropToPadding="false"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:maxHeight="70dp"
+        android:maxWidth="90dp"
+        android:adjustViewBounds="true" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="250dp"
+        android:id="@+id/txtTipoProducto" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView33"
+        android:layout_alignStart="@+id/txtTipoProducto"
+        android:id="@+id/txtPrecio" />
+
+    <TextView
+        android:text="$"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView35"
+        android:layout_alignBaseline="@+id/txtPrecio"
+        android:layout_alignBottom="@+id/txtPrecio"
+        android:layout_toStartOf="@+id/txtPrecio" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_marginLeft="0dp"
+        android:layout_alignTop="@+id/btnAgregarCarrito"
+        android:id="@+id/edtCantidad"
+        tools:text="Cantidad"
+        android:layout_alignEnd="@+id/textView33" />
+
+    <TextView
+        android:text="Precio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="29dp"
+        android:id="@+id/textView33"
+        android:layout_below="@+id/txtNombreGranja"
+        android:layout_alignStart="@+id/txtNombreGranja" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtNombreProducto"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="100dp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtNombreGranja"
+        android:layout_below="@+id/txtCalidadProducto"
+        android:layout_alignStart="@+id/txtNombreProducto"
+        android:layout_marginTop="15dp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="19dp"
+        android:id="@+id/txtCalidadProducto"
+        android:layout_below="@+id/txtTipoProducto"
+        android:layout_alignStart="@+id/txtTipoProducto" />
+
+    <TextView
+        android:text="Calidad Producto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView11"
+        android:layout_alignBaseline="@+id/txtCalidadProducto"
+        android:layout_alignBottom="@+id/txtCalidadProducto"
+        android:layout_alignStart="@+id/txtNombreGranja" />
+
+    <Button
+        android:text="Agregar Al Carrito"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:id="@+id/btnAgregarCarrito"
+        android:layout_below="@+id/txtPrecio"
+        android:layout_alignParentEnd="true" />
+</RelativeLayout>

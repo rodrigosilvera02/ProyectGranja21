@@ -13,27 +13,9 @@
         android:cropToPadding="false"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:maxHeight="35dp"
-        android:maxWidth="74dp"
+        android:maxHeight="70dp"
+        android:maxWidth="90dp"
         android:adjustViewBounds="true" />
-
-    <TextView
-        android:text="txtNombreProducto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/imageView4"
-        android:layout_marginStart="79dp"
-        android:id="@+id/txtNombreProducto" />
-
-    <TextView
-        android:text="txtNombreGranja"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtTipoProducto"
-        android:layout_alignStart="@+id/txtNombreProducto"
-        android:layout_marginTop="13dp"
-        android:id="@+id/txtNombreGranja" />
 
     <TextView
         android:text="txtPrecio"
@@ -45,18 +27,47 @@
         android:layout_alignParentEnd="true" />
 
     <TextView
-        android:text="txtCalidad"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtCalidad"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
         android:text="txtTipoProducto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtTipoProducto"
         android:layout_alignParentTop="true"
         android:layout_toStartOf="@+id/txtPrecio" />
+
+    <TextView
+        android:text="txtNombreGranja"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="68dp"
+        android:id="@+id/txtNombreGranja"
+        android:layout_below="@+id/txtNombreProducto"
+        android:layout_alignStart="@+id/textView23" />
+
+    <TextView
+        android:text="txtCalidad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtCalidad"
+        android:layout_above="@+id/txtPrecio"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="14dp" />
+
+    <TextView
+        android:text="Calidad Producto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView23"
+        android:layout_alignBaseline="@+id/txtCalidad"
+        android:layout_alignBottom="@+id/txtCalidad"
+        android:layout_alignStart="@+id/txtNombreProducto" />
+
+    <TextView
+        android:text="txtNombreProducto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtNombreProducto"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/imageView4"
+        android:layout_marginTop="0dp"/>
+
 </RelativeLayout>
