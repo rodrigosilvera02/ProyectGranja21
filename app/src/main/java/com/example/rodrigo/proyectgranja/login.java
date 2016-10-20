@@ -105,6 +105,7 @@ public class login extends AppCompatActivity implements GridView.OnClickListener
          final   String nickname = String.valueOf(Nickname.getText().toString());
             String password = String.valueOf(Password.getText().toString());
             WSUsuario webservice = new WSUsuario();
+
             final String valido = webservice.validarUsuario(nickname, password);
             if (valido.equals("true")) {
                 handler.post(new Runnable() {

@@ -1,6 +1,7 @@
 package com.example.rodrigo.proyectgranja;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Spinner;
@@ -24,6 +26,9 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 
 
 public class FiltrosActivity extends AppCompatActivity
@@ -35,24 +40,41 @@ public class FiltrosActivity extends AppCompatActivity
     private Spinner listaNombreGranja;
     private Button establecerFiltros;
     Handler handler;
+    private String texto1;
+    private CheckBox checkGranja;
+    private CheckBox checkKm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_filtros);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-    //   setSupportActionBar(toolbar);
+
+        SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+        texto1 = sharedpreferences.getString("Name","nameKey");
+        if(!texto1.equals("")&& !texto1.equals("nameKey")) {
+            setContentView(R.layout.activity_filtros);
+           Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+           setSupportActionBar(toolbar);
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.setDrawerListener(toggle);
+            toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
+        }
+        else{
+            setContentView(R.layout.filtrossl);
+            Toolbar toolbar1 = (Toolbar) findViewById(R.id.toolbar1);
+         setSupportActionBar(toolbar1);
+
+        }
+
+
         establecerFiltros = (Button)findViewById(R.id.FiltrosOk);
         establecerFiltros.setOnClickListener(this);
+        float a = sharedpreferences.getFloat("Kilometros", 0 );
         Thread t = new Thread(this);
         t.start();
     }
@@ -89,6 +111,23 @@ public class FiltrosActivity extends AppCompatActivity
         if (id == R.id.modificarusuario) {
             return true;
         }
+        if (id == R.id.home) {
+            Intent ListSong = new Intent(this, MainActivity.class);
+            startActivity(ListSong);
+            return true;
+        }
+        if (id == R.id.Cerrarsesión) {
+            SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+
+            editor.clear();
+            editor.commit();
+            finish();
+            Intent ListSong = new Intent(FiltrosActivity.this, MainActivity.class);
+            startActivity(ListSong);
+
+        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -100,7 +139,8 @@ public class FiltrosActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.modificarusuario) {
-            // Handle the camera action
+            Intent ListSong = new Intent(this, modificar.class);
+            startActivity(ListSong);
         }/*else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -120,6 +160,7 @@ public class FiltrosActivity extends AppCompatActivity
 
     @Override
     public void onClick(View v) {
+
         Thread thread = new Thread(){
             @Override
             public void run() {
@@ -127,9 +168,9 @@ public class FiltrosActivity extends AppCompatActivity
                     runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+
                                 listadepartamento = (Spinner)findViewById(R.id.listaDepartamento);
                                 listaGranja  = (Spinner)findViewById(R.id.listaNombreGranja);
-
                                 listaTipoProdu=(Spinner)findViewById(R.id.spinner4);
                                 SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedpreferences.edit();
@@ -141,7 +182,6 @@ public class FiltrosActivity extends AppCompatActivity
                                 }
                                 final String granja  = String.valueOf(listaGranja.getSelectedItem());
                                 if(!granja.equals("null")){
-
                                     editor.putString("Granja",granja);
 
                                 }
@@ -152,17 +192,27 @@ public class FiltrosActivity extends AppCompatActivity
                                     editor.putString("tipoProducto",TipoProducto);
 
                                 }
-                                final float establecerKm  = Float.parseFloat(String.valueOf(buscarDistankm.getText()));
-                                if(establecerKm != 0.0){
+                                float establecerKm = 0;
 
+                                String p = String.valueOf(buscarDistankm.getText());
+                                if(String.valueOf(buscarDistankm.getText()).equals(null)|| String.valueOf(buscarDistankm.getText()).equals("")){
+                                    establecerKm = 0;
                                     editor.putFloat("Kilometros", establecerKm);
+                                }
+                                else{
+                                    try{
+                                        establecerKm   = Float.parseFloat(String.valueOf(buscarDistankm.getText()));
+                                        editor.putFloat("Kilometros", establecerKm);
+                                    }catch (NumberFormatException e){
+                                        e.printStackTrace();
+                                    }
 
                                 }
 
 
 
                                 editor.commit();
-                                finish();
+
                             }
 
     //  Intent ListSong = new Intent(FiltrosActivity.this, Main2Activity.class);
@@ -180,6 +230,8 @@ public class FiltrosActivity extends AppCompatActivity
 
     @Override
     public void run() {
+        checkKm = (CheckBox)findViewById(R.id.checkProximidad);
+        checkGranja = (CheckBox)findViewById(R.id.checkBox);
         listadepartamento = (Spinner)findViewById(R.id.listaDepartamento);
 listaTipoProdu = (Spinner)findViewById(R.id.spinner4);
         listaNombreGranja =  (Spinner)findViewById(R.id.listaNombreGranja);
@@ -290,7 +342,7 @@ WStipoProducto  tipoProducto  = new WStipoProducto();
         };
         thread.start();
         String NombreGranjap = sharedpreferences.getString("Granja", "granja");
-        if(!NombreGranjap.equals("granja")){
+        if(!NombreGranjap.equals("granja") && !NombreGranjap.equals("")){
             for(int i = 0;i<NombreGranja.size();i++){
                 if(NombreGranjap.equals(NombreGranja.get(i))){
                     final int finalI = i;
@@ -301,7 +353,10 @@ WStipoProducto  tipoProducto  = new WStipoProducto();
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        listaNombreGranja.setSelection(finalI);
+                                        checkGranja.setChecked(true);
+
+                                       listaNombreGranja.setSelection(finalI);
+                                        listaNombreGranja.setVisibility(VISIBLE);
                                     }
                                 });
                             } catch (Exception e) {
@@ -358,7 +413,7 @@ WStipoProducto  tipoProducto  = new WStipoProducto();
                             final String FiltroGranjaS = (String) listaNombreGranja.getSelectedItem();
                             final String FiltroLocalidadS = (String) parent.getItemAtPosition(position);
 
-//testiar y arreglar el tema de size y por q no vicia el Spenner
+
                             Thread thread2 = new Thread(){
                                 @Override
                                 public void run() {
@@ -403,31 +458,34 @@ WStipoProducto  tipoProducto  = new WStipoProducto();
                                                                 };
                                                                 thread.start();
                                                                 String NombreGranjap = sharedpreferences.getString("Granja", "granja");
-                                                                if(!NombreGranjap.equals("granja")){
-                                                                    for(int i = 0;i<NombreGranja1.size();i++){
-                                                                        if(NombreGranjap.equals(NombreGranja1.get(i))){
-                                                                            final int finalI = i;
-                                                                            Thread thread4 = new Thread(){
-                                                                                @Override
-                                                                                public void run() {
-                                                                                    try {
-                                                                                        runOnUiThread(new Runnable() {
+                                                                            if(!NombreGranjap.equals("granja")&& !NombreGranjap.equals("")){
+                                                                                for(int i = 0;i<NombreGranja1.size();i++){
+                                                                                    if(NombreGranjap.equals(NombreGranja1.get(i))){
+                                                                                        final int finalI = i;
+                                                                                        Thread thread4 = new Thread(){
                                                                                             @Override
                                                                                             public void run() {
-                                                                                                listaNombreGranja.setSelection(finalI);
-                                                                                            }
-                                                                                        });
-                                                                                    } catch (Exception e) {
-                                                                                        e.printStackTrace();
-                                                                                    }
-                                                                                };
-                                                                            };
-                                                                            thread4.start();
+                                                                                                try {
+                                                                                                    runOnUiThread(new Runnable() {
+                                                                                                        @Override
+                                                                                                        public void run() {
+                                                                                                            checkGranja.setChecked(true);
+
+                                                                                                            listaNombreGranja.setSelection(finalI);
+                                                                                                            listaNombreGranja.setVisibility(VISIBLE);
+                                                                                                        }
+                                                                                                    });
+                                                                                                } catch (Exception e) {
+                                                                                                    e.printStackTrace();
+                                                                                                }
+                                                                                            };
+                                                                                        };
+                                                                                        thread4.start();
                                                                         }
                                                                     }
                                                                 }
                                                                 else {
-                                                                    listaNombreGranja.setSelection(0);
+                                                                    //  listaNombreGranja.setSelection(0);
                                                                 }
 
                                                             }
@@ -457,26 +515,6 @@ WStipoProducto  tipoProducto  = new WStipoProducto();
 
 
 
-                        }
-                        if(parent.getItemAtPosition(position).equals("")){
-                            Thread thread = new Thread(){
-                                @Override
-                                public void run() {
-                                    try {
-                                        runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                dataAdapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                                listaNombreGranja.setAdapter(null);
-                                                listaNombreGranja.setAdapter(dataAdapter2);
-                                            }
-                                        });
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                };
-                            };
-                            thread.start();
                         }
                     }
 
@@ -522,8 +560,12 @@ WStipoProducto  tipoProducto  = new WStipoProducto();
 
 
 //-------------------------------------------------------------------------------------------------//
-        float buscarkm = sharedpreferences.getFloat("Kilometros", 0);
-        if(buscarkm != 0.0){
+
+
+        System.out.print(sharedpreferences.getFloat("Kilometros", 0));
+        String buscars = String.valueOf(sharedpreferences.getFloat("Kilometros", 0));
+        final float buscarkm=sharedpreferences.getFloat("Kilometros", 0);
+        if(buscarkm != 0.0 ){
             final String km = Float.toString(buscarkm);
 
             Thread thread2 = new Thread(){
@@ -533,7 +575,9 @@ WStipoProducto  tipoProducto  = new WStipoProducto();
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                    buscarDistankm.setText(km);
+                                 buscarDistankm.setText(km);
+                                buscarDistankm.setVisibility(VISIBLE);
+                                checkKm.setChecked(true);
                             }
                         });
                     } catch (Exception e) {
@@ -545,9 +589,46 @@ WStipoProducto  tipoProducto  = new WStipoProducto();
 
             }
 
+       checkGranja.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean click  = checkGranja.isChecked();
+                if (click == true) {
+                    listaNombreGranja.setVisibility(VISIBLE);
+                    if(checkKm.isChecked()==true){
+                        checkKm.setChecked(false);
+                        buscarDistankm.setVisibility(INVISIBLE);
+                        buscarDistankm.setText("");
+                    }
+                }
+                if (click == false){
+                    listaNombreGranja.setSelection(0);
+                    listaNombreGranja.setVisibility(INVISIBLE);
+                }
 
-        // aca me fijaria si en la sesion existe el filtro y si existe seteo con lo q tiene en el parametro haciendo un
-        //recorrido del array y setiandolo en la posiscion del mismo +
+            }
+        });
+
+        checkKm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                boolean click  = checkKm.isChecked();
+                if (click == true) {
+                    buscarDistankm.setVisibility(VISIBLE);
+                    if(checkGranja.isChecked()==true){
+                        checkGranja.setChecked(false);
+                        listaNombreGranja.setVisibility(INVISIBLE);
+                        listaNombreGranja.setSelection(0);
+                    }
+                }
+                if(click==false){
+                    buscarDistankm.setVisibility(INVISIBLE);
+                    buscarDistankm.setText("");
+                }
+            }
+        });
+
 
     }
 

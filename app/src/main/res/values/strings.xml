@@ -4,7 +4,6 @@
     <string name="title_activity_login">login</string>
     <string name="title_activity_registarce">registarce</string>
     <string name="title_activity_main2">Main2Activity</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_modificar">modificar</string>
@@ -31,4 +30,5 @@
     <string name="modificarusuario">ModificarUsuario</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_filtros">activity_filtros</string>
+
 </resources>

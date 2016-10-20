@@ -110,7 +110,16 @@ public class modificar extends AppCompatActivity
             Intent ListSong = new Intent(modificar.this, MainActivity.class);
             startActivity(ListSong);
         }
-
+        if (id == R.id.home) {
+            Intent ListSong = new Intent(this, MainActivity.class);
+            startActivity(ListSong);
+            return true;
+        }
+        if (id == R.id.filtros) {
+            Intent ListSong = new Intent(this, FiltrosActivity.class);
+            startActivity(ListSong);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 

@@ -5,8 +5,12 @@
     <item
         android:id="@+id/home"
         android:orderInCategory="100"
-        android:title="home"
+        android:title="INICIO"
         app:showAsAction="ifRoom" />
-
+    <item
+        android:id="@+id/filtros"
+        android:orderInCategory="100"
+        android:title="Configurar Filtros"
+        app:showAsAction="never" />
 
 </menu>

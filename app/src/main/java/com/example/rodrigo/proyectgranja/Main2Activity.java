@@ -117,7 +117,11 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
             startActivity(ListSong);
 
         }
-
+        if (id == R.id.filtros) {
+            Intent ListSong = new Intent(this, FiltrosActivity.class);
+            startActivity(ListSong);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 

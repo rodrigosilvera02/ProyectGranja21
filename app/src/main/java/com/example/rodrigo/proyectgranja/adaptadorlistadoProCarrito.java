@@ -24,7 +24,7 @@ import java.util.ArrayList;
  * Created by Rodrigo on 14/10/2016.
  */
 
-public class adaptadorlistadoProCarrito  extends BaseAdapter {
+public class adaptadorlistadoProCarrito  extends BaseAdapter implements View.OnClickListener {
 
 
     protected Activity activity;
@@ -88,6 +88,7 @@ public class adaptadorlistadoProCarrito  extends BaseAdapter {
         EditText Cantidad = (EditText)v.findViewById(R.id.edtCantidad);
         ImageView imagen = (ImageView) v.findViewById(R.id.imageView5);
         Button agregarCarrito  = (Button)v.findViewById(R.id.btnAgregarCarrito);
+        agregarCarrito.setOnClickListener(this);
         final Bitmap[] a = new Bitmap[1];
         Thread thread4 = new Thread(){
             @Override
@@ -126,5 +127,10 @@ public class adaptadorlistadoProCarrito  extends BaseAdapter {
 
 
 
+    }
+
+    @Override
+    public void onClick(View v) {
+ // aca se va a escribir to-do lo relacionado con agregar al carrito
     }
 }

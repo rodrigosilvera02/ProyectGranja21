@@ -1,6 +1,12 @@
 package com.example.rodrigo.proyectgranja;
+
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Handler;
 import android.support.multidex.MultiDex;
 import android.content.Context;
@@ -9,6 +15,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ListViewCompat;
@@ -38,38 +45,43 @@ import java.security.PublicKey;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements GridView.OnClickListener, Runnable, OnQueryTextListener, OnActionExpandListener {
-    public static final String MyPREFERENCES = "MyPrefs" ;
+    public static final String MyPREFERENCES = "MyPrefs";
     public static final String Name = "nameKey";
     public static final String Granja = "granja";
     public static final String Departamento = "departamento";
     public static final String Producto = "producto";
-    public static final float Kilometros = 0;
+    public static final float Kilometros =  '0';
     public static final String tipoProducto = "tipoP";
-public static final ArrayList<GranjaProducto> prod1 = null;
+    public static final ArrayList<GranjaProducto> prod1 = null;
     SharedPreferences sharedpreferences;
     private String texto1;
     private ListView lista;
     private Handler handler = new Handler();
     private ArrayList<GranjaProducto> ListaDeGranjaProducto;
+    Location location;
+    LocationManager locationManager;
+    LocationListener locationListener;
+    private LocationManager mlocManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
-        texto1 = sharedpreferences.getString("Name","nameKey");
-        if(texto1.equals("nameKey")) {
+        texto1 = sharedpreferences.getString("Name", "nameKey");
+        if (texto1.equals("nameKey")) {
             setContentView(R.layout.activity_main);
-    lista = (ListView)findViewById(R.id.ListProductoGranjasl);
-
+            lista = (ListView) findViewById(R.id.ListProductoGranjasl);
             Thread t = new Thread(this);
             t.start();
 
-        }
-        else{
+        } else {
             Intent ListSong = new Intent(MainActivity.this, Main2Activity.class);
             startActivity(ListSong);
         }
+
+
+
 
     }
 
@@ -99,7 +111,11 @@ public static final ArrayList<GranjaProducto> prod1 = null;
             startActivity(ListSong);
             return true;
         }
-
+        if (id == R.id.filtros) {
+            Intent ListSong = new Intent(this, FiltrosActivity.class);
+            startActivity(ListSong);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -113,42 +129,68 @@ public static final ArrayList<GranjaProducto> prod1 = null;
     public void run() {
 
 
-        WSGranjaProducto granjap =  new WSGranjaProducto();
+        WSGranjaProducto granjap = new WSGranjaProducto();
         try {
-            Filtros filtro =  new Filtros();
-            ArrayList<GranjaProducto> g1 = granjap.traerGranjaProducto();
+            Filtros filtro = new Filtros();
+            ArrayList<GranjaProducto> g1 = null;
+            try {
+                g1 = granjap.traerGranjaProducto();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-            String departamento  = sharedpreferences.getString("Departamento","departamento");
-            ListaDeGranjaProducto = g1 ;
-            if(!departamento.equals("")&&!departamento.equals("departamento")){
+            String departamento = sharedpreferences.getString("Departamento", "departamento");
+            ListaDeGranjaProducto = g1;
+            if (!departamento.equals("") && !departamento.equals("departamento")) {
                 ArrayList<GranjaProducto> g2 = ListaDeGranjaProducto;
-                ListaDeGranjaProducto = filtro.filtrarporLocalidad(g2,departamento);
+                ListaDeGranjaProducto = filtro.filtrarporLocalidad(g2, departamento);
             }
 
-            String nombreGranjaSE =sharedpreferences.getString("Granja","granja");
-            if(!nombreGranjaSE.equals("")&&!nombreGranjaSE.equals("granja")){
+            String nombreGranjaSE = sharedpreferences.getString("Granja", "granja");
+            if (!nombreGranjaSE.equals("") && !nombreGranjaSE.equals("granja")) {
                 ArrayList<GranjaProducto> g2 = ListaDeGranjaProducto;
-                ListaDeGranjaProducto = filtro.filtrarporGranja(g2,nombreGranjaSE);
+                ListaDeGranjaProducto = filtro.filtrarporGranja(g2, nombreGranjaSE);
             }
-            String TipoProductoSE =sharedpreferences.getString("tipoProducto","tipoP");
-            if(!TipoProductoSE.equals("")&&!TipoProductoSE.equals("tipoP")){
+            String TipoProductoSE = sharedpreferences.getString("tipoProducto", "tipoP");
+            if (!TipoProductoSE.equals("") && !TipoProductoSE.equals("tipoP")) {
                 ArrayList<GranjaProducto> g2 = ListaDeGranjaProducto;
-                ListaDeGranjaProducto = filtro.filtrarporTipo(g2,TipoProductoSE);
+                ListaDeGranjaProducto = filtro.filtrarporTipo(g2, TipoProductoSE);
             }
-            String ProductoSE =sharedpreferences.getString("Producto","producto");
-            if(!ProductoSE.equals("")&&!ProductoSE.equals("producto")){
+            String ProductoSE = sharedpreferences.getString("Producto", "producto");
+            if (!ProductoSE.equals("") && !ProductoSE.equals("producto")) {
                 ArrayList<GranjaProducto> g2 = ListaDeGranjaProducto;
-                ListaDeGranjaProducto = filtro.filtrarporProducto(g2,ProductoSE);
+                ListaDeGranjaProducto = filtro.filtrarporProducto(g2, ProductoSE);
             }
 
-            float Distanciakm =sharedpreferences.getFloat("Kilometros",0);
-            if(Distanciakm < 0){
+            float Distanciakm = sharedpreferences.getFloat("Kilometros", 0);
+            if (Distanciakm > 0) {
+                LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                MyLocationListener mlocListener = new MyLocationListener();
 
-            }
+                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+
+             //   mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,(LocationListener) mlocListener);
+                location = mlocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                ArrayList<GranjaProducto> g2 = ListaDeGranjaProducto;
+                ListaDeGranjaProducto = filtro.filtrarporKm(location,g2,Distanciakm);
+
+//probar en el celular
+
+                }
 
 
             final ArrayList<listadoProducto> listaProducto = new ArrayList<listadoProducto>();
             listadoProducto p1 ;
+         //soluciona hilo
             for(int i = 0;i<ListaDeGranjaProducto.size();i++){
                 p1 =new listadoProducto();
                 p1.setNombreProducto(ListaDeGranjaProducto.get(i).getNomProd());
@@ -182,8 +224,7 @@ public static final ArrayList<GranjaProducto> prod1 = null;
 
 
 
-        } catch (IOException e) {
-            e.printStackTrace();
+
         } catch (XmlPullParserException e) {
             e.printStackTrace();
         }
@@ -230,6 +271,7 @@ public static final ArrayList<GranjaProducto> prod1 = null;
             Thread t = new Thread(this);
             t.start();
         }
+
         return true;
     }
 }

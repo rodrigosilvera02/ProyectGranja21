@@ -28,11 +28,21 @@ public class WSGranja {
 
     public ArrayList<String> traerLocalidad () throws IOException, XmlPullParserException {
         ArrayList<String> localidadGranjas = new ArrayList<>();
+        boolean  existe = false;
         ArrayList<Granja> g1 = listarGranjas();
         for (int a = 0; a < g1.size(); a++) {
-            //hacer recorrida para q los departamentos no se repitan 
             String b = g1.get(a).getLocalidad().substring(8);
-            localidadGranjas.add(b);
+            //hacer recorrida para q los departamentos no se repitan
+            for(int i = 0 ;i<localidadGranjas.size();i++){
+                if(localidadGranjas.get(i).equals(b)){
+                    existe = true;
+                }
+            }
+           if(existe == false){
+               localidadGranjas.add(b);
+           }
+            existe = false;
+
         }
         return localidadGranjas;
 
