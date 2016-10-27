@@ -151,25 +151,10 @@ public class MainActivity extends AppCompatActivity implements GridView.OnClickL
                 ListaDeGranjaProducto = filtro.filtrarporProducto(g2, ProductoSE);
             }
 
-            float Distanciakm = 10;//sharedpreferences.getFloat("Kilometros", 0);
+            float Distanciakm = sharedpreferences.getFloat("Kilometros", 0);
             if (Distanciakm > 0) {
-                LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                MyLocationListener mlocListener = new MyLocationListener();
 
-                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-
-
-             //   mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,(LocationListener) mlocListener);
-                location = mlocManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                location = null;
                 ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
                 ListaDeGranjaProducto = filtro.filtrarporKm(location,g2,Distanciakm);
 

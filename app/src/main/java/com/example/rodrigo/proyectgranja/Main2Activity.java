@@ -167,6 +167,11 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
                 ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
                 ListaDeGranjaProducto = filtro.filtrarporGranja(g2,nombreGranjaSE);
             }
+            String CalidadProductoSE = sharedpreferences.getString("CalidadProducto", "calidadP");
+            if (!CalidadProductoSE.equals("") && !CalidadProductoSE.equals("calidadP")) {
+                ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
+                ListaDeGranjaProducto = filtro.FiltroCalidad(g2, CalidadProductoSE);
+            }
             String TipoProductoSE =sharedpreferences.getString("tipoProducto","tipoP");
             if(!TipoProductoSE.equals("")&&!TipoProductoSE.equals("tipoP")){
                 ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
