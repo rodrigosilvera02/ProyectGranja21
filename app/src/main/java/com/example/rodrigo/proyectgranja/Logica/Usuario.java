@@ -1,4 +1,4 @@
-package com.example.rodrigo.proyectgranja;
+package com.example.rodrigo.proyectgranja.Logica;
 
 /**
  * Created by Rodrigo on 22/09/2016.

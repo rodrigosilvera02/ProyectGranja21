@@ -1,4 +1,7 @@
-package com.example.rodrigo.proyectgranja;
+package com.example.rodrigo.proyectgranja.WebService;
+
+import com.example.rodrigo.proyectgranja.DatosSoap;
+import com.example.rodrigo.proyectgranja.Manager.mnGranjaProducto;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -16,21 +19,45 @@ import java.util.Vector;
 
 public class WSGranjaProducto {
     static DatosSoap dato = new DatosSoap();
+    private Vector<String> a;
+
     public WSGranjaProducto() {
     }
 
-    public ArrayList<GranjaProducto> traerGranjaProducto() throws IOException, XmlPullParserException {
+    public ArrayList<mnGranjaProducto> traerGranjaProducto() throws IOException, XmlPullParserException {
         SoapObject soap = new SoapObject("http://Servicio/", "listarProdGranja");
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
+        final SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
         envelope.setOutputSoapObject(soap);
+        ArrayList<mnGranjaProducto> listaProdGran = new ArrayList<mnGranjaProducto>();
+        final HttpTransportSE httotrans = new HttpTransportSE(dato.getDatoIP() + "GranjaProductWS?WSDL");
+        Thread thread4 = new Thread(){
+            @Override
+            public void run() {
+                try {
+                    httotrans.call("listarProdGranja", envelope);
+                     a = (Vector<String>) envelope.getResponse();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+                }
+            };
+        };
+        thread4.start();
+        try {
+            thread4.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-        HttpTransportSE httotrans = new HttpTransportSE(dato.getDatoIP() + "GranjaProductWS?WSDL");
-        httotrans.call("listarProdGranja", envelope);
-        ArrayList<GranjaProducto> listaProdGran = new ArrayList<GranjaProducto>();
-      Vector<String> listarProdGranja = (Vector<String>) envelope.getResponse();
+
+
+      Vector<String> listarProdGranja = a;
+
+
         for (int a = 0; a < listarProdGranja.size(); a++) {
 
-            GranjaProducto prodg=new GranjaProducto();
+            mnGranjaProducto prodg=new mnGranjaProducto();
            prodg.setId(Integer.parseInt(String.valueOf(listarProdGranja.get(a))));
             prodg.setNomProd(String.valueOf(listarProdGranja.get(a+1)));
             prodg.setImgProg(String.valueOf(listarProdGranja.get(a+2)));

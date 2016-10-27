@@ -21,6 +21,13 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Spinner;
 import android.os.Handler;
+
+import com.example.rodrigo.proyectgranja.Logica.CalidadProducto;
+import com.example.rodrigo.proyectgranja.Logica.TipoProducto;
+import com.example.rodrigo.proyectgranja.WebService.WSCalidad;
+import com.example.rodrigo.proyectgranja.WebService.WSGranja;
+import com.example.rodrigo.proyectgranja.WebService.WStipoProducto;
+
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -35,6 +42,7 @@ public class FiltrosActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,GridView.OnClickListener, Runnable, AdapterView.OnItemSelectedListener {
     private Spinner listadepartamento;
     private Spinner listaGranja;
+    private Spinner listaCalidad;
     private EditText buscarDistankm;
     private Spinner listaTipoProdu;
     private Spinner listaNombreGranja;
@@ -92,10 +100,19 @@ public class FiltrosActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_2main, menu);
-        getMenuInflater().inflate(R.menu.main2, menu);
-        MenuItem searchItem = menu.findItem(R.id.menu3_buscar);
-        searchItem.setVisible(false);
+        SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+        texto1 = sharedpreferences.getString("Name","nameKey");
+        if(!texto1.equals("")&& !texto1.equals("nameKey")) {
+            getMenuInflater().inflate(R.menu.main2, menu);
+            MenuItem searchItem = menu.findItem(R.id.menu3_buscar);
+            searchItem.setVisible(false);
+        }
+        else {
+            getMenuInflater().inflate(R.menu.menu_2main, menu);
+
+        }
+        MenuItem configurarfil = menu.findItem(R.id.filtros);
+        configurarfil.setVisible(false);
         return true;
 
     }
@@ -192,6 +209,13 @@ public class FiltrosActivity extends AppCompatActivity
                                     editor.putString("tipoProducto",TipoProducto);
 
                                 }
+
+                                final String calidad  = String.valueOf(listaCalidad.getSelectedItem());
+                                if(!TipoProducto.equals("null")){
+
+                                    editor.putString("CalidadProducto",calidad);
+
+                                }
                                 float establecerKm = 0;
 
                                 String p = String.valueOf(buscarDistankm.getText());
@@ -213,6 +237,9 @@ public class FiltrosActivity extends AppCompatActivity
 
                                 editor.commit();
 
+
+
+
                             }
 
     //  Intent ListSong = new Intent(FiltrosActivity.this, Main2Activity.class);
@@ -226,6 +253,8 @@ public class FiltrosActivity extends AppCompatActivity
         };
         };
         thread.start();
+        Intent ListSong1 = new Intent(this, MainActivity.class);
+        startActivity(ListSong1);
     }
 
     @Override
@@ -235,9 +264,10 @@ public class FiltrosActivity extends AppCompatActivity
         listadepartamento = (Spinner)findViewById(R.id.listaDepartamento);
 listaTipoProdu = (Spinner)findViewById(R.id.spinner4);
         listaNombreGranja =  (Spinner)findViewById(R.id.listaNombreGranja);
+        listaCalidad = (Spinner)findViewById(R.id.spnCalidad);
         buscarDistankm = (EditText)findViewById(R.id.edtEstablecerKm);
   //cargarDatos En Spinner
-WStipoProducto  tipoProducto  = new WStipoProducto();
+WStipoProducto tipoProducto  = new WStipoProducto();
     final    List<String> tipo = new ArrayList<String>();
         try {
             listaTipoProdu.setOnItemSelectedListener(this);
@@ -300,10 +330,81 @@ WStipoProducto  tipoProducto  = new WStipoProducto();
                 }
             }
         }
-
         //--------------fin TipoProducto --------------------------//
+        //lista de CalidadProducto
+
+        WSCalidad calidadp  = new WSCalidad();
+        final    List<String> calidad = new ArrayList<String>();
+        try {
+            listaCalidad.setOnItemSelectedListener(this);
+            ArrayList <CalidadProducto> Lista = calidadp.cargarlistaCalidad();
+            calidad.add("");
+            for(int i = 0;i<Lista.size();i++){
+                calidad.add(Lista.get(i).getCalidadProductto());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        }
+
+        // attaching data adapter to spinner
+
+        final ArrayAdapter<String> dataAdapter6 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, calidad);
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        Thread thread7 = new Thread(){
+            @Override
+            public void run() {
+                try {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            listaCalidad.setAdapter(dataAdapter6);
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            };
+        };
+        thread7.start();
+
+
+        String calidad1 = sharedpreferences.getString("CalidadProducto", "calidadP");
+        if(!calidad1.equals("calidadP")){
+            for(int i = 0;i<calidad.size();i++){
+                if(calidad1.equals(calidad.get(i))){
+                    final int finalI = i;
+                    Thread thread8 = new Thread(){
+                        @Override
+                        public void run() {
+                            try {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        listaCalidad.setSelection(finalI);
+                                    }
+                                });
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        };
+                    };
+                    thread8.start();
+                }
+            }
+        }
+
+
+
+
+
+
+
         //------------ListaGranja----------------------------------//
-        final WSGranja  listaGranja  = new WSGranja();
+        final WSGranja listaGranja  = new WSGranja();
         final    List<String> NombreGranja = new ArrayList<String>();
         try {
             listaNombreGranja.setOnItemSelectedListener(this);

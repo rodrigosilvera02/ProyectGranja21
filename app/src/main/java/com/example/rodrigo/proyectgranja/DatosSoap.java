@@ -5,7 +5,7 @@ package com.example.rodrigo.proyectgranja;
  */
 public class DatosSoap {
 
-    private String datoIP = "http://192.168.0.103:8080/WebService/";
+    private String datoIP = "http://192.168.0.105:8080/WebService/";
 
     public String getWebServiceUsuario() {
         return WebServiceUsuario;

@@ -1,14 +1,16 @@
-package com.example.rodrigo.proyectgranja;
+package com.example.rodrigo.proyectgranja.Logica;
 
 /**
- * Created by Rodrigo on 05/10/2016.
+ * Created by Rodrigo on 24/10/2016.
  */
-
-public class Productor {
+public class Producto {
     private Integer id;
     private String nombre;
     private String imagen;
     private boolean borrado;
+
+    public Producto() {
+    }
 
     public Integer getId() {
         return id;
@@ -40,8 +42,5 @@ public class Productor {
 
     public void setBorrado(boolean borrado) {
         this.borrado = borrado;
-    }
-
-    public Productor() {
     }
 }

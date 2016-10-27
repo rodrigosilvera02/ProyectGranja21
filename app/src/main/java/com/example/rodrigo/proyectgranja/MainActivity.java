@@ -1,47 +1,32 @@
 package com.example.rodrigo.proyectgranja;
 
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Handler;
-import android.support.multidex.MultiDex;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ListViewCompat;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.widget.ListView;
-import android.widget.Toast;
+
+import com.example.rodrigo.proyectgranja.Manager.mnGranjaProducto;
+import com.example.rodrigo.proyectgranja.WebService.WSGranjaProducto;
 
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.security.PublicKey;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements GridView.OnClickListener, Runnable, OnQueryTextListener, OnActionExpandListener {
@@ -52,12 +37,14 @@ public class MainActivity extends AppCompatActivity implements GridView.OnClickL
     public static final String Producto = "producto";
     public static final float Kilometros =  '0';
     public static final String tipoProducto = "tipoP";
-    public static final ArrayList<GranjaProducto> prod1 = null;
+    public static final String CalidadProducto = "calidadP";
+    public static int idCliente = 0;
+    public static final ArrayList<mnGranjaProducto> prod1 = null;
     SharedPreferences sharedpreferences;
     private String texto1;
     private ListView lista;
     private Handler handler = new Handler();
-    private ArrayList<GranjaProducto> ListaDeGranjaProducto;
+    private ArrayList<mnGranjaProducto> ListaDeGranjaProducto;
     Location location;
     LocationManager locationManager;
     LocationListener locationListener;
@@ -132,37 +119,39 @@ public class MainActivity extends AppCompatActivity implements GridView.OnClickL
         WSGranjaProducto granjap = new WSGranjaProducto();
         try {
             Filtros filtro = new Filtros();
-            ArrayList<GranjaProducto> g1 = null;
-            try {
-                g1 = granjap.traerGranjaProducto();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            ArrayList<mnGranjaProducto> g1 = granjap.traerGranjaProducto();
+
             sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
             String departamento = sharedpreferences.getString("Departamento", "departamento");
             ListaDeGranjaProducto = g1;
             if (!departamento.equals("") && !departamento.equals("departamento")) {
-                ArrayList<GranjaProducto> g2 = ListaDeGranjaProducto;
+                ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
                 ListaDeGranjaProducto = filtro.filtrarporLocalidad(g2, departamento);
             }
 
             String nombreGranjaSE = sharedpreferences.getString("Granja", "granja");
             if (!nombreGranjaSE.equals("") && !nombreGranjaSE.equals("granja")) {
-                ArrayList<GranjaProducto> g2 = ListaDeGranjaProducto;
+                ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
                 ListaDeGranjaProducto = filtro.filtrarporGranja(g2, nombreGranjaSE);
             }
             String TipoProductoSE = sharedpreferences.getString("tipoProducto", "tipoP");
             if (!TipoProductoSE.equals("") && !TipoProductoSE.equals("tipoP")) {
-                ArrayList<GranjaProducto> g2 = ListaDeGranjaProducto;
+                ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
                 ListaDeGranjaProducto = filtro.filtrarporTipo(g2, TipoProductoSE);
             }
+            String CalidadProductoSE = sharedpreferences.getString("CalidadProducto", "calidadP");
+            if (!CalidadProductoSE.equals("") && !CalidadProductoSE.equals("calidadP")) {
+                ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
+                ListaDeGranjaProducto = filtro.FiltroCalidad(g2, CalidadProductoSE);
+            }
+
             String ProductoSE = sharedpreferences.getString("Producto", "producto");
             if (!ProductoSE.equals("") && !ProductoSE.equals("producto")) {
-                ArrayList<GranjaProducto> g2 = ListaDeGranjaProducto;
+                ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
                 ListaDeGranjaProducto = filtro.filtrarporProducto(g2, ProductoSE);
             }
 
-            float Distanciakm = sharedpreferences.getFloat("Kilometros", 0);
+            float Distanciakm = 10;//sharedpreferences.getFloat("Kilometros", 0);
             if (Distanciakm > 0) {
                 LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                 MyLocationListener mlocListener = new MyLocationListener();
@@ -178,12 +167,11 @@ public class MainActivity extends AppCompatActivity implements GridView.OnClickL
                     return;
                 }
 
-             //   mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,(LocationListener) mlocListener);
-                location = mlocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                ArrayList<GranjaProducto> g2 = ListaDeGranjaProducto;
-                ListaDeGranjaProducto = filtro.filtrarporKm(location,g2,Distanciakm);
 
-//probar en el celular
+             //   mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,(LocationListener) mlocListener);
+                location = mlocManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
+                ListaDeGranjaProducto = filtro.filtrarporKm(location,g2,Distanciakm);
 
                 }
 
@@ -226,6 +214,8 @@ public class MainActivity extends AppCompatActivity implements GridView.OnClickL
 
 
         } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

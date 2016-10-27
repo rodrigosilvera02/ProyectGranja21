@@ -105,4 +105,23 @@
         android:id="@+id/btnAgregarCarrito"
         android:layout_below="@+id/txtPrecio"
         android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="Cantidad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView33"
+        android:layout_alignParentStart="true"
+        android:id="@+id/textView24" />
+
+    <TextView
+        android:text="La cantidad debe de ser un entero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/errorEnt"
+        android:layout_alignBottom="@+id/btnAgregarCarrito"
+        android:layout_alignParentStart="true"
+        android:textColorLink="@android:color/holo_red_dark"
+        android:visibility="invisible"/>
+
 </RelativeLayout>

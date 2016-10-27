@@ -20,7 +20,7 @@
         android:id="@+id/textView17"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="42dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
     <TextView
@@ -140,5 +140,22 @@
         android:layout_above="@+id/edtEstablecerKm"
         android:layout_alignStart="@+id/textView16"
         />
+
+    <TextView
+        android:text="Calidad Producto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinner4"
+        android:layout_alignStart="@+id/textView19"
+        android:layout_marginTop="22dp"
+        android:id="@+id/textView25" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView25"
+        android:layout_toEndOf="@+id/textView19"
+        android:id="@+id/spnCalidad"
+        android:layout_alignStart="@+id/listaNombreGranja" />
 
 </RelativeLayout>

@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -19,9 +17,15 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.example.rodrigo.proyectgranja.WebService.WSUsuario;
+import com.example.rodrigo.proyectgranja.WebService.WScliente;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
 
 import static android.view.View.VISIBLE;
 
@@ -86,6 +90,13 @@ public class login extends AppCompatActivity implements GridView.OnClickListener
 
 
         }
+        if (id == R.id.filtros) {
+            Intent ListSong = new Intent(this, FiltrosActivity.class);
+            startActivity(ListSong);
+            return true;
+
+
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -104,8 +115,8 @@ public class login extends AppCompatActivity implements GridView.OnClickListener
 
          final   String nickname = String.valueOf(Nickname.getText().toString());
             String password = String.valueOf(Password.getText().toString());
-            WSUsuario webservice = new WSUsuario();
-
+            final WSUsuario webservice = new WSUsuario();
+            final WScliente wscliente = new WScliente();
             final String valido = webservice.validarUsuario(nickname, password);
             if (valido.equals("true")) {
                 handler.post(new Runnable() {
@@ -114,11 +125,23 @@ public class login extends AppCompatActivity implements GridView.OnClickListener
                         SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedpreferences.edit();
                         editor.putString("Name", nickname);
+                        int idCliente = 0;
+                        try {
+                            int idUsuario = webservice.traerIdUsuario(nickname);
+                            idCliente =  wscliente.traerIdCliente(idUsuario);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (XmlPullParserException e) {
+                            e.printStackTrace();
+                        }
+                        editor.putInt("idCliente", idCliente);
+                       //agregar el id a una variable de sesion
                         editor.commit();
                         finish();
+
                         Intent ListSong = new Intent(login.this, Main2Activity.class);
                         startActivity(ListSong);
-
+            //hacer variable de session y poner el id del cliente
                     }
                 });
             } else {

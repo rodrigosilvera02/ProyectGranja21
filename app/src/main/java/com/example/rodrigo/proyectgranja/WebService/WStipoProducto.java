@@ -1,4 +1,7 @@
-package com.example.rodrigo.proyectgranja;
+package com.example.rodrigo.proyectgranja.WebService;
+
+import com.example.rodrigo.proyectgranja.DatosSoap;
+import com.example.rodrigo.proyectgranja.Logica.TipoProducto;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;

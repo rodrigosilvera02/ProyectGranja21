@@ -13,6 +13,34 @@ public class listadoProducto {
     private String NombreGranja;
     private String PrecioProducto;
     private String ImgProducto;
+    private  int idproductoGranja;
+    private int idGranja;
+
+    public int getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
+    }
+
+    private int idCliente;
+
+    public int getIdGranja() {
+        return idGranja;
+    }
+
+    public void setIdGranja(int idGranja) {
+        this.idGranja = idGranja;
+    }
+
+    public int getIdproductoGranja() {
+        return idproductoGranja;
+    }
+
+    public void setIdproductoGranja(int idproductoGranja) {
+        this.idproductoGranja = idproductoGranja;
+    }
 
     public String getImgProducto() {
         return ImgProducto;

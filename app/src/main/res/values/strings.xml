@@ -1,13 +1,13 @@
 <resources>
-    <string name="app_name">ProyectGranja</string>
+    <string name="app_name">GranjaEnCasa</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">login</string>
-    <string name="title_activity_registarce">registarce</string>
-    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_registarce">GranjaEnCasa</string>
+    <string name="title_activity_main2">GranjaEnCasa</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="title_activity_modificar">modificar</string>
-    <string name="title_activity_registrarse">Registrarse</string>
+    <string name="title_activity_modificar">GranjaEnCasa</string>
+    <string name="title_activity_registrarse">GranjaEnCasa</string>
     <string name="nombre">nombre</string>
     <string name="apellido">apellido</string>
     <string name="nombre_usuario">nombre_usuario</string>
@@ -28,7 +28,7 @@
     <string name="android_studio">Android Studio</string>
     <string name="android_studio_android_com">android.studio@android.com</string>
     <string name="modificarusuario">ModificarUsuario</string>
-    <string name="title_activity_maps">Map</string>
-    <string name="title_activity_filtros">activity_filtros</string>
+    <string name="title_activity_maps">GranjaEnCasa</string>
+    <string name="title_activity_filtros">GranjaEnCasa</string>
 
 </resources>

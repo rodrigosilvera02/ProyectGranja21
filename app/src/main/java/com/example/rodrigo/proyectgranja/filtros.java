@@ -1,16 +1,12 @@
 package com.example.rodrigo.proyectgranja;
 
-import android.content.Context;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 
+
+import com.example.rodrigo.proyectgranja.Logica.Granja;
+import com.example.rodrigo.proyectgranja.Manager.mnGranjaProducto;
 
 import java.util.ArrayList;
-
-import static android.content.Context.LOCATION_SERVICE;
-import static com.example.rodrigo.proyectgranja.MainActivity.Departamento;
-import static com.example.rodrigo.proyectgranja.MainActivity.Producto;
 
 /**
  * Created by Rodrigo on 05/10/2016.
@@ -19,8 +15,8 @@ import static com.example.rodrigo.proyectgranja.MainActivity.Producto;
 public class Filtros {
     public Filtros() {
     }
-    public ArrayList<GranjaProducto> filtrarporProducto(ArrayList<GranjaProducto> g1 , String producto){
-        ArrayList<GranjaProducto> filtroProducto = new ArrayList<GranjaProducto>();
+    public ArrayList<mnGranjaProducto> filtrarporProducto(ArrayList<mnGranjaProducto> g1 , String producto){
+        ArrayList<mnGranjaProducto> filtroProducto = new ArrayList<mnGranjaProducto>();
         int tamaño =producto.length();
 
         for(int i = 0 ;i<g1.size();i++){
@@ -48,8 +44,8 @@ public class Filtros {
         }
         return filtroProducto;
     }
-    public ArrayList<GranjaProducto> filtrarporLocalidad(ArrayList<GranjaProducto> g1,String localidad){
-        ArrayList<GranjaProducto> filtroNombreGranja = new ArrayList<GranjaProducto>();
+    public ArrayList<mnGranjaProducto> filtrarporLocalidad(ArrayList<mnGranjaProducto> g1, String localidad){
+        ArrayList<mnGranjaProducto> filtroNombreGranja = new ArrayList<mnGranjaProducto>();
         for(int i = 0 ;i<g1.size();i++){
             if(g1.get(i).getLocalidad().equals(localidad)){
                 filtroNombreGranja.add(g1.get(i));
@@ -57,8 +53,8 @@ public class Filtros {
         }
         return filtroNombreGranja;
     }
-    public ArrayList<GranjaProducto> filtrarporGranja(ArrayList<GranjaProducto> g1,String NomnbreGranja){
-        ArrayList<GranjaProducto> filtroNombreGranja = new ArrayList<GranjaProducto>();
+    public ArrayList<mnGranjaProducto> filtrarporGranja(ArrayList<mnGranjaProducto> g1, String NomnbreGranja){
+        ArrayList<mnGranjaProducto> filtroNombreGranja = new ArrayList<mnGranjaProducto>();
         for(int i = 0 ;i<g1.size();i++){
             if(g1.get(i).getNombreGranja().equals(NomnbreGranja)){
                 filtroNombreGranja.add(g1.get(i));
@@ -67,8 +63,8 @@ public class Filtros {
         return filtroNombreGranja;
     }
 
-    public ArrayList<GranjaProducto> filtrarporTipo(ArrayList<GranjaProducto> g1,String tipop){
-        ArrayList<GranjaProducto> filtrotipo = new ArrayList<GranjaProducto>();
+    public ArrayList<mnGranjaProducto> filtrarporTipo(ArrayList<mnGranjaProducto> g1, String tipop){
+        ArrayList<mnGranjaProducto> filtrotipo = new ArrayList<mnGranjaProducto>();
         for(int i = 0 ;i<g1.size();i++){
             if(g1.get(i).getTipoProducto().equals(tipop)){
                 filtrotipo.add(g1.get(i));
@@ -84,9 +80,9 @@ public class Filtros {
     }
     
 
-    public ArrayList<GranjaProducto> filtrarporKm(Location location,ArrayList<GranjaProducto> g1,float Distancia){
+    public ArrayList<mnGranjaProducto> filtrarporKm(Location location, ArrayList<mnGranjaProducto> g1, float Distancia){
         float mitaddistancia = Distancia / 2;
-        ArrayList<GranjaProducto> granjasAMostrar = new ArrayList<GranjaProducto>();
+        ArrayList<mnGranjaProducto> granjasAMostrar = new ArrayList<mnGranjaProducto>();
         for(int i =0;i<g1.size();i++){
             float latitud= g1.get(i).getGeoLat();
             float longitud = g1.get(i).getGeoLong();
@@ -104,7 +100,7 @@ public class Filtros {
         return g1;
     }
 
-    public ArrayList<Granja> FiltroGranjaDepartamento(ArrayList<Granja> granja1,String departamento){
+    public ArrayList<Granja> FiltroGranjaDepartamento(ArrayList<Granja> granja1, String departamento){
         ArrayList<Granja> g1 = granja1;
         for (int i =0 ;i<g1.size();i++){
 
@@ -115,18 +111,34 @@ public class Filtros {
 
 
 
-    public static double distanciaCoord(double lat1, double lng1, double lat2, double lng2) {
-        //double radioTierra = 3958.75;//en millas
-        double radioTierra = 6371;//en kilómetros
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLng = Math.toRadians(lng2 - lng1);
-        double sindLat = Math.sin(dLat / 2);
-        double sindLng = Math.sin(dLng / 2);
-        double va1 = Math.pow(sindLat, 2) + Math.pow(sindLng, 2)
-                * Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2));
-        double va2 = 2 * Math.atan2(Math.sqrt(va1), Math.sqrt(1 - va1));
-        double distancia = radioTierra * va2;
+    public double distanciaCoord(double la1, double lo1, double la2, double lo2) {
+        // transforma grados en radianes
+        double lat1 = graRad(la1);
+        double long1 = graRad(lo1);
 
-        return distancia;
+        double lat2 = graRad(la2);
+        double long2 = graRad(lo2);
+        // calcula la distancia
+        double d = Math.acos( Math.sin(lat1)*Math.sin(lat2) + Math.cos(lat1)*Math.cos(lat2) * Math.cos(long2-long1) ) * 6371;
+     return d;
+    }
+
+    public double graRad(double grados){
+        double radianes = (grados * Math.PI)/180;
+        return radianes;
+
+}
+
+
+    public ArrayList<mnGranjaProducto> FiltroCalidad(ArrayList<mnGranjaProducto> g2, String calidadProductoSE) {
+        ArrayList<mnGranjaProducto> fitlroCalidad = new ArrayList<mnGranjaProducto>();
+        for(int i = 0 ;i<g2.size();i++){
+            if(g2.get(i).getCalidad().equals(calidadProductoSE)){
+                fitlroCalidad.add(g2.get(i));
+            }
+        }
+        return fitlroCalidad;
+
+
     }
 }

@@ -1,5 +1,8 @@
-package com.example.rodrigo.proyectgranja;
+package com.example.rodrigo.proyectgranja.WebService;
 
+
+import com.example.rodrigo.proyectgranja.DatosSoap;
+import com.example.rodrigo.proyectgranja.Logica.Usuario;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -11,7 +14,6 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Vector;
 
 /**
@@ -101,11 +103,31 @@ public class WSUsuario {
     public static int traerIdUsuario(String nickName) throws IOException, XmlPullParserException {
         SoapObject soap = new SoapObject("http://Servicio/","traerIdUsuario");
         soap.addProperty("nickName",nickName);
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
+        final SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
         envelope.setOutputSoapObject(soap);
 
-        HttpTransportSE httotrans = new HttpTransportSE(dato.getDatoIP()+"UsuarioWS?WSDL");
-        httotrans.call("traerIdUsuario",envelope);
+        final HttpTransportSE httotrans = new HttpTransportSE(dato.getDatoIP()+"UsuarioWS?WSDL");
+        Thread thread4 = new Thread(){
+            @Override
+            public void run() {
+                try {
+                    httotrans.call("traerIdUsuario",envelope);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+                }
+            };
+        };
+        thread4.start();
+        try {
+            thread4.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+
         Object resultado =  envelope.getResponse();
         return Integer.parseInt(resultado.toString());
     }

@@ -1,14 +1,14 @@
-package com.example.rodrigo.proyectgranja;
+package com.example.rodrigo.proyectgranja.WebService;
+
+import com.example.rodrigo.proyectgranja.DatosSoap;
+import com.example.rodrigo.proyectgranja.Logica.Granja;
+import com.example.rodrigo.proyectgranja.Logica.TipoProducto;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Vector;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,8 +31,9 @@ public class WSGranja {
         boolean  existe = false;
         ArrayList<Granja> g1 = listarGranjas();
         for (int a = 0; a < g1.size(); a++) {
-            String b = g1.get(a).getLocalidad().substring(8);
-            //hacer recorrida para q los departamentos no se repitan
+
+            //cuando se saque el tema de la localidad en mapa mpodificar esto y eliminar el sub string
+            String b = g1.get(a).getLocalidad();
             for(int i = 0 ;i<localidadGranjas.size();i++){
                 if(localidadGranjas.get(i).equals(b)){
                     existe = true;
@@ -66,7 +67,7 @@ public class WSGranja {
         ArrayList<Granja> g2 = listarGranjas();
         for (int a = 0; a < g2.size(); a++) {
             if(!Departamento.equals("")&&!Departamento.equals(null)) {
-                String localidad = g2.get(a).getLocalidad().substring(8);
+                String localidad = g2.get(a).getLocalidad();
                 if(Departamento.equals(localidad)){
                     NombreGranjas.add(g2.get(a).getNombre());
                 }
@@ -85,7 +86,7 @@ boolean retur= false;
         for (int a = 0; a < g1.size(); a++) {
             String NombreGranja1 = g1.get(a).getNombre();
             String localidad1 = g1.get(a).getLocalidad();
-            String l = localidad1.substring(8);
+            String l = localidad1;
             if(NombreGranja.equals(NombreGranja1) && localidad.equals(l)){
                 retur= true;
             }

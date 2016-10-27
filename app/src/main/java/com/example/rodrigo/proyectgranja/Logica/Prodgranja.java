@@ -1,11 +1,12 @@
-package com.example.rodrigo.proyectgranja;
+package com.example.rodrigo.proyectgranja.Logica;
 
 /**
- * Created by Rodrigo on 30/09/2016.
+ * Created by Rodrigo on 24/10/2016.
  */
-
-public class GranjaProducto {
+public class Prodgranja {
     private Integer id;
+    private Granja granja;
+    private Producto producto;
     private int strock;
     private String calidad;
     private String tipoProducto;
@@ -21,6 +22,11 @@ public class GranjaProducto {
     private int idGranja;
     private String NombreGranja;
     private String Localidad;
+    private Float GeoLat;
+    private Float GeoLong;
+
+    public Prodgranja() {
+    }
 
     public Integer getId() {
         return id;
@@ -30,8 +36,21 @@ public class GranjaProducto {
         this.id = id;
     }
 
-    private Float GeoLat;
-    private Float GeoLong;
+    public Granja getGranja() {
+        return granja;
+    }
+
+    public void setGranja(Granja granja) {
+        this.granja = granja;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
 
     public int getStrock() {
         return strock;
@@ -151,8 +170,5 @@ public class GranjaProducto {
 
     public void setGeoLong(Float geoLong) {
         GeoLong = geoLong;
-    }
-
-    public GranjaProducto() {
     }
 }

@@ -2,6 +2,7 @@ package com.example.rodrigo.proyectgranja;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -12,6 +13,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.rodrigo.proyectgranja.Manager.mnCarrito;
+import com.example.rodrigo.proyectgranja.Manager.mnGranjaProducto;
+import com.google.android.gms.analytics.ExceptionParser;
+
+import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -24,7 +31,7 @@ import java.util.ArrayList;
  * Created by Rodrigo on 14/10/2016.
  */
 
-public class adaptadorlistadoProCarrito  extends BaseAdapter implements View.OnClickListener {
+public class adaptadorlistadoProCarrito  extends BaseAdapter  {
 
 
     protected Activity activity;
@@ -85,10 +92,43 @@ public class adaptadorlistadoProCarrito  extends BaseAdapter implements View.OnC
         nombreGranja.setText(dir.getNombreGranja());
         TextView presioProducto = (TextView) v.findViewById(R.id.txtPrecio);
         presioProducto.setText(dir.getPrecioProducto());
-        EditText Cantidad = (EditText)v.findViewById(R.id.edtCantidad);
+        final EditText Cantidad = (EditText)v.findViewById(R.id.edtCantidad);
+        final  TextView ErrorEnt = (TextView)v.findViewById(R.id.errorEnt);
         ImageView imagen = (ImageView) v.findViewById(R.id.imageView5);
         Button agregarCarrito  = (Button)v.findViewById(R.id.btnAgregarCarrito);
-        agregarCarrito.setOnClickListener(this);
+        agregarCarrito.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ErrorEnt.setVisibility(View.INVISIBLE);
+                String cantidad = String.valueOf(Cantidad.getText());
+                int idCliente = dir.getIdCliente();
+                int idGranja =  dir.getIdGranja();
+
+                int idProducto = dir.getIdproductoGranja();
+
+                  try {
+                      int cantidad1 = Integer.parseInt(cantidad);
+                      mnCarrito mnCarrito = new mnCarrito();
+                      mnCarrito.setIdCliente(idCliente);
+                      mnCarrito.setIdGranja(idGranja);
+                      mnCarrito.setIdProdGran(idProducto);
+                      mnCarrito.setCantidad(cantidad1);
+                      mnCarrito.agregarProductoCarrito();
+                      Cantidad.setText("");
+                  } catch (XmlPullParserException e) {
+                      e.printStackTrace();
+                  } catch (IOException e) {
+                      e.printStackTrace();
+                  }
+                  catch (NumberFormatException e) {
+                    ErrorEnt.setVisibility(View.VISIBLE);
+                      Cantidad.setText("");
+                  }
+
+
+
+            }
+        });
         final Bitmap[] a = new Bitmap[1];
         Thread thread4 = new Thread(){
             @Override
@@ -126,11 +166,5 @@ public class adaptadorlistadoProCarrito  extends BaseAdapter implements View.OnC
         return bm;
 
 
-
-    }
-
-    @Override
-    public void onClick(View v) {
- // aca se va a escribir to-do lo relacionado con agregar al carrito
     }
 }

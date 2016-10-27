@@ -3,14 +3,10 @@ package com.example.rodrigo.proyectgranja;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,21 +15,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.example.rodrigo.proyectgranja.Manager.mnGranjaProducto;
+import com.example.rodrigo.proyectgranja.WebService.WSGranjaProducto;
 
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-import static android.view.View.VISIBLE;
 
 public class Main2Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Runnable, SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
     private TextView textol;
@@ -41,7 +32,7 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
     private String texto1;
     private ListView lista;
     private Handler handler = new Handler();
-    private ArrayList<GranjaProducto> ListaDeGranjaProducto;
+    private ArrayList<mnGranjaProducto> ListaDeGranjaProducto;
     @Override
 
     protected void onCreate(final Bundle savedInstanceState) {
@@ -163,27 +154,27 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         try {
             SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
             Filtros filtro =  new Filtros();
-            ArrayList<GranjaProducto> g1 = granjap.traerGranjaProducto();
+            ArrayList<mnGranjaProducto> g1 = granjap.traerGranjaProducto();
             String departamento  = sharedpreferences.getString("Departamento","departamento");
             ListaDeGranjaProducto = g1 ;
             if(!departamento.equals("")&&!departamento.equals("departamento")){
-                ArrayList<GranjaProducto> g2 = ListaDeGranjaProducto;
+                ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
                 ListaDeGranjaProducto = filtro.filtrarporLocalidad(g2,departamento);
             }
 
             String nombreGranjaSE =sharedpreferences.getString("Granja","granja");
             if(!nombreGranjaSE.equals("")&&!nombreGranjaSE.equals("granja")){
-                ArrayList<GranjaProducto> g2 = ListaDeGranjaProducto;
+                ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
                 ListaDeGranjaProducto = filtro.filtrarporGranja(g2,nombreGranjaSE);
             }
             String TipoProductoSE =sharedpreferences.getString("tipoProducto","tipoP");
             if(!TipoProductoSE.equals("")&&!TipoProductoSE.equals("tipoP")){
-                ArrayList<GranjaProducto> g2 = ListaDeGranjaProducto;
+                ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
                 ListaDeGranjaProducto = filtro.filtrarporTipo(g2,TipoProductoSE);
             }
             String ProductoSE =sharedpreferences.getString("Producto","producto");
             if(!ProductoSE.equals("")&&!ProductoSE.equals("producto")){
-                ArrayList<GranjaProducto> g2 = ListaDeGranjaProducto;
+                ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
                 ListaDeGranjaProducto = filtro.filtrarporProducto(g2,ProductoSE);
             }
 
@@ -192,7 +183,8 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
 
             }
 
-
+            sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+            int idCliente = sharedpreferences.getInt("idCliente",'0');
             final ArrayList<listadoProducto> listaProducto = new ArrayList<listadoProducto>();
             listadoProducto p1 ;
             for(int i = 0;i<ListaDeGranjaProducto.size();i++){
@@ -203,7 +195,10 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
                 p1.setNombreGranja(ListaDeGranjaProducto.get(i).getNombreGranja());
                 String src = ListaDeGranjaProducto.get(i).getImgProg();
                 p1.setImgProducto(src);
+                p1.setIdproductoGranja(ListaDeGranjaProducto.get(i).getId());
                 p1.setPrecioProducto(String.valueOf(ListaDeGranjaProducto.get(i).getPrecio()));
+                p1.setIdGranja(ListaDeGranjaProducto.get(i).getIdGranja());
+                p1.setIdCliente(idCliente);
                 listaProducto.add(p1);
             }
             lista = (ListView)findViewById(R.id.listProductosCariito);
