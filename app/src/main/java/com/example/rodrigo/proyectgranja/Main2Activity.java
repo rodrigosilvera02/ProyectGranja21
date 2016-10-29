@@ -3,8 +3,13 @@ package com.example.rodrigo.proyectgranja;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.support.design.widget.NavigationView;
@@ -33,6 +38,10 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
     private ListView lista;
     private Handler handler = new Handler();
     private ArrayList<mnGranjaProducto> ListaDeGranjaProducto;
+    Location location;
+    LocationManager locationManager;
+    LocationListener locationListener;
+    private LocationManager mlocManager;
     @Override
 
     protected void onCreate(final Bundle savedInstanceState) {
@@ -108,6 +117,11 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
             startActivity(ListSong);
 
         }
+        if (id == R.id.home) {
+            Intent ListSong = new Intent(this, MainActivity.class);
+            startActivity(ListSong);
+            return true;
+        }
         if (id == R.id.filtros) {
             Intent ListSong = new Intent(this, FiltrosActivity.class);
             startActivity(ListSong);
@@ -127,7 +141,13 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
             startActivity(ListSong);
 
             // Handle the camera action
-        }  /*else if (id == R.id.nav_gallery) {
+        }
+
+        if(id == R.id.ModPasswoed) {
+            Intent ListSong = new Intent(this, ActivityCamPassword.class);
+            startActivity(ListSong);
+
+        }/*else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
 
@@ -138,11 +158,12 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         } else if (id == R.id.nav_send) {
 
         }
-*/
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+*/      DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
+        }
+
+
 
 
 
@@ -183,8 +204,28 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
                 ListaDeGranjaProducto = filtro.filtrarporProducto(g2,ProductoSE);
             }
 
-            float Distanciakm =sharedpreferences.getFloat("Kilometros",0);
-            if(Distanciakm < 0){
+            float Distanciakm = sharedpreferences.getFloat("Kilometros", 0);
+            if (Distanciakm > 0) {
+
+                location = null;
+                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                location = mlocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if(location.getLatitude()!= 0  && location.getLatitude()!=0){
+                    double lat =location.getLatitude();
+                    double lon = location.getLongitude();
+                    ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
+                    ListaDeGranjaProducto = filtro.filtrarporKm(lat,lon,g2,Distanciakm);
+                }
+
 
             }
 

@@ -1,5 +1,7 @@
 package com.example.rodrigo.proyectgranja.Manager;
 
+import android.os.Handler;
+
 import com.example.rodrigo.proyectgranja.Logica.Carprod;
 import com.example.rodrigo.proyectgranja.Logica.Carrito;
 import com.example.rodrigo.proyectgranja.WebService.WSCarrito;
@@ -23,7 +25,7 @@ public class mnCarrito {
     private int idProdCarrito;
     private String nombProd;
     private String imgProd;
-
+    private Handler handler = new Handler();
     private int cantidad;
 
     ArrayList<Carrito> listarCarrito=new ArrayList<>();
@@ -109,20 +111,62 @@ public class mnCarrito {
     }
 
     public void agregarProductoCarrito() throws IOException, XmlPullParserException {
-        int idCarrito;
-        WSCarrito wsCarrito = new WSCarrito();
-        WSProductoCarrito wsProductoCarrito = new WSProductoCarrito();
-        idCarrito=wsCarrito.existeCarrito(getIdCliente(), getIdGranja());
-        if(idCarrito>0)
+        final int[] idCarrito = new int[1];
+        final WSCarrito wsCarrito = new WSCarrito();
+        final WSProductoCarrito wsProductoCarrito = new WSProductoCarrito();
+        Thread thread4 = new Thread(){
+            @Override
+            public void run() {
+                try {
+                    idCarrito[0] =wsCarrito.existeCarrito(getIdCliente(), getIdGranja());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+                }
+            };
+        };
+        thread4.start();
+        try {
+            thread4.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+
+        if(idCarrito[0] >0)
         {
 
         }else
         {
-            wsCarrito.agregarCarrito(getIdCliente(), getIdGranja());
-            idCarrito=wsCarrito.existeCarrito(getIdCliente(), getIdGranja());
+            try {
+                wsCarrito.agregarCarrito(getIdCliente(), getIdGranja());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (XmlPullParserException e) {
+                e.printStackTrace();
+            }
+            try {
+                idCarrito[0] =wsCarrito.existeCarrito(getIdCliente(), getIdGranja());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (XmlPullParserException e) {
+                e.printStackTrace();
+            }
 
         }
-        wsProductoCarrito.nuevoProductoCarrito(idCarrito, getIdProdGran(), getCantidad());
+                try {
+                    wsProductoCarrito.nuevoProductoCarrito(idCarrito[0], getIdProdGran(), getCantidad());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
     }
 

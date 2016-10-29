@@ -80,22 +80,18 @@ public class Filtros {
     }
     
 
-    public ArrayList<mnGranjaProducto> filtrarporKm(Location location, ArrayList<mnGranjaProducto> g1, float Distancia){
+    public ArrayList<mnGranjaProducto> filtrarporKm(double lat,double lon, ArrayList<mnGranjaProducto> g1, float Distancia){
         float mitaddistancia = Distancia / 2;
         ArrayList<mnGranjaProducto> granjasAMostrar = new ArrayList<mnGranjaProducto>();
         for(int i =0;i<g1.size();i++){
             float latitud= g1.get(i).getGeoLat();
             float longitud = g1.get(i).getGeoLong();
 
-            double distanciaentreYoGranja = distanciaCoord(latitud,longitud,location.getLatitude(),location.getLongitude());
-            if(distanciaentreYoGranja<=Distancia/2){
-                granjasAMostrar.add(g1.get(i));
-            }
-            if(distanciaentreYoGranja>=Distancia/2){
+            double distanciaentreYoGranja = distanciaCoord(latitud,longitud,lat,lon);
             if(distanciaentreYoGranja<=Distancia){
                 granjasAMostrar.add(g1.get(i));
             }
-            }
+
         }
         return g1;
     }

@@ -26,6 +26,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Objects;
+
 public class adaptadorListadoProducto  extends BaseAdapter{
     protected Activity activity;
     protected ArrayList<listadoProducto> items;
@@ -55,7 +57,8 @@ public class adaptadorListadoProducto  extends BaseAdapter{
         }
     }
     @Override
-    public Object getItem(int position) {
+    public Object getItem(final int position) {
+
         return items.get(position);
     }
 
@@ -115,8 +118,7 @@ public class adaptadorListadoProducto  extends BaseAdapter{
            InputStream is = con.getInputStream();
            BufferedInputStream bis = new BufferedInputStream(is);
            bm = BitmapFactory.decodeStream(bis);
-           bis.close();
-           is.close();
+
        } catch (IOException e) {
 
        }

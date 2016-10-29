@@ -1,10 +1,13 @@
 package com.example.rodrigo.proyectgranja.WebService;
 
 
+import android.widget.EditText;
+
 import com.example.rodrigo.proyectgranja.DatosSoap;
 import com.example.rodrigo.proyectgranja.Logica.Usuario;
 
 import org.ksoap2.SoapEnvelope;
+import org.ksoap2.SoapFault;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
@@ -57,11 +60,31 @@ public class WSUsuario {
        Usuario u1 =  new Usuario();
        SoapObject soap = new SoapObject("http://Servicio/","infoUsuario ");
        soap.addProperty("nickName",nickName);
-       SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
+       final SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
        envelope.setOutputSoapObject(soap);
        ArrayList<String> informacionUsuario = null;
-       HttpTransportSE httotrans = new HttpTransportSE(dato.getDatoIP()+"UsuarioWS?WSDL");
-      httotrans.call("infoUsuario ",envelope);
+       final HttpTransportSE httotrans = new HttpTransportSE(dato.getDatoIP()+"UsuarioWS?WSDL");
+       Thread thread4 = new Thread(){
+           @Override
+           public void run() {
+               try {
+                   httotrans.call("infoUsuario ",envelope);
+               } catch (IOException e) {
+                   e.printStackTrace();
+               } catch (XmlPullParserException e) {
+                   e.printStackTrace();
+               }
+           };
+       };
+       thread4.start();
+       try {
+           thread4.join();
+       } catch (InterruptedException e) {
+           e.printStackTrace();
+       }
+
+
+
        Vector<Object> informacionUsuario1= (Vector<Object>) envelope.getResponse();
        SoapPrimitive id = (SoapPrimitive) informacionUsuario1.get(0);
        SoapPrimitive nombre = (SoapPrimitive) informacionUsuario1.get(2);
@@ -87,13 +110,30 @@ public class WSUsuario {
         SoapObject soap = new SoapObject("http://Servicio/","validarUsuario");
         soap.addProperty("nickName",nickName);
         soap.addProperty("password",password);
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
+        final SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
         envelope.setOutputSoapObject(soap);
 
-        HttpTransportSE httotrans = new HttpTransportSE(dato.getDatoIP()+"UsuarioWS?WSDL");
-        httotrans.call("validarUsuario",envelope);
+        final HttpTransportSE httotrans = new HttpTransportSE(dato.getDatoIP()+"UsuarioWS?WSDL");
 
-        SoapPrimitive resultado= (SoapPrimitive) envelope.getResponse();
+        Thread thread4 = new Thread(){
+            @Override
+            public void run() {
+                try {
+                    httotrans.call("validarUsuario",envelope);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+                }
+            };
+        };
+        thread4.start();
+        try {
+            thread4.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+             SoapPrimitive resultado= (SoapPrimitive) envelope.getResponse();
         valor  = resultado.toString();
 
 
@@ -135,12 +175,29 @@ public class WSUsuario {
         String valor = "false";
         SoapObject soap = new SoapObject("http://Servicio/","validarNickName");
         soap.addProperty("nickName",nickName);
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
+        final SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
         envelope.setOutputSoapObject(soap);
 
-        HttpTransportSE httotrans = new HttpTransportSE(dato.getDatoIP()+"UsuarioWS?WSDL");
-        httotrans.call("validarNickName",envelope);
+        final HttpTransportSE httotrans = new HttpTransportSE(dato.getDatoIP()+"UsuarioWS?WSDL");
 
+        Thread thread4 = new Thread(){
+            @Override
+            public void run() {
+                try {
+                    httotrans.call("validarNickName",envelope);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+                }
+            };
+        };
+        thread4.start();
+        try {
+            thread4.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         SoapPrimitive resultado= (SoapPrimitive) envelope.getResponse();
      valor  = resultado.toString();
 
@@ -173,4 +230,69 @@ public class WSUsuario {
         return String.valueOf(resultado);
     }
 
+    public String validadPassword(int idUsuario, String passViejo) throws IOException, XmlPullParserException {
+        String valor = "false";
+        SoapObject soap = new SoapObject("http://Servicio/","verificarPassword");
+        soap.addProperty("idUsuario",idUsuario);
+        soap.addProperty("password",passViejo);
+        final SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
+        envelope.setOutputSoapObject(soap);
+
+         final HttpTransportSE httotrans = new HttpTransportSE(dato.getDatoIP()+"UsuarioWS?WSDL");
+        Thread thread4 = new Thread(){
+            @Override
+            public void run() {
+                try {
+                    httotrans.call("verificarPassword",envelope);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+                }
+            };
+        };
+
+        try {
+            thread4.start();
+            thread4.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        SoapPrimitive resultado= (SoapPrimitive) envelope.getResponse();
+        valor  = resultado.toString();
+
+
+        return valor;
+
+    }
+    public void modificarPassword(int idUsuario, String passNuevo) throws IOException, XmlPullParserException {
+        String valor = "false";
+        SoapObject soap = new SoapObject("http://Servicio/","modificarPassword");
+        soap.addProperty("idUsuario",idUsuario);
+        soap.addProperty("nuevoPass",passNuevo);
+        final SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
+        envelope.setOutputSoapObject(soap);
+
+        final HttpTransportSE httotrans = new HttpTransportSE(dato.getDatoIP()+"UsuarioWS?WSDL");
+
+        Thread thread4 = new Thread(){
+            @Override
+            public void run() {
+                try {
+                    httotrans.call("modificarPassword",envelope);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+                }
+            };
+        };
+        thread4.start();
+        try {
+            thread4.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

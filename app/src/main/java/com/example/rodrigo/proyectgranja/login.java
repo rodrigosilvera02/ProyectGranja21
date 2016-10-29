@@ -114,11 +114,38 @@ public class login extends AppCompatActivity implements GridView.OnClickListener
 
 
          final   String nickname = String.valueOf(Nickname.getText().toString());
-            String password = String.valueOf(Password.getText().toString());
+            final String password = String.valueOf(Password.getText().toString());
             final WSUsuario webservice = new WSUsuario();
             final WScliente wscliente = new WScliente();
-            final String valido = webservice.validarUsuario(nickname, password);
-            if (valido.equals("true")) {
+            final String[] valido = new String[1];
+            Thread thread4 = new Thread(){
+                @Override
+                public void run() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                valido[0] = webservice.validarUsuario(nickname, password);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (XmlPullParserException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                };
+            };
+
+            try {
+                thread4.start();
+                thread4.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+            if (valido[0].equals("true")) {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -128,6 +155,7 @@ public class login extends AppCompatActivity implements GridView.OnClickListener
                         int idCliente = 0;
                         try {
                             int idUsuario = webservice.traerIdUsuario(nickname);
+                            editor.putInt("idUsuario", idUsuario);
                             idCliente =  wscliente.traerIdCliente(idUsuario);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -154,7 +182,8 @@ public class login extends AppCompatActivity implements GridView.OnClickListener
 
 
             }
-
+                }
+            });
         } catch (Exception ex) {
             Log.e("Myactivity", "Error", ex);
         }

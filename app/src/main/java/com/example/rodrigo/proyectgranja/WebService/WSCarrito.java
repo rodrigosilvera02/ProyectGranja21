@@ -1,9 +1,13 @@
 package com.example.rodrigo.proyectgranja.WebService;
 
+import android.os.Handler;
+import android.view.View;
+
 import com.example.rodrigo.proyectgranja.DatosSoap;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
@@ -17,16 +21,37 @@ import java.util.ArrayList;
 
 public class WSCarrito {
     static DatosSoap dato = new DatosSoap();
-
+    private Handler handler = new Handler();
 public String agregarCarrito(int idCliente, int idGranja) throws IOException, XmlPullParserException {
 
     SoapObject soap = new SoapObject("http://Servicio/","agregarCarrito");
     soap.addProperty("idCliente",idCliente);
     soap.addProperty("idGranja",idGranja);
-    SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
+    final SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
     envelope.setOutputSoapObject(soap);
-    HttpTransportSE httotrans = new HttpTransportSE(dato.getDatoIP()+"CarritoWS?WSDL");
-    httotrans.call("agregarCarrito",envelope);
+    final HttpTransportSE httotrans = new HttpTransportSE(dato.getDatoIP()+"CarritoWS?WSDL");
+    Thread thread4 = new Thread(){
+        @Override
+        public void run() {
+            try {
+                httotrans.call("agregarCarrito",envelope);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (XmlPullParserException e) {
+                e.printStackTrace();
+            }
+        };
+    };
+
+    try {
+        thread4.start();
+        thread4.join();
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+
+
+
     Object resultado =  envelope.getResponse();
 
 
@@ -43,14 +68,15 @@ public String agregarCarrito(int idCliente, int idGranja) throws IOException, Xm
 */
 
 public Integer existeCarrito(int idCliente, int idGranja) throws IOException, XmlPullParserException {
-
+    final int[] valor = new int[1];
+    final String[] v = new String[1];
     SoapObject soap = new SoapObject("http://Servicio/","existeCarrito");
     soap.addProperty("idCliente",idCliente);
     soap.addProperty("idGranja",idGranja);
     final SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
     envelope.setOutputSoapObject(soap);
     final HttpTransportSE httotrans = new HttpTransportSE(dato.getDatoIP()+"CarritoWS?WSDL");
-
+    final SoapPrimitive[] resultado = new SoapPrimitive[1];
     Thread thread4 = new Thread(){
         @Override
         public void run() {
@@ -63,17 +89,45 @@ public Integer existeCarrito(int idCliente, int idGranja) throws IOException, Xm
             }
         };
     };
-    thread4.start();
+
     try {
+        thread4.start();
         thread4.join();
     } catch (InterruptedException e) {
         e.printStackTrace();
     }
 
-    Object resultado =  envelope.getResponse();
+    Thread thread5 = new Thread(){
+        @Override
+        public void run() {
+            try {
+               resultado[0] = (SoapPrimitive) envelope.getResponse();
+               v[0] = String.valueOf(resultado[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        };
+    };
+
+    try {
+        thread5.start();
+        thread5.join();
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
 
 
-    return Integer.parseInt(String.valueOf(resultado));
+    if(!v[0].equals("null")){
+        valor[0] = Integer.valueOf(String.valueOf(resultado[0]));
+    }
+    else{
+        valor[0] = 0;
+    }
+
+
+
+
+    return valor[0];
 
 }
 

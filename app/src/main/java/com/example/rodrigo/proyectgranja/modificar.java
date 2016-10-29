@@ -133,7 +133,13 @@ public class modificar extends AppCompatActivity
 
 
             // Handle the camera action
-        }  /*else if (id == R.id.nav_gallery) {
+        }
+
+        if(id == R.id.ModPasswoed) {
+            Intent ListSong = new Intent(this, ActivityCamPassword.class);
+            startActivity(ListSong);
+
+        }/*else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
 

@@ -30,5 +30,6 @@
     <string name="modificarusuario">ModificarUsuario</string>
     <string name="title_activity_maps">GranjaEnCasa</string>
     <string name="title_activity_filtros">GranjaEnCasa</string>
+    <string name="title_activity_cam_password">GranjaEnCasa</string>
 
 </resources>

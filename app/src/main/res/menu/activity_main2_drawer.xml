@@ -6,12 +6,14 @@
 
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Opciones">
         <menu>
             <item
                 android:id="@+id/modificarusuario"
-                android:title="@string/modificarusuario" />
-
+                android:title="Modificar Usuario" />
+            <item
+                android:id="@+id/ModPasswoed"
+                android:title="Modificar Contraceña" />
         </menu>
     </item>
 

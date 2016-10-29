@@ -43,8 +43,9 @@ public class WSGranjaProducto {
                 }
             };
         };
-        thread4.start();
+
         try {
+            thread4.start();
             thread4.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
