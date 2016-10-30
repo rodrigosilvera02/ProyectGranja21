@@ -93,7 +93,7 @@ public class adaptadorListadoProducto  extends BaseAdapter{
         Thread thread4 = new Thread(){
             @Override
             public void run() {
-            a[0] = getBitmapFromURL(dir.getImgProducto());
+                a[0] = getBitmapFromURL(dir.getImgProducto());
 
             };
         };
@@ -105,7 +105,6 @@ public class adaptadorListadoProducto  extends BaseAdapter{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
         return v;
     }
 

@@ -31,5 +31,6 @@
     <string name="title_activity_maps">GranjaEnCasa</string>
     <string name="title_activity_filtros">GranjaEnCasa</string>
     <string name="title_activity_cam_password">GranjaEnCasa</string>
+    <string name="title_activity_mostrar_carrito">GranjaEnCasa</string>
 
 </resources>

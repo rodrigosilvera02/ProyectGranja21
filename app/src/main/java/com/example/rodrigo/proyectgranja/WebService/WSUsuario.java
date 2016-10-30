@@ -84,22 +84,26 @@ public class WSUsuario {
        }
 
 
+try {
+    Vector<Object> informacionUsuario1= (Vector<Object>) envelope.getResponse();
+    SoapPrimitive id = (SoapPrimitive) informacionUsuario1.get(0);
+    SoapPrimitive nombre = (SoapPrimitive) informacionUsuario1.get(2);
+    SoapPrimitive apellido = (SoapPrimitive) informacionUsuario1.get(3);
+    SoapPrimitive email = (SoapPrimitive) informacionUsuario1.get(4);
+    SoapPrimitive direccion = (SoapPrimitive) informacionUsuario1.get(5);
+    SoapPrimitive telefono = (SoapPrimitive) informacionUsuario1.get(6);
 
-       Vector<Object> informacionUsuario1= (Vector<Object>) envelope.getResponse();
-       SoapPrimitive id = (SoapPrimitive) informacionUsuario1.get(0);
-       SoapPrimitive nombre = (SoapPrimitive) informacionUsuario1.get(2);
-       SoapPrimitive apellido = (SoapPrimitive) informacionUsuario1.get(3);
-       SoapPrimitive email = (SoapPrimitive) informacionUsuario1.get(4);
-       SoapPrimitive direccion = (SoapPrimitive) informacionUsuario1.get(5);
-       SoapPrimitive telefono = (SoapPrimitive) informacionUsuario1.get(6);
+    u1.setId((Integer.parseInt(String.valueOf(id))));
+    u1.setNickName(String.valueOf(nickName));
+    u1.setNombre(String.valueOf(nombre));
+    u1.setApellido(String.valueOf(apellido));
+    u1.setEmail(String.valueOf(email));
+    u1.setDireccion(String.valueOf(direccion));
+    u1.setTelefono(String.valueOf(telefono));
+}catch (NullPointerException e){
+    infoUsuario(nickName);
+}
 
-       u1.setId((Integer.parseInt(String.valueOf(id))));
-       u1.setNickName(String.valueOf(nickName));
-       u1.setNombre(String.valueOf(nombre));
-       u1.setApellido(String.valueOf(apellido));
-       u1.setEmail(String.valueOf(email));
-       u1.setDireccion(String.valueOf(direccion));
-       u1.setTelefono(String.valueOf(telefono));
        return u1;
    }
 
@@ -134,7 +138,12 @@ public class WSUsuario {
             e.printStackTrace();
         }
              SoapPrimitive resultado= (SoapPrimitive) envelope.getResponse();
-        valor  = resultado.toString();
+       try{
+           valor  = resultado.toString();
+       }catch (NullPointerException e){
+        validarUsuario(nickName,password);
+       }
+
 
 
         return valor;

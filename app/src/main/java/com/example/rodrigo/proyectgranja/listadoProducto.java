@@ -15,6 +15,15 @@ public class listadoProducto {
     private String ImgProducto;
     private  int idproductoGranja;
     private int idGranja;
+    private Bitmap img ;
+
+    public Bitmap getImg() {
+        return img;
+    }
+
+    public void setImg(Bitmap img) {
+        this.img = img;
+    }
 
     public int getIdCliente() {
         return idCliente;

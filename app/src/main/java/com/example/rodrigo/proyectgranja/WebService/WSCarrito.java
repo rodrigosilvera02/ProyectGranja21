@@ -174,12 +174,4 @@ public ArrayList<String> listarCarrito (int idCliente) throws IOException, XmlPu
 
 }
 
-
-
-    /* private java.util.List<java.lang.String> listarCarrito(int idCliente) {
-        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
-        // If the calling of port operations may lead to race condition some synchronization is required.
-        servicio.CarritoWS port = service.getCarritoWSPort();
-        return port.listarCarrito(idCliente);
-    }*/
 }

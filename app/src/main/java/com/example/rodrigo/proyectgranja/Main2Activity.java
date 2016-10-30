@@ -147,6 +147,11 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
             Intent ListSong = new Intent(this, ActivityCamPassword.class);
             startActivity(ListSong);
 
+        }
+        if(id == R.id.MosCarrito) {
+            Intent ListSong = new Intent(this, ActivityMostrarCarrito.class);
+            startActivity(ListSong);
+
         }/*else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {

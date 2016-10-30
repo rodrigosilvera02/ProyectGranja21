@@ -12,8 +12,11 @@
                 android:id="@+id/modificarusuario"
                 android:title="Modificar Usuario" />
             <item
-                android:id="@+id/ModPasswoed"
-                android:title="Modificar Contraceña" />
+            android:id="@+id/ModPasswoed"
+            android:title="Modificar Contraceña" />
+            <item
+                android:id="@+id/MosCarrito"
+                android:title="MostrarCarrito" />
         </menu>
     </item>
 

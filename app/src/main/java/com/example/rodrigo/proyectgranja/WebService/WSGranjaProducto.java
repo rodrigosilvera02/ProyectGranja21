@@ -19,7 +19,7 @@ import java.util.Vector;
 
 public class WSGranjaProducto {
     static DatosSoap dato = new DatosSoap();
-    private Vector<String> a;
+    private Vector<String> a = new Vector<>();
 
     public WSGranjaProducto() {
     }
@@ -51,8 +51,7 @@ public class WSGranjaProducto {
             e.printStackTrace();
         }
 
-
-
+        try{
       Vector<String> listarProdGranja = a;
 
 
@@ -81,6 +80,10 @@ public class WSGranjaProducto {
             listaProdGran.add(prodg);
             a = a + 13;
         }
+        }catch (NullPointerException e){
+            traerGranjaProducto();
+        }
+
         return listaProdGran;
     }
 }
