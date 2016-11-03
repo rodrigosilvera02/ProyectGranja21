@@ -17,9 +17,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
+
+import com.example.rodrigo.proyectgranja.Manager.mnCarrito;
+import com.example.rodrigo.proyectgranja.WebService.WSProductoCarrito;
+
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class ActivityMostrarCarrito extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Runnable{
-
+    private ListView lista;
+    private adaptadorMostrarCarrito adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +45,8 @@ public class ActivityMostrarCarrito extends AppCompatActivity implements Navigat
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        Thread t = new Thread(this);
+        t.start();
 
 
     }
@@ -122,10 +134,39 @@ public class ActivityMostrarCarrito extends AppCompatActivity implements Navigat
 
     @Override
     public void run() {
+        SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+        lista = (ListView)findViewById(R.id.listProductosCariitoCliente);
+        final int idCliente  =  sharedpreferences.getInt("idCliente",'0');
+        final WSProductoCarrito wsProductoCarrito = new WSProductoCarrito();
+        final ArrayList<mnCarrito>[] listarProdCar = new ArrayList[1];
+        Thread thread4 = new Thread(){
+            @Override
+            public void run() {
+                listarProdCar[0] =wsProductoCarrito.listarProdCar(idCliente);
+            };
+        };
+        thread4.start();
+        try {
+            thread4.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
+
+       adapter  = new adaptadorMostrarCarrito(this, listarProdCar[0]);
+        Thread thread5 = new Thread(){
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        lista.setAdapter(adapter);
+                    }
+                });
+            };
+        };
+        thread5.start();
         //cargar los datos de carrito usuario
-
-
 
     }
 }

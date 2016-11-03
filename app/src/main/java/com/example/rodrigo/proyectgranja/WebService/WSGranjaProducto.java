@@ -35,7 +35,7 @@ public class WSGranjaProducto {
             public void run() {
                 try {
                     httotrans.call("listarProdGranja", envelope);
-                     a = (Vector<String>) envelope.getResponse();
+                    a = (Vector<String>) envelope.getResponse();
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (XmlPullParserException e) {
@@ -43,43 +43,43 @@ public class WSGranjaProducto {
                 }
             };
         };
-
+        thread4.start();
         try {
-            thread4.start();
+
             thread4.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
         try{
-      Vector<String> listarProdGranja = a;
+            Vector<String> listarProdGranja = a;
 
 
-        for (int a = 0; a < listarProdGranja.size(); a++) {
+            for (int a = 0; a < listarProdGranja.size(); a++) {
 
-            mnGranjaProducto prodg=new mnGranjaProducto();
-           prodg.setId(Integer.parseInt(String.valueOf(listarProdGranja.get(a))));
-            prodg.setNomProd(String.valueOf(listarProdGranja.get(a+1)));
-            prodg.setImgProg(String.valueOf(listarProdGranja.get(a+2)));
+                mnGranjaProducto prodg=new mnGranjaProducto();
+                prodg.setId(Integer.parseInt(String.valueOf(listarProdGranja.get(a))));
+                prodg.setNomProd(String.valueOf(listarProdGranja.get(a+1)));
+                prodg.setImgProg(String.valueOf(listarProdGranja.get(a+2)));
 
-            prodg.setIdGranja(Integer.parseInt(String.valueOf(listarProdGranja.get(a+3))));
-            prodg.setNombreGranja(String.valueOf(listarProdGranja.get(a+4)));
-            String localidad = String.valueOf(listarProdGranja.get(a+5));
+                prodg.setIdGranja(Integer.parseInt(String.valueOf(listarProdGranja.get(a+3))));
+                prodg.setNombreGranja(String.valueOf(listarProdGranja.get(a+4)));
+                String localidad = String.valueOf(listarProdGranja.get(a+5));
 
-            prodg.setLocalidad(localidad.substring(8));
-            prodg.setGeoLat(Float.valueOf(String.valueOf(listarProdGranja.get(a+6))));
-            prodg.setGeoLong(Float.valueOf(String.valueOf(listarProdGranja.get(a+7))));
+                prodg.setLocalidad(localidad.substring(8));
+                prodg.setGeoLat(Float.valueOf(String.valueOf(listarProdGranja.get(a+6))));
+                prodg.setGeoLong(Float.valueOf(String.valueOf(listarProdGranja.get(a+7))));
 
-            prodg.setStrock(Integer.parseInt(String.valueOf(listarProdGranja.get(a+8))));
-            prodg.setCalidad(String.valueOf(listarProdGranja.get(a+9)));
-            prodg.setPrecio(Float.valueOf(String.valueOf(listarProdGranja.get(a+10))));
-            prodg.setPrecioZafra(Float.valueOf(String.valueOf(listarProdGranja.get(a+11))));
-            prodg.setTipoProducto(String.valueOf(listarProdGranja.get(a+12)));
-            prodg.setUnidad(String.valueOf(listarProdGranja.get(a+13)));
+                prodg.setStrock(Integer.parseInt(String.valueOf(listarProdGranja.get(a+8))));
+                prodg.setCalidad(String.valueOf(listarProdGranja.get(a+9)));
+                prodg.setPrecio(Float.valueOf(String.valueOf(listarProdGranja.get(a+10))));
+                prodg.setPrecioZafra(Float.valueOf(String.valueOf(listarProdGranja.get(a+11))));
+                prodg.setTipoProducto(String.valueOf(listarProdGranja.get(a+12)));
+                prodg.setUnidad(String.valueOf(listarProdGranja.get(a+13)));
 
-            listaProdGran.add(prodg);
-            a = a + 13;
-        }
+                listaProdGran.add(prodg);
+                a = a + 13;
+            }
         }catch (NullPointerException e){
             traerGranjaProducto();
         }

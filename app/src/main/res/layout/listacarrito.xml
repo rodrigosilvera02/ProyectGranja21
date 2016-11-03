@@ -3,4 +3,72 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:text="Nombre Granja"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/textView37" />
+
+    <TextView
+        android:text="NombreGranja"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView37"
+        android:layout_toEndOf="@+id/textView37"
+        android:layout_marginStart="36dp"
+        android:id="@+id/txtNombreGranja" />
+
+    <TextView
+        android:text="Nombre Producto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView37"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="17dp"
+        android:id="@+id/textView41" />
+
+    <TextView
+        android:text="NombreProducto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView41"
+        android:layout_alignStart="@+id/txtNombreGranja"
+        android:id="@+id/txtNombreProducto" />
+
+    <TextView
+        android:text="Cantidad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView43"
+        android:layout_alignBottom="@+id/edtCantidad"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnModificar"
+        android:text="Modificar"
+        android:layout_below="@+id/btnEliminar"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/edtCantidad" />
+
+    <Button
+        android:text="Eliminar del Carrito"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnEliminar"
+        android:layout_below="@+id/txtNombreGranja"
+        android:layout_toEndOf="@+id/txtNombreProducto" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="5"
+        android:id="@+id/edtCantidad"
+        android:layout_below="@+id/txtNombreProducto"
+        android:layout_toStartOf="@+id/btnEliminar" />
+
 </RelativeLayout>
