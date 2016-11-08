@@ -131,7 +131,16 @@ private Button Aceptar;
             startActivity(ListSong);
 
             // Handle the camera action
-        }  /*else if (id == R.id.nav_gallery) {
+        }   if(id == R.id.MosCarrito) {
+            Intent ListSong = new Intent(this, ActivityMostrarCarrito.class);
+            startActivity(ListSong);
+
+        }
+        if(id == R.id.Ubucacion) {
+            Intent ListSong = new Intent(this, MapsActivity.class);
+            startActivity(ListSong);
+
+        }/*else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
 

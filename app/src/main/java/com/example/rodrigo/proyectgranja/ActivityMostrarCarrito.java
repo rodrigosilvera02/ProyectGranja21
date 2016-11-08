@@ -116,6 +116,11 @@ public class ActivityMostrarCarrito extends AppCompatActivity implements Navigat
             Intent ListSong = new Intent(this, ActivityCamPassword.class);
             startActivity(ListSong);
 
+        }
+        if(id == R.id.Ubucacion) {
+            Intent ListSong = new Intent(this, MapsActivity.class);
+            startActivity(ListSong);
+
         }/*else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {

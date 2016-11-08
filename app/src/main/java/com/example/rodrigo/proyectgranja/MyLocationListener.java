@@ -8,25 +8,25 @@ import android.os.Bundle;
  * Created by Rodrigo on 15/10/2016.
  */
 public class MyLocationListener implements LocationListener {
-    MainActivity mainActivity;
+public static Double Latitud;
+    public static Double Longitud;
+    public static boolean StadoGps;
+    public static Location cordenadas;
 
-    public MainActivity getMainActivity() {
-        return mainActivity;
-    }
 
-    public void setMainActivity(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
+
+    @Override
+    public void onLocationChanged(Location location) {
+        location.getLatitude();
+        location.getLongitude();
+        Latitud = location.getLatitude();
+        Longitud =location.getLongitude();
+        cordenadas = location;
+        return;
     }
 
     @Override
-    public void onLocationChanged(Location loc) {
-
-
-        this.mainActivity.setLocation(loc);
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
+    public void onStatusChanged(String provider, int status, Bundle extras) {
 
     }
 
@@ -36,13 +36,7 @@ public class MyLocationListener implements LocationListener {
     }
 
     @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        // Este mŽtodo se ejecuta cada vez que se detecta un cambio en el
-        // status del proveedor de localizaci—n (GPS)
-        // Los diferentes Status son:
-        // OUT_OF_SERVICE -> Si el proveedor esta fuera de servicio
-        // TEMPORARILY_UNAVAILABLE -> Temp˜ralmente no disponible pero se
-        // espera que este disponible en breve
-        // AVAILABLE -> Disponible
+    public void onProviderDisabled(String provider) {
+
     }
 }

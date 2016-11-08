@@ -93,7 +93,7 @@ public class Filtros {
             }
 
         }
-        return g1;
+        return granjasAMostrar;
     }
 
     public ArrayList<Granja> FiltroGranjaDepartamento(ArrayList<Granja> granja1, String departamento){

@@ -37,7 +37,13 @@ public class WSGranjaProducto {
                     httotrans.call("listarProdGranja", envelope);
                     a = (Vector<String>) envelope.getResponse();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    try {
+                        traerGranjaProducto();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    } catch (XmlPullParserException e1) {
+                        e1.printStackTrace();
+                    }
                 } catch (XmlPullParserException e) {
                     e.printStackTrace();
                 }

@@ -15,7 +15,25 @@ public class listadoProducto {
     private String ImgProducto;
     private  int idproductoGranja;
     private int idGranja;
+    private float latGranja;
+    private float lonGranja;
     private Bitmap img ;
+
+    public float getLatGranja() {
+        return latGranja;
+    }
+
+    public void setLatGranja(float latGranja) {
+        this.latGranja = latGranja;
+    }
+
+    public float getLonGranja() {
+        return lonGranja;
+    }
+
+    public void setLonGranja(float lonGranja) {
+        this.lonGranja = lonGranja;
+    }
 
     public Bitmap getImg() {
         return img;

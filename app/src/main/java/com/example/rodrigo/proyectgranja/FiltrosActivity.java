@@ -3,7 +3,11 @@ package com.example.rodrigo.proyectgranja;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -24,6 +28,7 @@ import android.os.Handler;
 
 import com.example.rodrigo.proyectgranja.Logica.CalidadProducto;
 import com.example.rodrigo.proyectgranja.Logica.TipoProducto;
+import com.example.rodrigo.proyectgranja.Manager.mnGranjaProducto;
 import com.example.rodrigo.proyectgranja.WebService.WSCalidad;
 import com.example.rodrigo.proyectgranja.WebService.WSGranja;
 import com.example.rodrigo.proyectgranja.WebService.WStipoProducto;
@@ -51,6 +56,12 @@ public class FiltrosActivity extends AppCompatActivity
     private String texto1;
     private CheckBox checkGranja;
     private CheckBox checkKm;
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0;
+    public LocationManager locationManager;
+    public Criteria criteria;
+    public String bestProvider;
+    private Double lat;
+    private Double lon;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +94,7 @@ public class FiltrosActivity extends AppCompatActivity
         establecerFiltros = (Button)findViewById(R.id.FiltrosOk);
         establecerFiltros.setOnClickListener(this);
         float a = sharedpreferences.getFloat("Kilometros", 0 );
+
         Thread t = new Thread(this);
         t.start();
     }
@@ -169,6 +181,11 @@ public class FiltrosActivity extends AppCompatActivity
             startActivity(ListSong);
 
         }
+        if(id == R.id.Ubucacion) {
+            Intent ListSong = new Intent(this, MapsActivity.class);
+            startActivity(ListSong);
+
+        }
         /*else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -188,7 +205,7 @@ public class FiltrosActivity extends AppCompatActivity
 
     @Override
     public void onClick(View v) {
-
+        final Intent ListSong1 = new Intent(this, MainActivity.class);
         Thread thread = new Thread(){
             @Override
             public void run() {
@@ -236,8 +253,13 @@ public class FiltrosActivity extends AppCompatActivity
                                 }
                                 else{
                                     try{
+
+
                                         establecerKm   = Float.parseFloat(String.valueOf(buscarDistankm.getText()));
                                         editor.putFloat("Kilometros", establecerKm);
+
+
+
                                     }catch (NumberFormatException e){
                                         e.printStackTrace();
                                     }
@@ -253,8 +275,7 @@ public class FiltrosActivity extends AppCompatActivity
 
                             }
 
-    //  Intent ListSong = new Intent(FiltrosActivity.this, Main2Activity.class);
-    // startActivity(ListSong);
+
 });
 
 
@@ -262,10 +283,14 @@ public class FiltrosActivity extends AppCompatActivity
         e.printStackTrace();
         }
         };
+
+
         };
         thread.start();
-        Intent ListSong1 = new Intent(this, MainActivity.class);
-        startActivity(ListSong1);
+        Intent ListSong = new Intent(FiltrosActivity.this, MainActivity.class);
+        startActivity(ListSong);
+
+
     }
 
     @Override
@@ -679,7 +704,6 @@ WStipoProducto tipoProducto  = new WStipoProducto();
         final float buscarkm=sharedpreferences.getFloat("Kilometros", 0);
         if(buscarkm != 0.0 ){
             final String km = Float.toString(buscarkm);
-
             Thread thread2 = new Thread(){
                 @Override
                 public void run() {
@@ -754,4 +778,5 @@ WStipoProducto tipoProducto  = new WStipoProducto();
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
 }

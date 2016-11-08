@@ -149,7 +149,7 @@ try {
         return valor;
     }
 
-    public static int traerIdUsuario(String nickName) throws IOException, XmlPullParserException {
+    public static int traerIdUsuario(final String nickName) throws IOException, XmlPullParserException {
         SoapObject soap = new SoapObject("http://Servicio/","traerIdUsuario");
         soap.addProperty("nickName",nickName);
         final SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
@@ -162,7 +162,13 @@ try {
                 try {
                     httotrans.call("traerIdUsuario",envelope);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    try {
+                        traerIdUsuario(nickName);
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    } catch (XmlPullParserException e1) {
+                        e1.printStackTrace();
+                    }
                 } catch (XmlPullParserException e) {
                     e.printStackTrace();
                 }

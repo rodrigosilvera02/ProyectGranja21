@@ -2,6 +2,7 @@ package com.example.rodrigo.proyectgranja;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,8 +15,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.rodrigo.proyectgranja.Logica.Granja;
 import com.example.rodrigo.proyectgranja.Manager.mnCarrito;
 import com.example.rodrigo.proyectgranja.Manager.mnGranjaProducto;
+import com.example.rodrigo.proyectgranja.WebService.WSGranja;
 import com.google.android.gms.analytics.ExceptionParser;
 
 import org.xmlpull.v1.XmlPullParserException;
@@ -26,6 +29,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Set;
+
+import static android.support.v4.app.ActivityCompat.startActivity;
 
 /**
  * Created by Rodrigo on 14/10/2016.
@@ -73,7 +79,7 @@ public class adaptadorlistadoProCarrito  extends BaseAdapter  {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View v = convertView;
+      View v = convertView;
 
         if (convertView == null) {
             LayoutInflater inf = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -90,6 +96,30 @@ public class adaptadorlistadoProCarrito  extends BaseAdapter  {
         calidadProducto.setText(dir.getCalidadProducto());
         TextView nombreGranja = (TextView) v.findViewById(R.id.txtNombreGranja);
         nombreGranja.setText(dir.getNombreGranja());
+        final View finalV = v;
+        nombreGranja.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View c) {
+                Granja granja = new Granja();
+                   granja.setNombre(dir.getNombreGranja());
+                   granja.setGeoLat(Double.valueOf(dir.getLatGranja()));
+                   granja.setGeoLong(Double.valueOf(dir.getLonGranja()));
+                SharedPreferences sharedpreferences = activity.getSharedPreferences(Main2Activity.MyPREFERENCES, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString("Granja1",dir.getNombreGranja());
+                editor.putFloat("Lat",dir.getLatGranja());
+                editor.putFloat("Lon",dir.getLonGranja());
+                editor.commit();
+//hacer bariable de sesion para poder mandar los datos al mapa y tomarlos
+
+
+
+                Intent ListSong = new Intent(activity, MapsActivity.class);
+                activity.startActivity(ListSong);
+            }
+
+
+        });
         TextView presioProducto = (TextView) v.findViewById(R.id.txtPrecio);
         presioProducto.setText(dir.getPrecioProducto());
         final EditText Cantidad = (EditText)v.findViewById(R.id.edtCantidad);
@@ -115,7 +145,8 @@ public class adaptadorlistadoProCarrito  extends BaseAdapter  {
                       mnCarrito.setCantidad(cantidad1);
                       mnCarrito.agregarProductoCarrito();
                       Cantidad.setText("");
-                  } catch (XmlPullParserException e) {
+                  }
+                catch (XmlPullParserException e) {
                       e.printStackTrace();
                   } catch (IOException e) {
                       e.printStackTrace();
@@ -148,6 +179,7 @@ public class adaptadorlistadoProCarrito  extends BaseAdapter  {
 
         return v;
     }
+
 
     private Bitmap getBitmapFromURL(String src) {
         Bitmap bm = null;

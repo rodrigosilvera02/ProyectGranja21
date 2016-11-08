@@ -108,12 +108,14 @@ String a = wsProductoCarrito.modificarProdCar(dir.getIdProdCarrito(),cantidad);
                 WSProductoCarrito wsProductoCarrito = new WSProductoCarrito();
                 try {
 
-                    String a = wsProductoCarrito.EliminarProdCar(dir.getIdProdCarrito());
+                   wsProductoCarrito.EliminarProdCar(dir.getIdProdCarrito());
 
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                Intent ListSong = new Intent(activity, ActivityMostrarCarrito.class);
+                activity.startActivity(ListSong);
             }
 
         });

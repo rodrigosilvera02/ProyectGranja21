@@ -99,7 +99,7 @@ public class WSProductoCarrito {
 
 
 
-    public ArrayList<mnCarrito> listarProdCar(int idCliente) {
+    public ArrayList<mnCarrito> listarProdCar(final int idCliente) {
         ArrayList<mnCarrito> listaCarrito = new ArrayList<>();
 
         SoapObject soap = new SoapObject("http://Servicio/", "listarProdCar");
@@ -115,7 +115,7 @@ public class WSProductoCarrito {
                     httotrans.call("listarProdCar", envelope);
                     a = (Vector<String>) envelope.getResponse();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    listarProdCar(idCliente);
                 } catch (XmlPullParserException e) {
                     e.printStackTrace();
                 }
@@ -150,7 +150,6 @@ public class WSProductoCarrito {
                 a = a + 8;
             }
         }catch (NullPointerException e){
-            listarProdCar(idCliente);
         }
 
 

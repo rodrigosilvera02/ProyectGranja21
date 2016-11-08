@@ -1,6 +1,7 @@
 package com.example.rodrigo.proyectgranja;
 
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -21,6 +23,7 @@ import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.widget.ListView;
 
+import com.example.rodrigo.proyectgranja.Logica.Granja;
 import com.example.rodrigo.proyectgranja.Manager.mnGranjaProducto;
 import com.example.rodrigo.proyectgranja.WebService.WSGranjaProducto;
 
@@ -38,8 +41,14 @@ public class MainActivity extends AppCompatActivity implements GridView.OnClickL
     public static final float Kilometros = '0';
     public static final String tipoProducto = "tipoP";
     public static final String CalidadProducto = "calidadP";
+    public static final Double lonmia=0.0;
+    public static final Double latmia = 0.0;
+    private boolean a;
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0;
     public static int idCliente = 0;
     public static int idUsuario = 0;
+    private double[] lat = {0};
+    private double[] lon = {0};
     public static final ArrayList<mnGranjaProducto> prod1 = null;
     SharedPreferences sharedpreferences;
     private String texto1;
@@ -47,9 +56,12 @@ public class MainActivity extends AppCompatActivity implements GridView.OnClickL
     private Handler handler = new Handler();
     private ArrayList<mnGranjaProducto> ListaDeGranjaProducto;
     Location location;
-    LocationManager locationManager;
+    private   ArrayList<mnGranjaProducto> g1;
     LocationListener locationListener;
     private LocationManager mlocManager;
+    public LocationManager locationManager;
+    public Criteria criteria;
+    public String bestProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +70,50 @@ public class MainActivity extends AppCompatActivity implements GridView.OnClickL
 
         texto1 = sharedpreferences.getString("Name", "nameKey");
         if (texto1.equals("nameKey")) {
+            a = false;
             setContentView(R.layout.activity_main);
             lista = (ListView) findViewById(R.id.ListProductoGranjasl);
+            locationManager = (LocationManager)  getSystemService(Context.LOCATION_SERVICE);
+            criteria = new Criteria();
+            bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true)).toString();
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // ¿Deberíamos mostrar una explicación?
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                    // Mostrar una expansión al usuario * asincrónicamente * - no bloquear
+                    // este hilo esperando la respuesta del usuario!  Después de que el usuario
+                    // ve la explicación, vuelve a intentar solicitar el permiso.
+
+                } else {
+
+                    // No se necesita ninguna explicación, podemos solicitar el permiso.
+
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+
+                    // MY_PERMISSIONS_REQUEST_READ_CONTACTS es un
+                    // app-defined int constante.  El método callback obtiene el
+                    // resultado de la solicitud.
+
+                }
+            }
+            WSGranjaProducto granjap = new WSGranjaProducto();
+            try {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        lat[0] = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude();
+                        lon[0] = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude();
+
+                    }
+
+                });
+                g1 = granjap.traerGranjaProducto();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (XmlPullParserException e) {
+                e.printStackTrace();
+            }
             Thread t = new Thread(this);
             t.start();
 
@@ -115,116 +169,98 @@ public class MainActivity extends AppCompatActivity implements GridView.OnClickL
     public void run() {
 
 
-        WSGranjaProducto granjap = new WSGranjaProducto();
-        try {
-            Filtros filtro = new Filtros();
-            ArrayList<mnGranjaProducto> g1 = granjap.traerGranjaProducto();
-
-            sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-            String departamento = sharedpreferences.getString("Departamento", "departamento");
-            ListaDeGranjaProducto = g1;
-            if (!departamento.equals("") && !departamento.equals("departamento")) {
-                ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
-                ListaDeGranjaProducto = filtro.filtrarporLocalidad(g2, departamento);
-            }
-
-            String nombreGranjaSE = sharedpreferences.getString("Granja", "granja");
-            if (!nombreGranjaSE.equals("") && !nombreGranjaSE.equals("granja")) {
-                ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
-                ListaDeGranjaProducto = filtro.filtrarporGranja(g2, nombreGranjaSE);
-            }
-            String TipoProductoSE = sharedpreferences.getString("tipoProducto", "tipoP");
-            if (!TipoProductoSE.equals("") && !TipoProductoSE.equals("tipoP")) {
-                ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
-                ListaDeGranjaProducto = filtro.filtrarporTipo(g2, TipoProductoSE);
-            }
-            String CalidadProductoSE = sharedpreferences.getString("CalidadProducto", "calidadP");
-            if (!CalidadProductoSE.equals("") && !CalidadProductoSE.equals("calidadP")) {
-                ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
-                ListaDeGranjaProducto = filtro.FiltroCalidad(g2, CalidadProductoSE);
-            }
-
-            String ProductoSE = sharedpreferences.getString("Producto", "producto");
-            if (!ProductoSE.equals("") && !ProductoSE.equals("producto")) {
-                ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
-                ListaDeGranjaProducto = filtro.filtrarporProducto(g2, ProductoSE);
-            }
-
-            float Distanciakm = sharedpreferences.getFloat("Kilometros", 0);
-            if (Distanciakm > 0) {
-
-
-                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                try {
-
-
-                    location = mlocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    if(location != null){
-                        double lat =location.getLatitude();
-                        double lon = location.getLongitude();
-                        ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
-                        ListaDeGranjaProducto = filtro.filtrarporKm(lat,lon,g2,Distanciakm);
-                    }
-                }catch (NullPointerException e){
-                    e.printStackTrace();
-                }
-
-
-
-                }
-
-
-            final ArrayList<listadoProducto> listaProducto = new ArrayList<listadoProducto>();
-            listadoProducto p1 ;
-         //soluciona hilo
-            for(int i = 0;i<ListaDeGranjaProducto.size();i++){
-                p1 =new listadoProducto();
-                p1.setNombreProducto(ListaDeGranjaProducto.get(i).getNomProd());
-                p1.setTipoProducto(ListaDeGranjaProducto.get(i).getTipoProducto());
-                p1.setCalidadProducto(ListaDeGranjaProducto.get(i).getCalidad());
-                p1.setNombreGranja(ListaDeGranjaProducto.get(i).getNombreGranja());
-                String src = ListaDeGranjaProducto.get(i).getImgProg();
-                p1.setImgProducto(src);
-                p1.setPrecioProducto(String.valueOf(ListaDeGranjaProducto.get(i).getPrecio()));
-                listaProducto.add(p1);
-            }
-            lista = (ListView)findViewById(R.id.ListProductoGranjasl);
-
-            final adaptadorListadoProducto adapter = new adaptadorListadoProducto(this, listaProducto);
-
-
-            Thread thread4 = new Thread(){
-                @Override
-                public void run() {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            lista.setAdapter(adapter);
-                        }
-                    });
-                };
-            };
-            thread4.start();
-
-
-
-
-
-
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if ( a  == false) {
+                  ListaDeGranjaProducto = g1;
         }
+        Filtros filtro = new Filtros();
+
+
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String departamento = sharedpreferences.getString("Departamento", "departamento");
+
+
+
+        if (!departamento.equals("") && !departamento.equals("departamento")) {
+            ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
+            ListaDeGranjaProducto = filtro.filtrarporLocalidad(g2, departamento);
+        }
+
+        String nombreGranjaSE = sharedpreferences.getString("Granja", "granja");
+        if (!nombreGranjaSE.equals("") && !nombreGranjaSE.equals("granja")) {
+            ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
+            ListaDeGranjaProducto = filtro.filtrarporGranja(g2, nombreGranjaSE);
+        }
+        String TipoProductoSE = sharedpreferences.getString("tipoProducto", "tipoP");
+        if (!TipoProductoSE.equals("") && !TipoProductoSE.equals("tipoP")) {
+            ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
+            ListaDeGranjaProducto = filtro.filtrarporTipo(g2, TipoProductoSE);
+        }
+        String CalidadProductoSE = sharedpreferences.getString("CalidadProducto", "calidadP");
+        if (!CalidadProductoSE.equals("") && !CalidadProductoSE.equals("calidadP")) {
+            ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
+            ListaDeGranjaProducto = filtro.FiltroCalidad(g2, CalidadProductoSE);
+        }
+
+        String ProductoSE = sharedpreferences.getString("Producto", "producto");
+        if (!ProductoSE.equals("") && !ProductoSE.equals("producto")) {
+            ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
+            ListaDeGranjaProducto = filtro.filtrarporProducto(g2, ProductoSE);
+        }
+
+        final float Distanciakm = sharedpreferences.getFloat("Kilometros", 0);
+
+        if (Distanciakm > 0 && a  == false) {
+            try {
+
+
+
+                if (lat[0] != 0.0 && lon[0] != 0.0) {
+                    ArrayList<mnGranjaProducto> g2 = ListaDeGranjaProducto;
+                    ListaDeGranjaProducto = filtro.filtrarporKm(lat[0], lon[0], g2, Distanciakm);
+                    a = true;
+
+                }
+                Thread t = new Thread(this);
+                t.start();
+            }catch (NullPointerException ex){
+
+            }
+        }
+
+
+        final ArrayList<listadoProducto> listaProducto = new ArrayList<listadoProducto>();
+        listadoProducto p1 ;
+        //soluciona hilo
+        for(int i = 0;i<ListaDeGranjaProducto.size();i++){
+            p1 =new listadoProducto();
+            p1.setNombreProducto(ListaDeGranjaProducto.get(i).getNomProd());
+            p1.setTipoProducto(ListaDeGranjaProducto.get(i).getTipoProducto());
+            p1.setCalidadProducto(ListaDeGranjaProducto.get(i).getCalidad());
+            p1.setNombreGranja(ListaDeGranjaProducto.get(i).getNombreGranja());
+            String src = ListaDeGranjaProducto.get(i).getImgProg();
+            p1.setImgProducto(src);
+            p1.setPrecioProducto(String.valueOf(ListaDeGranjaProducto.get(i).getPrecio()));
+            listaProducto.add(p1);
+        }
+        lista = (ListView)findViewById(R.id.ListProductoGranjasl);
+
+        final adaptadorListadoProducto adapter = new adaptadorListadoProducto(this, listaProducto);
+
+
+        Thread thread4 = new Thread(){
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        lista.setAdapter(adapter);
+                    }
+                });
+            };
+        };
+        thread4.start();
+
+
     }
 
     @Override
@@ -275,5 +311,30 @@ public class MainActivity extends AppCompatActivity implements GridView.OnClickL
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 }

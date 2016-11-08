@@ -42,17 +42,6 @@
         android:layout_alignBottom="@+id/txtPrecio"
         android:layout_toStartOf="@+id/txtPrecio" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:layout_marginLeft="0dp"
-        android:layout_alignTop="@+id/btnAgregarCarrito"
-        android:id="@+id/edtCantidad"
-        tools:text="Cantidad"
-        android:layout_alignEnd="@+id/textView33" />
-
     <TextView
         android:text="Precio"
         android:layout_width="wrap_content"
@@ -123,5 +112,14 @@
         android:layout_alignParentStart="true"
         android:textColorLink="@android:color/holo_red_dark"
         android:visibility="invisible"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/edtCantidad"
+        android:layout_alignBottom="@+id/errorEnt"
+        android:layout_alignEnd="@+id/textView11" />
 
 </RelativeLayout>
