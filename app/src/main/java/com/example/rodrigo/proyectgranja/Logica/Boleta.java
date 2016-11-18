@@ -64,4 +64,5 @@ public class Boleta {
     public void setBorrado(boolean borrado) {
         this.borrado = borrado;
     }
+
 }

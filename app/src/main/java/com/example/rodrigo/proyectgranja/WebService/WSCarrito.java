@@ -25,6 +25,8 @@ import java.util.Vector;
 public class WSCarrito {
     static DatosSoap dato = new DatosSoap();
     private Handler handler = new Handler();
+    private Vector<String> a = new Vector<>();
+
 
 public String agregarCarrito(int idCliente, int idGranja) throws IOException, XmlPullParserException {
 
@@ -129,5 +131,47 @@ public Integer existeCarrito(int idCliente, int idGranja) throws IOException, Xm
 }
 
 
+    public ArrayList<String> listarCarrito(final int idCliente) throws IOException, XmlPullParserException  {
+        ArrayList<String> listacarrito = new ArrayList<>();
+        SoapObject soap = new SoapObject("http://Servicio/", "listarCarrito");
+        soap.addProperty("idCliente",idCliente);
+        final SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
+        envelope.setOutputSoapObject(soap);
 
+        final HttpTransportSE httotrans = new HttpTransportSE(dato.getDatoIP() + "CarritoWS?WSDL");
+        Thread thread4 = new Thread(){
+            @Override
+            public void run() {
+                try {
+                    httotrans.call("listarCarrito", envelope);
+                    a = (Vector<String>) envelope.getResponse();
+                } catch (IOException e) {
+                    try {
+                        listarCarrito(idCliente);
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    } catch (XmlPullParserException e1) {
+                        e1.printStackTrace();
+                    }
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+                }
+            };
+        };
+        thread4.start();
+        try {
+
+            thread4.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        for (int cont = 0 ;cont<a.size(); cont ++ )
+        {
+
+            listacarrito.add(a.get(cont));
+        }
+
+
+        return listacarrito;
+    }
 }

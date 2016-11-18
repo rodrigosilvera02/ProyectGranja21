@@ -145,9 +145,10 @@ public class WSProductoCarrito {
                 prodc.setIdProdGran(Integer.parseInt(String.valueOf(listarCarritos.get(a+6))));
                 prodc.setNombreProdGranja(String.valueOf(listarCarritos.get(a+7)));
                 prodc.setImgProd(String.valueOf(listarCarritos.get(a+8)));
+                prodc.setPrecio(Float.valueOf(String.valueOf(listarCarritos.get(a+9))));
 
                 listaCarrito.add(prodc);
-                a = a + 8;
+                a = a + 9;
             }
         }catch (NullPointerException e){
         }
@@ -190,5 +191,93 @@ public class WSProductoCarrito {
 
 
         return valor;
+    }
+
+    public ArrayList<String> listarProductosCarrito(final Integer id)  throws IOException, XmlPullParserException  {
+        ArrayList<String> listaProdCar= new ArrayList<>();
+
+        SoapObject soap = new SoapObject("http://Servicio/", "listarProductosCarrito");
+        soap.addProperty("idCarrito",id);
+        final SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
+        envelope.setOutputSoapObject(soap);
+
+        final HttpTransportSE httotrans = new HttpTransportSE(dato.getDatoIP() + "ProductoCarrito?WSDL");
+        Thread thread4 = new Thread(){
+            @Override
+            public void run() {
+                try {
+                    httotrans.call("listarProductosCarrito", envelope);
+                    a = (Vector<String>) envelope.getResponse();
+                } catch (IOException e) {
+                    try {
+                        listarProductosCarrito(id);
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    } catch (XmlPullParserException e1) {
+                        e1.printStackTrace();
+                    }
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+                }
+            };
+        };
+        thread4.start();
+        try {
+
+            thread4.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        int b;
+        try {
+             b= a.size();
+        }catch (NullPointerException ex){
+            b = 0;
+        }
+
+        for (int cont = 0 ;cont<b; cont ++ )
+        {
+            listaProdCar.add(a.get(cont));
+        }
+
+
+        return listaProdCar;
+    }
+
+    public void eliminarProdCarrito(Integer id)  throws IOException, XmlPullParserException {
+        SoapObject soap = new SoapObject("http://Servicio/","eliminarProdCarrito");
+        soap.addProperty("idProdCar",id);
+        final SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
+        envelope.setOutputSoapObject(soap);
+        final HttpTransportSE httotrans = new HttpTransportSE(dato.getDatoIP()+"ProductoCarrito?WSDL");
+        Thread thread4 = new Thread(){
+            @Override
+            public void run() {
+                try {
+                    httotrans.call("eliminarProdCarrito",envelope);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+                }
+            };
+        };
+
+        try {
+            thread4.start();
+            thread4.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+        try {
+            SoapPrimitive resultado = (SoapPrimitive) envelope.getResponse();
+        } catch (SoapFault soapFault) {
+            soapFault.printStackTrace();
+        }
+
+
+
     }
 }

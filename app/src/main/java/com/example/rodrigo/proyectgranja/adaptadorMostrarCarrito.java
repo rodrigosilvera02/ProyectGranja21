@@ -82,7 +82,13 @@ public class adaptadorMostrarCarrito extends BaseAdapter {
         NombreProducto.setText(dir.getNombreProdGranja());
         final EditText Cantidad =(EditText)v.findViewById(R.id.edtCantidad);
         Cantidad.setText(String.valueOf(dir.getCantidad()));
-
+        TextView Precio = (TextView)v.findViewById(R.id.txtPrecio);
+        Precio.setText(String.valueOf(dir.getPrecio()));
+        float presio = dir.getPrecio();
+        int cantidad = dir.getCantidad();
+        float total = presio * cantidad;
+        TextView total1 = (TextView) v.findViewById(R.id.txtPrecioTotal);
+        total1.setText(String.valueOf(total));
         Button Modificar = (Button)v.findViewById( R.id.btnModificar);
         Modificar.setOnClickListener(new View.OnClickListener() {
             @Override

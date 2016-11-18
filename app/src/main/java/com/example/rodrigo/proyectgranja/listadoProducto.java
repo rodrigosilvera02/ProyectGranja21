@@ -17,7 +17,16 @@ public class listadoProducto {
     private int idGranja;
     private float latGranja;
     private float lonGranja;
+    private int Strock;
     private Bitmap img ;
+
+    public int getStrock() {
+        return Strock;
+    }
+
+    public void setStrock(int strock) {
+        Strock = strock;
+    }
 
     public float getLatGranja() {
         return latGranja;

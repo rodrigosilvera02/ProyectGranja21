@@ -126,9 +126,13 @@ public class adaptadorlistadoProCarrito  extends BaseAdapter  {
         final  TextView ErrorEnt = (TextView)v.findViewById(R.id.errorEnt);
         ImageView imagen = (ImageView) v.findViewById(R.id.imageView5);
         Button agregarCarrito  = (Button)v.findViewById(R.id.btnAgregarCarrito);
+        final TextView error1 = (TextView) v.findViewById(R.id.txtError2);
         agregarCarrito.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                int stock = dir.getStrock();
+                error1.setVisibility(View.INVISIBLE);
                 ErrorEnt.setVisibility(View.INVISIBLE);
                 String cantidad = String.valueOf(Cantidad.getText());
                 int idCliente = dir.getIdCliente();
@@ -138,13 +142,21 @@ public class adaptadorlistadoProCarrito  extends BaseAdapter  {
 
                   try {
                       int cantidad1 = Integer.parseInt(cantidad);
-                      mnCarrito mnCarrito = new mnCarrito();
-                      mnCarrito.setIdCliente(idCliente);
-                      mnCarrito.setIdGranja(idGranja);
-                      mnCarrito.setIdProdGran(idProducto);
-                      mnCarrito.setCantidad(cantidad1);
-                      mnCarrito.agregarProductoCarrito();
-                      Cantidad.setText("");
+                      if(stock >= cantidad1) {
+                          mnCarrito mnCarrito = new mnCarrito();
+                          mnCarrito.setIdCliente(idCliente);
+                          mnCarrito.setIdGranja(idGranja);
+                          mnCarrito.setIdProdGran(idProducto);
+                          mnCarrito.setCantidad(cantidad1);
+                          mnCarrito.agregarProductoCarrito();
+                          Cantidad.setText("");
+                      }
+                      else{
+                          error1.setText("La cantidad Tiene\n Ser Menor a:  "+stock);
+                          error1.setVisibility(View.VISIBLE);
+
+                          Cantidad.setText("");
+                      }
                   }
                 catch (XmlPullParserException e) {
                       e.printStackTrace();
@@ -158,7 +170,9 @@ public class adaptadorlistadoProCarrito  extends BaseAdapter  {
 
 
 
+
             }
+
         });
         final Bitmap[] a = new Bitmap[1];
         Thread thread4 = new Thread(){

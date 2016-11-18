@@ -4,7 +4,9 @@ import com.example.rodrigo.proyectgranja.DatosSoap;
 import com.example.rodrigo.proyectgranja.Manager.mnGranjaProducto;
 
 import org.ksoap2.SoapEnvelope;
+import org.ksoap2.SoapFault;
 import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
@@ -87,9 +89,84 @@ public class WSGranjaProducto {
                 a = a + 13;
             }
         }catch (NullPointerException e){
-            traerGranjaProducto();
         }
 
         return listaProdGran;
+    }
+
+
+    public ArrayList<String> informacionProductoGranja(final int idProdGran) throws IOException, XmlPullParserException  {
+        ArrayList<String> infoprodGranja =  new ArrayList<>();
+
+        SoapObject soap = new SoapObject("http://Servicio/", "informacionProductoGranja");
+        soap.addProperty("idProdGranj",idProdGran);
+        final SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
+        envelope.setOutputSoapObject(soap);
+
+        final HttpTransportSE httotrans = new HttpTransportSE(dato.getDatoIP() + "GranjaProductWS?WSDL");
+        Thread thread4 = new Thread(){
+            @Override
+            public void run() {
+                try {
+                    httotrans.call("informacionProductoGranja", envelope);
+                    a = (Vector<String>) envelope.getResponse();
+                } catch (IOException e) {
+                    try {
+                        informacionProductoGranja(idProdGran);
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    } catch (XmlPullParserException e1) {
+                        e1.printStackTrace();
+                    }
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+                }
+            };
+        };
+        thread4.start();
+        try {
+
+            thread4.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        for (int cont = 0 ;cont<a.size(); cont ++ )
+        {
+            infoprodGranja.add(a.get(cont));
+        }
+
+
+        return infoprodGranja;
+    }
+
+    public void modificarStockProdGranja(int idProdGran, int resStock) {
+        SoapObject soap = new SoapObject("http://Servicio/","modificarStockProdGranja");
+        soap.addProperty("idProdGran",idProdGran);
+        soap.addProperty("stock",resStock);
+        final SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
+        envelope.setOutputSoapObject(soap);
+        final HttpTransportSE httotrans = new HttpTransportSE(dato.getDatoIP()+"GranjaProductWS?WSDL");
+        Thread thread4 = new Thread(){
+            @Override
+            public void run() {
+                try {
+                    httotrans.call("modificarStockProdGranja",envelope);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+                }
+            };
+        };
+        try {
+            SoapPrimitive resultado= (SoapPrimitive) envelope.getResponse();
+        } catch (SoapFault soapFault) {
+            soapFault.printStackTrace();
+        }
+
+        thread4.start();
+
+
     }
 }

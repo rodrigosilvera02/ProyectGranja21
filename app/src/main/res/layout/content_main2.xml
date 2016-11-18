@@ -19,5 +19,6 @@
         android:scrollbars="none"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:scrollbarThumbVertical="@layout/cast_mini_controller"/>
+        android:scrollbarThumbVertical="@layout/cast_mini_controller"
+        android:verticalScrollbarPosition="defaultPosition" />
 </RelativeLayout>

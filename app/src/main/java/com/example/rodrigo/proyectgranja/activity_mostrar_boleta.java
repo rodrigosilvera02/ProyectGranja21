@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -17,11 +19,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ListView;
 
+import com.example.rodrigo.proyectgranja.Logica.Boleta;
 import com.example.rodrigo.proyectgranja.Manager.mnCarrito;
+import com.example.rodrigo.proyectgranja.WebService.WSBoleta;
 import com.example.rodrigo.proyectgranja.WebService.WSProductoCarrito;
 
 import org.xmlpull.v1.XmlPullParserException;
@@ -29,15 +31,15 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ActivityMostrarCarrito extends AppCompatActivity implements GridView.OnClickListener,NavigationView.OnNavigationItemSelectedListener, Runnable{
+public class activity_mostrar_boleta extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Runnable, SearchView.OnQueryTextListener{
+    SharedPreferences sharedpreferences;
+    private String texto1;
     private ListView lista;
-    private Button Aceptar;
-    private int idcliente;
-    private adaptadorMostrarCarrito adapter;
+    private adaptadorlistadoboletacliente adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mostrar_carrito);
+        setContentView(R.layout.activity_mostrar_boleta);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -45,14 +47,13 @@ public class ActivityMostrarCarrito extends AppCompatActivity implements GridVie
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-        Aceptar = (Button)findViewById(R.id.ComprarCarrito);
-        Aceptar.setOnClickListener(this);
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
         Thread t = new Thread(this);
         t.start();
-
 
     }
     @Override
@@ -69,6 +70,11 @@ public class ActivityMostrarCarrito extends AppCompatActivity implements GridVie
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main2, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.menu3_buscar);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(this);
+
         return true;
     }
 
@@ -87,7 +93,7 @@ public class ActivityMostrarCarrito extends AppCompatActivity implements GridVie
             editor.clear();
             editor.commit();
             finish();
-            Intent ListSong = new Intent(ActivityMostrarCarrito.this, MainActivity.class);
+            Intent ListSong = new Intent(this, MainActivity.class);
             startActivity(ListSong);
 
         }
@@ -122,13 +128,13 @@ public class ActivityMostrarCarrito extends AppCompatActivity implements GridVie
             startActivity(ListSong);
 
         }
-        if(id == R.id.Ubucacion) {
-            Intent ListSong = new Intent(this, MapsActivity.class);
+        if(id == R.id.MosCarrito) {
+            Intent ListSong = new Intent(this, ActivityMostrarCarrito.class);
             startActivity(ListSong);
 
         }
-        if(id == R.id.BoletaCliente) {
-            Intent ListSong = new Intent(this, activity_mostrar_boleta.class);
+        if(id == R.id.Ubucacion) {
+            Intent ListSong = new Intent(this, MapsActivity.class);
             startActivity(ListSong);
 
         }/*else if (id == R.id.nav_gallery) {
@@ -146,18 +152,34 @@ public class ActivityMostrarCarrito extends AppCompatActivity implements GridVie
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
 
     @Override
     public void run() {
+        int idcliente = 0 ;
         SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
-        lista = (ListView)findViewById(R.id.listProductosCariitoCliente);
+        lista = (ListView)findViewById(R.id.lstBoleta);
         final int idCliente  =  sharedpreferences.getInt("idCliente",'0');
-        final WSProductoCarrito wsProductoCarrito = new WSProductoCarrito();
-        final ArrayList<mnCarrito>[] listarProdCar = new ArrayList[1];
+        final  WSBoleta wsBoleta = new WSBoleta();
+        final ArrayList<Boleta>[] listarBolCliente = new ArrayList[1];
         Thread thread4 = new Thread(){
             @Override
             public void run() {
-                listarProdCar[0] =wsProductoCarrito.listarProdCar(idCliente);
+                try {
+                    listarBolCliente[0] =wsBoleta.ListarBolCliente(idCliente);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+                }
             };
         };
         thread4.start();
@@ -168,7 +190,7 @@ public class ActivityMostrarCarrito extends AppCompatActivity implements GridVie
         }
 
 
-       adapter  = new adaptadorMostrarCarrito(this, listarProdCar[0]);
+        adapter  = new adaptadorlistadoboletacliente(this, listarBolCliente[0]);
         Thread thread5 = new Thread(){
             @Override
             public void run() {
@@ -181,24 +203,6 @@ public class ActivityMostrarCarrito extends AppCompatActivity implements GridVie
             };
         };
         thread5.start();
-        //cargar los datos de carrito usuario
 
-    }
-
-    @Override
-    public void onClick(View v) {
-        SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
-        idcliente = sharedpreferences.getInt("idCliente", '0');
-        mnCarrito mnCarrito = new mnCarrito();
-        try {
-            mnCarrito.ComprarCarritos(idcliente);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        }
-        Intent ListSong = new Intent(this, ActivityMostrarCarrito.class);
-        startActivity(ListSong);
     }
 }

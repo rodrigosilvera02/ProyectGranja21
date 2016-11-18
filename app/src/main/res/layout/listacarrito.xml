@@ -46,15 +46,6 @@
         android:layout_alignParentStart="true" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnModificar"
-        android:text="Modificar"
-        android:layout_below="@+id/btnEliminar"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/edtCantidad" />
-
-    <Button
         android:text="Eliminar del Carrito"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -70,5 +61,46 @@
         android:id="@+id/edtCantidad"
         android:layout_below="@+id/txtNombreProducto"
         android:layout_toStartOf="@+id/btnEliminar" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView26"
+        android:layout_toEndOf="@+id/textView41"
+        android:id="@+id/txtPrecio"
+        android:text="txtPrecio" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView31"
+        android:layout_alignStart="@+id/txtPrecio"
+        android:id="@+id/txtPrecioTotal" />
+
+    <TextView
+        android:text="Precio Total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView31"
+        android:layout_below="@+id/textView26"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Precio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView26"
+        android:layout_below="@+id/textView43"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnModificar"
+        android:text="Modificar"
+        android:layout_below="@+id/edtCantidad"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/edtCantidad" />
 
 </RelativeLayout>

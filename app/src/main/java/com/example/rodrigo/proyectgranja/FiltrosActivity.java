@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Spinner;
 import android.os.Handler;
+import android.widget.TextView;
 
 import com.example.rodrigo.proyectgranja.Logica.CalidadProducto;
 import com.example.rodrigo.proyectgranja.Logica.TipoProducto;
@@ -52,6 +53,8 @@ public class FiltrosActivity extends AppCompatActivity
     private Spinner listaTipoProdu;
     private Spinner listaNombreGranja;
     private Button establecerFiltros;
+    private TextView buscarnombre;
+    private TextView km;
     Handler handler;
     private String texto1;
     private CheckBox checkGranja;
@@ -186,6 +189,11 @@ public class FiltrosActivity extends AppCompatActivity
             startActivity(ListSong);
 
         }
+        if(id == R.id.BoletaCliente) {
+            Intent ListSong = new Intent(this, activity_mostrar_boleta.class);
+            startActivity(ListSong);
+
+        }
         /*else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -302,6 +310,8 @@ listaTipoProdu = (Spinner)findViewById(R.id.spinner4);
         listaNombreGranja =  (Spinner)findViewById(R.id.listaNombreGranja);
         listaCalidad = (Spinner)findViewById(R.id.spnCalidad);
         buscarDistankm = (EditText)findViewById(R.id.edtEstablecerKm);
+        buscarnombre = (TextView)findViewById(R.id.textView22) ;
+        km = (TextView)findViewById(R.id.textView21) ;
   //cargarDatos En Spinner
 WStipoProducto tipoProducto  = new WStipoProducto();
     final    List<String> tipo = new ArrayList<String>();
@@ -731,13 +741,16 @@ WStipoProducto tipoProducto  = new WStipoProducto();
                 boolean click  = checkGranja.isChecked();
                 if (click == true) {
                     listaNombreGranja.setVisibility(VISIBLE);
+                    buscarnombre.setVisibility(VISIBLE);
                     if(checkKm.isChecked()==true){
+                        km.setVisibility(INVISIBLE);
                         checkKm.setChecked(false);
                         buscarDistankm.setVisibility(INVISIBLE);
                         buscarDistankm.setText("");
                     }
                 }
                 if (click == false){
+                    buscarnombre.setVisibility(INVISIBLE);
                     listaNombreGranja.setSelection(0);
                     listaNombreGranja.setVisibility(INVISIBLE);
                 }
@@ -752,14 +765,17 @@ WStipoProducto tipoProducto  = new WStipoProducto();
                 boolean click  = checkKm.isChecked();
                 if (click == true) {
                     buscarDistankm.setVisibility(VISIBLE);
+                    km.setVisibility(VISIBLE);
                     if(checkGranja.isChecked()==true){
                         checkGranja.setChecked(false);
                         listaNombreGranja.setVisibility(INVISIBLE);
+                        buscarnombre.setVisibility(INVISIBLE);
                         listaNombreGranja.setSelection(0);
                     }
                 }
                 if(click==false){
                     buscarDistankm.setVisibility(INVISIBLE);
+                    km.setVisibility(INVISIBLE);
                     buscarDistankm.setText("");
                 }
             }

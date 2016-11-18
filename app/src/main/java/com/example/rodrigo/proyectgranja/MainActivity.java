@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements GridView.OnClickL
     public static final String CalidadProducto = "calidadP";
     public static final Double lonmia=0.0;
     public static final Double latmia = 0.0;
+    public static final int idBoleta = 0;
     private boolean a;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0;
     public static int idCliente = 0;
@@ -102,8 +103,13 @@ public class MainActivity extends AppCompatActivity implements GridView.OnClickL
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        lat[0] = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude();
-                        lon[0] = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude();
+                        try {
+                            lat[0] = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude();
+                            lon[0] = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude();
+                        }catch (NullPointerException ex){
+
+                        }
+
 
                     }
 

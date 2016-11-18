@@ -111,9 +111,12 @@ a = false;
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    lat[0] = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude();
-                    lon[0] = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude();
+                    try {
+                        lat[0] = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude();
+                        lon[0] = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude();
+                    }catch (NullPointerException ex){
 
+                    }
                 }
 
             });
@@ -221,6 +224,11 @@ a = false;
             Intent ListSong = new Intent(this, MapsActivity.class);
             startActivity(ListSong);
 
+        }
+        if(id == R.id.BoletaCliente) {
+            Intent ListSong = new Intent(this, activity_mostrar_boleta.class);
+            startActivity(ListSong);
+
         }/*else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -320,6 +328,7 @@ a = false;
             p1.setIdCliente(idCliente);
             p1.setLatGranja(ListaDeGranjaProducto.get(i).getGeoLat());
             p1.setLonGranja(ListaDeGranjaProducto.get(i).getGeoLong());
+            p1.setStrock(ListaDeGranjaProducto.get(i).getStrock());
             listaProducto.add(p1);
         }
         lista = (ListView)findViewById(R.id.listProductosCariito);

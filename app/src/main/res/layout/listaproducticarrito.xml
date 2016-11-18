@@ -122,4 +122,13 @@
         android:layout_alignBottom="@+id/errorEnt"
         android:layout_alignEnd="@+id/textView11" />
 
+    <TextView
+        android:text="La Cantidad Tiene \nQue ser Menor a:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/errorEnt"
+        android:layout_alignStart="@+id/imageView5"
+        android:id="@+id/txtError2"
+        android:visibility="invisible" />
+
 </RelativeLayout>

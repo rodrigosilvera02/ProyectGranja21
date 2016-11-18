@@ -2,9 +2,13 @@ package com.example.rodrigo.proyectgranja.Manager;
 
 import android.os.Handler;
 
+import com.example.rodrigo.proyectgranja.Logica.BolProd;
+import com.example.rodrigo.proyectgranja.Logica.Boleta;
 import com.example.rodrigo.proyectgranja.Logica.Carprod;
 import com.example.rodrigo.proyectgranja.Logica.Carrito;
+import com.example.rodrigo.proyectgranja.WebService.WSBoleta;
 import com.example.rodrigo.proyectgranja.WebService.WSCarrito;
+import com.example.rodrigo.proyectgranja.WebService.WSGranjaProducto;
 import com.example.rodrigo.proyectgranja.WebService.WSProductoCarrito;
 
 import org.xmlpull.v1.XmlPullParserException;
@@ -29,6 +33,80 @@ public class mnCarrito {
         private String imgProd;
 
 
+    // Datos de ProductoGranja
+    private Integer id;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public int getStrock() {
+        return strock;
+    }
+
+    public void setStrock(int strock) {
+        this.strock = strock;
+    }
+
+    public String getCalidad() {
+        return calidad;
+    }
+
+    public void setCalidad(String calidad) {
+        this.calidad = calidad;
+    }
+
+    public String getTipoProducto() {
+        return tipoProducto;
+    }
+
+    public void setTipoProducto(String tipoProducto) {
+        this.tipoProducto = tipoProducto;
+    }
+
+    public String getUnidad() {
+        return unidad;
+    }
+
+    public void setUnidad(String unidad) {
+        this.unidad = unidad;
+    }
+
+    public float getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(float precio) {
+        this.precio = precio;
+    }
+
+    public boolean isZafra() {
+        return zafra;
+    }
+
+    public void setZafra(boolean zafra) {
+        this.zafra = zafra;
+    }
+
+    public Float getPrecioZafra() {
+        return precioZafra;
+    }
+
+    public void setPrecioZafra(Float precioZafra) {
+        this.precioZafra = precioZafra;
+    }
+
+    private int strock;
+    private String calidad;
+    private String tipoProducto;
+    private String unidad;
+    private float precio;
+    private boolean zafra;
+    private Float precioZafra;
 
     ArrayList<Carrito> listarCarrito=new ArrayList<>();
     ArrayList<Carprod> listarProdCarrito=new ArrayList<Carprod>();
@@ -196,6 +274,74 @@ public class mnCarrito {
         WSProductoCarrito wsProductoCarrito = new WSProductoCarrito();
         wsProductoCarrito.modificarProdCar(getIdProdCarrito(), getCantidad());
     }
+
+    public void ComprarCarritos(int idCliente) throws IOException, XmlPullParserException {
+        try {
+            int resStock = 0;
+            float PrecioTotalBoleta = 0;
+            ArrayList<String> _listaProdCarrito = new ArrayList<String>();
+            ArrayList<String> _listaCarrito = new ArrayList<String>();
+            WSCarrito wsCarrito = new WSCarrito();
+            WSBoleta wsBoleta = new WSBoleta();
+            WSProductoCarrito wsProductoCarrito = new WSProductoCarrito();
+            _listaCarrito = (ArrayList<String>) wsCarrito.listarCarrito(idCliente);
+            WSGranjaProducto wsGranjaProducto = new WSGranjaProducto();
+            int idBoleta=0;
+            for (int b = 0; b < _listaCarrito.size(); b++) {
+
+                Carrito Carrito = new Carrito();
+                int id = Integer.parseInt(String.valueOf(_listaCarrito.get(b)));
+                Carrito.setId(id);
+
+                _listaProdCarrito = (ArrayList<String>) wsProductoCarrito.listarProductosCarrito(Carrito.getId());
+                if (_listaProdCarrito.size()>0) {
+                    wsBoleta.nuevaBoleta(id);
+                    idBoleta = wsBoleta.traerUltimaBoleta();
+
+                    for (int a = 0; a < _listaProdCarrito.size(); a++) {
+                        Boleta bol = new Boleta();
+                        BolProd producto = new BolProd();
+                        bol.setId(idBoleta);
+                        producto.setBoleta(bol);
+                        producto.setId(Integer.parseInt(String.valueOf(_listaProdCarrito.get(a))));
+                        producto.setIdProdGran(Integer.parseInt(String.valueOf(_listaProdCarrito.get(a + 1))));
+                        producto.setCantidad(Integer.parseInt(String.valueOf(_listaProdCarrito.get(a + 4))));
+
+                        ArrayList<String> _listaProdGran = new ArrayList<String>();
+                        _listaProdGran = (ArrayList<String>) wsGranjaProducto.informacionProductoGranja(producto.getIdProdGran());
+
+                        setId(Integer.parseInt(String.valueOf(_listaProdGran.get(0))));
+                        setStrock(Integer.parseInt(String.valueOf(_listaProdGran.get(3))));
+                        setCalidad(String.valueOf(_listaProdGran.get(4)));
+                        setPrecio(Float.valueOf(String.valueOf(_listaProdGran.get(5))));
+                        setPrecioZafra(Float.valueOf(String.valueOf(_listaProdGran.get(6))));
+                        setTipoProducto(String.valueOf(_listaProdGran.get(7)));
+                        setUnidad(String.valueOf(_listaProdGran.get(8)));
+
+                        producto.setPrecio(getPrecio());
+                        producto.setPrecioTotal(getPrecio() * producto.getCantidad());
+                        producto.setEstado("espera");
+                        PrecioTotalBoleta = PrecioTotalBoleta + producto.getPrecioTotal();
+                        resStock = getStrock() - producto.getCantidad();
+
+                        wsBoleta.agregarProductoBoleta(idBoleta, producto.getIdProdGran(), producto.getCantidad(), producto.getPrecio(), producto.getPrecioTotal());
+                        wsProductoCarrito.eliminarProdCarrito(producto.getId());
+                        wsGranjaProducto.modificarStockProdGranja(producto.getIdProdGran(), resStock);
+                        a = a + 5;
+                    }
+
+                    wsBoleta.modificarPrecioTotalBoleta(idBoleta, PrecioTotalBoleta);
+                }
+                    b = b + 1;
+
+
+
+            }
+            }catch(NullPointerException ex){
+
+            }
+
+        }
 
 
 
