@@ -175,6 +175,12 @@ public class activity_mostrar_boleta extends AppCompatActivity implements Naviga
             public void run() {
                 try {
                     listarBolCliente[0] =wsBoleta.ListarBolCliente(idCliente);
+                    int contador= listarBolCliente[0].size();
+                     ArrayList<Boleta> listarBolCliente1 = new ArrayList();
+                    for(contador = contador -1;contador >= 0;contador --){
+                        listarBolCliente1.add(listarBolCliente[0].get(contador));
+                    }
+                    listarBolCliente[0]= listarBolCliente1;
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (XmlPullParserException e) {

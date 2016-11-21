@@ -18,11 +18,12 @@
                 android:id="@+id/MosCarrito"
                 android:title="Mostrar Carrito" />
             <item
-                android:id="@+id/Ubucacion"
-                android:title="Ubicacion Granjas" />
-            <item
                 android:id="@+id/BoletaCliente"
                 android:title="Mostrar Boletas" />
+            <item
+                android:id="@+id/Ubucacion"
+                android:title="Ubicacion Granjas" />
+
 </menu>
     </item>
 
