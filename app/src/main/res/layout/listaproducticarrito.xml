@@ -43,15 +43,6 @@
         android:layout_toStartOf="@+id/txtPrecio" />
 
     <TextView
-        android:text="Precio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="29dp"
-        android:id="@+id/textView33"
-        android:layout_below="@+id/txtNombreGranja"
-        android:layout_alignStart="@+id/txtNombreGranja" />
-
-    <TextView
         android:text="TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -130,5 +121,31 @@
         android:layout_alignStart="@+id/imageView5"
         android:id="@+id/txtError2"
         android:visibility="invisible" />
+
+    <TextView
+        android:text="Precio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:id="@+id/textView33"
+        android:layout_below="@+id/txtNombreGranja"
+        android:layout_alignStart="@+id/txtNombreGranja" />
+
+    <TextView
+        android:text="Unidad De Venta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:id="@+id/textView39"
+        android:layout_below="@+id/txtNombreGranja"
+        android:layout_alignStart="@+id/txtNombreGranja" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView39"
+        android:layout_toEndOf="@+id/textView35"
+        android:id="@+id/txtUnidadVenta" />
 
 </RelativeLayout>

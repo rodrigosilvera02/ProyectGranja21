@@ -32,7 +32,7 @@
     <string name="title_activity_filtros">GranjaEnCasa</string>
     <string name="title_activity_cam_password">GranjaEnCasa</string>
     <string name="title_activity_mostrar_carrito">GranjaEnCasa</string>
-    <string name="title_activity_mostrar_boleta">activity_mostrar_boleta</string>
-    <string name="title_activity_mostrar_datos_boleta">ActivityMostrarDatosBoleta</string>
+    <string name="title_activity_mostrar_boleta">GranjaEnCasa</string>
+    <string name="title_activity_mostrar_datos_boleta">GranjaEnCasa</string>
 
 </resources>

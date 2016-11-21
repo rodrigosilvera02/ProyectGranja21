@@ -125,6 +125,8 @@ public class adaptadorlistadoProCarrito  extends BaseAdapter  {
         final EditText Cantidad = (EditText)v.findViewById(R.id.edtCantidad);
         final  TextView ErrorEnt = (TextView)v.findViewById(R.id.errorEnt);
         ImageView imagen = (ImageView) v.findViewById(R.id.imageView5);
+        TextView unidadVenta = (TextView)v.findViewById(R.id.txtUnidadVenta);
+        unidadVenta.setText(dir.getUnidad());
         Button agregarCarrito  = (Button)v.findViewById(R.id.btnAgregarCarrito);
         final TextView error1 = (TextView) v.findViewById(R.id.txtError2);
         agregarCarrito.setOnClickListener(new View.OnClickListener() {

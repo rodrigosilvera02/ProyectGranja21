@@ -329,6 +329,7 @@ a = false;
             p1.setLatGranja(ListaDeGranjaProducto.get(i).getGeoLat());
             p1.setLonGranja(ListaDeGranjaProducto.get(i).getGeoLong());
             p1.setStrock(ListaDeGranjaProducto.get(i).getStrock());
+            p1.setUnidad(ListaDeGranjaProducto.get(i).getUnidad());
             listaProducto.add(p1);
         }
         lista = (ListView)findViewById(R.id.listProductosCariito);

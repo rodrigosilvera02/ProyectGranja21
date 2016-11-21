@@ -19,6 +19,15 @@ public class listadoProducto {
     private float lonGranja;
     private int Strock;
     private Bitmap img ;
+    private String Unidad;
+
+    public String getUnidad() {
+        return Unidad;
+    }
+
+    public void setUnidad(String unidad) {
+        Unidad = unidad;
+    }
 
     public int getStrock() {
         return Strock;
