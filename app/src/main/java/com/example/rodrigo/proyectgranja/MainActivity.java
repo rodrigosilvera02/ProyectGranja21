@@ -101,8 +101,8 @@ public class MainActivity extends AppCompatActivity implements GridView.OnClickL
             WSGranjaProducto granjap = new WSGranjaProducto();
             try {
                 handler.post(new Runnable() {
-                    @Override
-                    public void run() {
+                        @Override
+                        public void run() {
                         try {
                             lat[0] = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude();
                             lon[0] = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude();
