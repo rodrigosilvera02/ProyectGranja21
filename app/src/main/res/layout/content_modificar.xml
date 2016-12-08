@@ -111,8 +111,9 @@
         android:layout_height="wrap_content"
         android:text="Modificar"
         android:id="@+id/btnModificar"
+        android:layout_marginTop="80dp"
         android:layout_below="@+id/edtmodTelefono"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="82dp" />
+        android:background="@color/colorPrimary" />
 
 </RelativeLayout>

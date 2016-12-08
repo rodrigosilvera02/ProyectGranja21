@@ -56,7 +56,7 @@ public class WSUsuario {
 
 
 
-   public Usuario infoUsuario(String nickName) throws IOException, XmlPullParserException,HttpResponseException{
+   public Usuario infoUsuario(final String nickName) throws IOException, XmlPullParserException,HttpResponseException{
        Usuario u1 =  new Usuario();
        SoapObject soap = new SoapObject("http://Servicio/","infoUsuario ");
        soap.addProperty("nickName",nickName);
@@ -70,7 +70,13 @@ public class WSUsuario {
                try {
                    httotrans.call("infoUsuario ",envelope);
                } catch (IOException e) {
-                   e.printStackTrace();
+                   try {
+                       infoUsuario(nickName);
+                   } catch (IOException e1) {
+                       e1.printStackTrace();
+                   } catch (XmlPullParserException e1) {
+                       e1.printStackTrace();
+                   }
                } catch (XmlPullParserException e) {
                    e.printStackTrace();
                }

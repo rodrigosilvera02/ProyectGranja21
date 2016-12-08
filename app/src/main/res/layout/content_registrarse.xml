@@ -166,7 +166,8 @@
         android:text="@string/registrar"
         android:id="@+id/btnRegistrar"
         android:layout_below="@+id/edtelefono"
-        android:layout_toEndOf="@+id/textView7" />
+        android:layout_toEndOf="@+id/textView7"
+        android:background="@color/colorPrimaryDark" />
 
     <TextView
         android:layout_width="wrap_content"

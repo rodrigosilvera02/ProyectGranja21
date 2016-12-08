@@ -84,7 +84,8 @@
         android:layout_marginTop="18dp"
         android:id="@+id/btnAgregarCarrito"
         android:layout_below="@+id/txtPrecio"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:background="@color/colorPrimaryDark" />
 
     <TextView
         android:text="Cantidad"
@@ -95,7 +96,7 @@
         android:id="@+id/textView24" />
 
     <TextView
-        android:text="La cantidad debe de ser un entero"
+        android:text="La cantidad debe de \n ser un entero"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/errorEnt"
@@ -119,6 +120,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/errorEnt"
         android:layout_alignStart="@+id/imageView5"
+        android:textColorLink="@android:color/holo_red_dark"
         android:id="@+id/txtError2"
         android:visibility="invisible" />
 

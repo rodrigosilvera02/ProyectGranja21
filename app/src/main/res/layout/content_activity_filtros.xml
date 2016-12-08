@@ -67,7 +67,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="15dp"
-        android:id="@+id/FiltrosOk" />
+        android:id="@+id/FiltrosOk"
+        android:background="@color/colorAccent" />
 
     <EditText
         android:layout_width="wrap_content"

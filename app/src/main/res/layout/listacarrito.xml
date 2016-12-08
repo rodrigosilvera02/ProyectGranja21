@@ -51,7 +51,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/btnEliminar"
         android:layout_below="@+id/txtNombreGranja"
-        android:layout_toEndOf="@+id/txtNombreProducto" />
+        android:layout_toEndOf="@+id/txtNombreProducto"
+        android:background="@android:color/holo_red_light" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -101,6 +102,7 @@
         android:text="Modificar"
         android:layout_below="@+id/edtCantidad"
         android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/edtCantidad" />
+        android:layout_toEndOf="@+id/edtCantidad"
+        android:background="@android:color/holo_orange_light" />
 
 </RelativeLayout>

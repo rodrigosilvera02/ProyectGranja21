@@ -111,6 +111,7 @@ public class adaptadorListadoProducto  extends BaseAdapter{
    private Bitmap getBitmapFromURL(String src) {
        Bitmap bm = null;
        try {
+
            URL _url = new URL(src);
            URLConnection con = _url.openConnection();
            con.connect();
