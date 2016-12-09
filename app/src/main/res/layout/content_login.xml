@@ -73,7 +73,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/el_usuario_o_contrace_a_no_son_correctas"
         android:id="@+id/txtErrorlogin"
-        android:textColor="#f21519"
+        android:textColor="@android:color/holo_red_dark"
         android:visibility="invisible"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />

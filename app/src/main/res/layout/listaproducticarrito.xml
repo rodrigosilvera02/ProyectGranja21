@@ -103,6 +103,7 @@
         android:layout_alignBottom="@+id/btnAgregarCarrito"
         android:layout_alignParentStart="true"
         android:textColorLink="@android:color/holo_red_dark"
+        android:textColor="@android:color/holo_red_dark"
         android:visibility="invisible"/>
 
     <EditText
@@ -121,6 +122,7 @@
         android:layout_alignTop="@+id/errorEnt"
         android:layout_alignStart="@+id/imageView5"
         android:textColorLink="@android:color/holo_red_dark"
+        android:textColor="@android:color/holo_red_dark"
         android:id="@+id/txtError2"
         android:visibility="invisible" />
 

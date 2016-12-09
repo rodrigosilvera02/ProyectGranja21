@@ -26,6 +26,9 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class modificar extends AppCompatActivity
@@ -63,6 +66,16 @@ public class modificar extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+        nickname = sharedpreferences.getString("Name", "nameKey");
+        WSUsuario webservice = new WSUsuario();
+        try {
+            usuario = webservice.infoUsuario(nickname);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        }
 
         Thread t = new Thread(this);
         t.start();
@@ -178,12 +191,10 @@ public class modificar extends AppCompatActivity
 
     @Override
     public void run() {
-        SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
-        nickname = sharedpreferences.getString("Name", "nameKey");
-        WSUsuario webservice = new WSUsuario();
+
         try {
 
-            usuario = webservice.infoUsuario(nickname);
+
             if (onclik == false) {
                 nombre = (TextView) findViewById(R.id.edtmodNombre);
                 Apellido = (TextView) findViewById(R.id.edtmodApellido);

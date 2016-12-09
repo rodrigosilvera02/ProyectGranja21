@@ -52,7 +52,8 @@
         android:id="@+id/btnEliminar"
         android:layout_below="@+id/txtNombreGranja"
         android:layout_toEndOf="@+id/txtNombreProducto"
-        android:background="@android:color/holo_red_light" />
+        android:background="@android:color/holo_red_light"
+        android:textColor="@android:color/holo_red_dark"/>
 
     <EditText
         android:layout_width="wrap_content"
