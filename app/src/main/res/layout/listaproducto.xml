@@ -70,4 +70,12 @@
         android:layout_toEndOf="@+id/imageView4"
         android:layout_marginTop="0dp"/>
 
+    <TextView
+        android:text="$"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/txtPrecio"
+        android:layout_toStartOf="@+id/txtPrecio"
+        android:id="@+id/textView47" />
+
 </RelativeLayout>

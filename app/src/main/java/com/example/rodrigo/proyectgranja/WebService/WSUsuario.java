@@ -45,7 +45,7 @@ public class WSUsuario {
         envelope.setOutputSoapObject(soap);
 
         HttpTransportSE httotrans = new HttpTransportSE(dato.getDatoIP()+"UsuarioWS?WSDL");
-        httotrans.call("",envelope);
+        httotrans.call("modificarUsuario",envelope);
 
 
 
