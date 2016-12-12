@@ -86,6 +86,10 @@ public class login extends AppCompatActivity implements GridView.OnClickListener
         if (id == R.id.home) {
             Intent ListSong = new Intent(this, MainActivity.class);
             startActivity(ListSong);
+            SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putString("Producto","");
+            editor.commit();
             return true;
 
 

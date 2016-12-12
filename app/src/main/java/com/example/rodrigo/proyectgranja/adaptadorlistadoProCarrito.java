@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.rodrigo.proyectgranja.Logica.Granja;
 import com.example.rodrigo.proyectgranja.Manager.mnCarrito;
@@ -126,9 +127,18 @@ public class adaptadorlistadoProCarrito  extends BaseAdapter  {
         final  TextView ErrorEnt = (TextView)v.findViewById(R.id.errorEnt);
         ImageView imagen = (ImageView) v.findViewById(R.id.imageView5);
         TextView unidadVenta = (TextView)v.findViewById(R.id.txtUnidadVenta);
+
         unidadVenta.setText(dir.getUnidad());
         Button agregarCarrito  = (Button)v.findViewById(R.id.btnAgregarCarrito);
         final TextView error1 = (TextView) v.findViewById(R.id.txtError2);
+
+        Cantidad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                error1.setVisibility(View.INVISIBLE);
+                ErrorEnt.setVisibility(View.INVISIBLE);
+            }
+        });
         agregarCarrito.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,6 +161,7 @@ public class adaptadorlistadoProCarrito  extends BaseAdapter  {
                           mnCarrito.setIdProdGran(idProducto);
                           mnCarrito.setCantidad(cantidad1);
                           mnCarrito.agregarProductoCarrito();
+                          Toast.makeText(activity, "Producto Agregado \n Al Carrito", Toast.LENGTH_LONG).show();
                           Cantidad.setText("");
                       }
                       else{
@@ -166,7 +177,7 @@ public class adaptadorlistadoProCarrito  extends BaseAdapter  {
                       e.printStackTrace();
                   }
                   catch (NumberFormatException e) {
-                    ErrorEnt.setVisibility(View.VISIBLE);
+                      ErrorEnt.setVisibility(View.VISIBLE);
                       Cantidad.setText("");
                   }
 

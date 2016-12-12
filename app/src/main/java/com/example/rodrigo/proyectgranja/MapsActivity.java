@@ -104,6 +104,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             ponervariablevacio ();
             Intent ListSong = new Intent(this, MainActivity.class);
             startActivity(ListSong);
+            SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putString("Producto","");
+            editor.commit();
             return true;
         }
         if (id == R.id.filtros) {

@@ -54,57 +54,71 @@
         android:text="TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/txtNombreGranja"
-        android:layout_below="@+id/txtCalidadProducto"
-        android:layout_alignStart="@+id/txtNombreProducto"
-        android:layout_marginTop="15dp" />
+        android:layout_alignTop="@+id/textView39"
+        android:layout_toEndOf="@+id/textView35"
+        android:id="@+id/txtUnidadVenta" />
 
     <TextView
-        android:text="TextView"
+        android:text="La Cantidad Tiene \nQue ser Menor a:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="19dp"
-        android:id="@+id/txtCalidadProducto"
-        android:layout_below="@+id/txtTipoProducto"
-        android:layout_alignStart="@+id/txtTipoProducto" />
-
-    <TextView
-        android:text="Calidad Producto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView11"
-        android:layout_alignBaseline="@+id/txtCalidadProducto"
-        android:layout_alignBottom="@+id/txtCalidadProducto"
-        android:layout_alignStart="@+id/txtNombreGranja" />
-
-    <Button
-        android:text="Agregar Al Carrito"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:id="@+id/btnAgregarCarrito"
-        android:layout_below="@+id/txtPrecio"
-        android:layout_alignParentEnd="true"
-        android:background="@color/colorPrimaryDark" />
-
-    <TextView
-        android:text="Cantidad"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView33"
-        android:layout_alignParentStart="true"
-        android:id="@+id/textView24" />
+        android:textColorLink="@android:color/holo_red_dark"
+        android:id="@+id/txtError2"
+        android:visibility="invisible"
+        android:layout_alignBottom="@+id/edtCantidad"
+        android:layout_alignStart="@+id/edtCantidad" />
 
     <TextView
         android:text="La cantidad debe de \n ser un entero"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/errorEnt"
-        android:layout_alignBottom="@+id/btnAgregarCarrito"
-        android:layout_alignParentStart="true"
         android:textColorLink="@android:color/holo_red_dark"
-        android:textColor="@android:color/holo_red_dark"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        android:layout_alignBaseline="@+id/txtError2"
+        android:layout_alignBottom="@+id/txtError2"
+        android:layout_alignEnd="@+id/txtPrecio" />
+
+    <TextView
+        android:text="Calidad Producto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView11"
+        android:layout_below="@+id/txtNombreProducto"
+        android:layout_alignStart="@+id/txtNombreProducto" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtNombreGranja"
+        android:layout_alignBaseline="@+id/txtCalidadProducto"
+        android:layout_alignBottom="@+id/txtCalidadProducto"
+        android:layout_alignStart="@+id/textView11" />
+
+    <TextView
+        android:text="Unidad De Venta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView39"
+        android:layout_below="@+id/txtNombreGranja"
+        android:layout_alignStart="@+id/txtNombreGranja" />
+
+    <TextView
+        android:text="Precio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView33"
+        android:layout_below="@+id/textView39"
+        android:layout_alignStart="@+id/textView39" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtCalidadProducto"
+        android:layout_below="@+id/textView11"
+        android:layout_alignStart="@+id/txtUnidadVenta" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -112,44 +126,32 @@
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/edtCantidad"
-        android:layout_alignBottom="@+id/errorEnt"
-        android:layout_alignEnd="@+id/textView11" />
+        android:layout_below="@+id/txtPrecio"
+        android:layout_alignParentEnd="true" />
 
     <TextView
-        android:text="La Cantidad Tiene \nQue ser Menor a:"
+        android:text="Cantidad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/errorEnt"
-        android:layout_alignStart="@+id/imageView5"
-        android:textColorLink="@android:color/holo_red_dark"
-        android:textColor="@android:color/holo_red_dark"
-        android:id="@+id/txtError2"
-        android:visibility="invisible" />
+        android:id="@+id/textView24"
+        android:layout_above="@+id/btnAgregarCarrito"
+        android:layout_alignStart="@+id/imageView5" />
+
+    <Button
+        android:text="Agregar Al Carrito"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnAgregarCarrito"
+        android:background="@color/colorPrimaryDark"
+        android:layout_below="@+id/txtError2"
+        android:layout_toStartOf="@+id/txtPrecio"
+        android:layout_marginTop="14dp" />
 
     <TextView
-        android:text="Precio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:id="@+id/textView33"
-        android:layout_below="@+id/txtNombreGranja"
-        android:layout_alignStart="@+id/txtNombreGranja" />
-
-    <TextView
-        android:text="Unidad De Venta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="11dp"
-        android:id="@+id/textView39"
-        android:layout_below="@+id/txtNombreGranja"
-        android:layout_alignStart="@+id/txtNombreGranja" />
-
-    <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView39"
-        android:layout_toEndOf="@+id/textView35"
-        android:id="@+id/txtUnidadVenta" />
+        android:id="@+id/textView34"
+        android:layout_below="@+id/btnAgregarCarrito"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

@@ -1,6 +1,8 @@
 package com.example.rodrigo.proyectgranja;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -92,6 +94,10 @@ public class Registrarse extends AppCompatActivity  implements GridView.OnClickL
         if (id == R.id.home) {
             Intent ListSong = new Intent(this, MainActivity.class);
             startActivity(ListSong);
+            SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putString("Producto","");
+            editor.commit();
             return true;
 
 

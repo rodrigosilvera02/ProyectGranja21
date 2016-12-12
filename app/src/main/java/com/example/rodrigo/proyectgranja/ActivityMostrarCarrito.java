@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.rodrigo.proyectgranja.Manager.mnCarrito;
 import com.example.rodrigo.proyectgranja.WebService.WSProductoCarrito;
@@ -94,6 +95,10 @@ public class ActivityMostrarCarrito extends AppCompatActivity implements GridVie
         if (id == R.id.home) {
             Intent ListSong = new Intent(this, MainActivity.class);
             startActivity(ListSong);
+            SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putString("Producto","");
+            editor.commit();
             return true;
         }
         if (id == R.id.filtros) {
@@ -166,7 +171,10 @@ public class ActivityMostrarCarrito extends AppCompatActivity implements GridVie
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        if(listarProdCar[0].size() > 0){
+            Aceptar = (Button)findViewById(R.id.ComprarCarrito);
+            Aceptar.setVisibility(View.VISIBLE);
+        }
 
        adapter  = new adaptadorMostrarCarrito(this, listarProdCar[0]);
         Thread thread5 = new Thread(){
@@ -192,12 +200,13 @@ public class ActivityMostrarCarrito extends AppCompatActivity implements GridVie
         mnCarrito mnCarrito = new mnCarrito();
         try {
             mnCarrito.ComprarCarritos(idcliente);
-
+            Toast.makeText(this, "Todos Datos\n Se Agregaron Correctamente", Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (XmlPullParserException e) {
             e.printStackTrace();
         }
+
         Intent ListSong = new Intent(this, ActivityMostrarCarrito.class);
         startActivity(ListSong);
     }

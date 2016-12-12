@@ -14,14 +14,6 @@
         android:layout_alignParentStart="true" />
 
     <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView27"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/txtNumeroBol" />
-
-    <TextView
         android:text="Fecha Boleta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -80,5 +72,15 @@
         android:id="@+id/btnVerProducto"
         android:layout_below="@+id/txtFechaBol"
         android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtNumeroBol"
+        android:layout_alignBaseline="@+id/textView27"
+        android:layout_alignBottom="@+id/textView27"
+        android:layout_toStartOf="@+id/btnVerProducto"
+        android:layout_marginEnd="22dp" />
 
 </RelativeLayout>

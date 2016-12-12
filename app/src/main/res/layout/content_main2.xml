@@ -17,8 +17,18 @@
         android:layout_height="match_parent"
         android:id="@+id/listProductosCariito"
         android:scrollbars="none"
+        android:scrollbarThumbVertical="@layout/cast_mini_controller"
+        android:verticalScrollbarPosition="defaultPosition"
+        android:layout_marginTop="25dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:scrollbarThumbVertical="@layout/cast_mini_controller"
-        android:verticalScrollbarPosition="defaultPosition" />
+        android:layout_marginTop="11dp"
+        android:id="@+id/txtfiltro1" />
+
 </RelativeLayout>

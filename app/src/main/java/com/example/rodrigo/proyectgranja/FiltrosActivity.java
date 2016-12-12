@@ -146,6 +146,10 @@ public class FiltrosActivity extends AppCompatActivity
         if (id == R.id.home) {
             Intent ListSong = new Intent(this, MainActivity.class);
             startActivity(ListSong);
+            SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putString("Producto","");
+            editor.commit();
             return true;
         }
         if (id == R.id.Cerrarsesión) {

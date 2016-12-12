@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements GridView.OnClickL
         super.onCreate(savedInstanceState);
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
+
         texto1 = sharedpreferences.getString("Name", "nameKey");
         if (texto1.equals("nameKey")) {
             a = false;
