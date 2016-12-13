@@ -91,7 +91,15 @@ public class adaptadorlistadoboletacliente extends BaseAdapter  {
         fecha.setText(fechabol);
         TextView estado = (TextView) v.findViewById(R.id.txtEstado);
         String Estado = String.valueOf(dir.isPediListo());
-        estado.setText(Estado);
+
+        String e = null;
+        if(Estado.equals("true")){
+            e = "Listo";
+        }
+        if(Estado.equals("false")){
+            e = "En Proceso";
+        }
+        estado.setText(e);
         TextView precioTotal = (TextView) v.findViewById(R.id.txtPrecio);
         String total = String.valueOf(dir.getPrecioTotal());
         precioTotal.setText(total);

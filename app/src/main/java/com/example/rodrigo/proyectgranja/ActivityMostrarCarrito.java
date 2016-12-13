@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -30,9 +31,12 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static android.view.View.VISIBLE;
+
 public class ActivityMostrarCarrito extends AppCompatActivity implements GridView.OnClickListener,NavigationView.OnNavigationItemSelectedListener, Runnable{
     private ListView lista;
     private Button Aceptar;
+    private Handler handler = new Handler();
     private int idcliente;
     private adaptadorMostrarCarrito adapter;
     @Override
@@ -173,7 +177,13 @@ public class ActivityMostrarCarrito extends AppCompatActivity implements GridVie
         }
         if(listarProdCar[0].size() > 0){
             Aceptar = (Button)findViewById(R.id.ComprarCarrito);
-            Aceptar.setVisibility(View.VISIBLE);
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Aceptar.setVisibility(View.VISIBLE);
+                }
+            });
+
         }
 
        adapter  = new adaptadorMostrarCarrito(this, listarProdCar[0]);

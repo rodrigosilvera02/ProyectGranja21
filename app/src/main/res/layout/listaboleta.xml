@@ -57,14 +57,6 @@
         android:layout_marginTop="17dp"
         android:id="@+id/textView44" />
 
-    <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView44"
-        android:layout_alignStart="@+id/txtFechaBol"
-        android:id="@+id/txtEstado" />
-
     <Button
         android:text="Ver Producto\n Boleta"
         android:layout_width="wrap_content"
@@ -82,5 +74,15 @@
         android:layout_alignBottom="@+id/textView27"
         android:layout_toStartOf="@+id/btnVerProducto"
         android:layout_marginEnd="22dp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtEstado"
+        android:layout_marginStart="11dp"
+        android:layout_alignBaseline="@+id/textView44"
+        android:layout_alignBottom="@+id/textView44"
+        android:layout_toEndOf="@+id/textView44" />
 
 </RelativeLayout>
