@@ -97,7 +97,7 @@ public class adaptadorlistadoboletacliente extends BaseAdapter  {
             e = "Listo";
         }
         if(Estado.equals("false")){
-            e = "En Proceso";
+            e = "En \nProceso";
         }
         estado.setText(e);
         TextView precioTotal = (TextView) v.findViewById(R.id.txtPrecio);
