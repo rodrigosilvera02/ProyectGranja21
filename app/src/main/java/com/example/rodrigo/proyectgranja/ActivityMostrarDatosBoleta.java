@@ -72,6 +72,7 @@ public class ActivityMostrarDatosBoleta extends AppCompatActivity implements Nav
         getMenuInflater().inflate(R.menu.main2, menu);
 
         MenuItem searchItem = menu.findItem(R.id.menu3_buscar);
+        searchItem.setVisible(false);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(this);
 

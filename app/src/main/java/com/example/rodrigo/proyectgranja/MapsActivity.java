@@ -78,6 +78,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main2, menu);
+        MenuItem searchItem = menu.findItem(R.id.menu3_buscar);
+        searchItem.setVisible(false);
         return true;
     }
 

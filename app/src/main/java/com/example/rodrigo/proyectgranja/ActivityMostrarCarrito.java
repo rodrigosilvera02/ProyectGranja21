@@ -74,6 +74,8 @@ public class ActivityMostrarCarrito extends AppCompatActivity implements GridVie
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main2, menu);
+        MenuItem searchItem = menu.findItem(R.id.menu3_buscar);
+        searchItem.setVisible(false);
         return true;
     }
 
