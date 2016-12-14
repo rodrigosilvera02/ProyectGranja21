@@ -85,4 +85,37 @@
         android:layout_alignBottom="@+id/textView44"
         android:layout_toEndOf="@+id/textView44" />
 
+    <TextView
+        android:text="Nombre Productor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView45"
+        android:layout_below="@+id/btnVerProducto"
+        android:layout_alignStart="@+id/textView44" />
+
+    <TextView
+        android:text="Número Contacto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView45"
+        android:layout_alignStart="@+id/textView45"
+        android:layout_marginTop="15dp"
+        android:id="@+id/textView48" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView48"
+        android:layout_alignStart="@+id/txtNombreProd"
+        android:id="@+id/txtNumero" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtNombreProd"
+        android:layout_below="@+id/btnVerProducto"
+        android:layout_alignStart="@+id/btnVerProducto" />
+
 </RelativeLayout>

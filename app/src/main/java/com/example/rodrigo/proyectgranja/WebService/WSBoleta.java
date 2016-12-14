@@ -209,9 +209,11 @@ String precioTotal = Float.toHexString(precioTotalBoleta);
                 bol.setPrecioTotal(Float.valueOf(String.valueOf(listarProdGranja.get(a + 2))));
                 bol.setPediListo(Boolean.valueOf(String.valueOf(listarProdGranja.get(a + 3))));
                 bol.setBorrado(Boolean.valueOf(String.valueOf(listarProdGranja.get(a + 4))));
-
+                bol.setNombre(String.valueOf(listarProdGranja.get(a+5)));
+                bol.setApellido(String.valueOf(listarProdGranja.get(a+6)));
+                bol.setTelefono(String.valueOf(listarProdGranja.get(a+7)));
                 listaboleta.add(bol);
-                a = a + 4;
+                a = a + 7;
             }
         }catch (NullPointerException e){
         }

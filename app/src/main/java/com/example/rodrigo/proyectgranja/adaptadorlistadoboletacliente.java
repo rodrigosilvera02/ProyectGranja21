@@ -100,6 +100,15 @@ public class adaptadorlistadoboletacliente extends BaseAdapter  {
             e = "En \nProceso";
         }
         estado.setText(e);
+
+        TextView Nombre = (TextView) v.findViewById(R.id.txtNombreProd);
+        String Apellido = dir.getApellido();
+        String nombre = dir.getNombre();
+        String nombrecomp = nombre + " " + Apellido;
+        Nombre.setText(nombrecomp);
+        TextView Telefono = (TextView) v.findViewById(R.id.txtNumero);
+        String numero = dir.getTelefono();
+        Telefono.setText(numero);
         TextView precioTotal = (TextView) v.findViewById(R.id.txtPrecio);
         String total = String.valueOf(dir.getPrecioTotal());
         precioTotal.setText(total);
