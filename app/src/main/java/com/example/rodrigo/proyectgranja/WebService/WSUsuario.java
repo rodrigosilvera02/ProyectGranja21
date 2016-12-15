@@ -41,12 +41,27 @@ public class WSUsuario {
         soap.addProperty("direccion",u1.getDireccion());
         soap.addProperty("telefono",u1.getTelefono());
 
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
+        final SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
         envelope.setOutputSoapObject(soap);
-
-        HttpTransportSE httotrans = new HttpTransportSE(dato.getDatoIP()+"UsuarioWS?WSDL");
-        httotrans.call("modificarUsuario",envelope);
-
+       final  HttpTransportSE httotrans = new HttpTransportSE(dato.getDatoIP()+"UsuarioWS?WSDL");
+       Thread thread4 = new Thread(){
+           @Override
+           public void run() {
+               try {
+                   httotrans.call("modificarUsuario",envelope);
+               } catch (IOException e) {
+                   e.printStackTrace();
+               } catch (XmlPullParserException e) {
+                   e.printStackTrace();
+               }
+           };
+       };
+       thread4.start();
+       try {
+           thread4.join();
+       } catch (InterruptedException e) {
+           e.printStackTrace();
+       }
 
 
 
