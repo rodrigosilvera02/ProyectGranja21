@@ -166,6 +166,11 @@ public class modificar extends AppCompatActivity
             Intent ListSong = new Intent(this, MapsActivity.class);
             startActivity(ListSong);
 
+        }
+        if(id == R.id.BoletaCliente) {
+            Intent ListSong = new Intent(this, activity_mostrar_boleta.class);
+            startActivity(ListSong);
+
         }/*else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {

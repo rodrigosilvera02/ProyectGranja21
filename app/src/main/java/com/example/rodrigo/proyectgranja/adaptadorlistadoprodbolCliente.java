@@ -82,7 +82,7 @@ public class adaptadorlistadoprodbolCliente extends BaseAdapter  {
         precioTotal.setText(total);
         TextView Estado = (TextView) v.findViewById(R.id.txtEstado);
         String estado = dir.getEstado();
-        Estado.setText(estado);
+        Estado.setText("  "+ estado);
 
         return v;
     }

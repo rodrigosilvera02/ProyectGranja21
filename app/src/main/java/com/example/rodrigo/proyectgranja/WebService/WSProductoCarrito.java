@@ -26,7 +26,7 @@ public class WSProductoCarrito {
 
 /*    @WebMethod(operationName = "nuevoProductoCarrito")
 */
-   public String nuevoProductoCarrito  (int idcarrito, int idpriductogranja, int cantidad) throws IOException, XmlPullParserException {
+   public String nuevoProductoCarrito  (final int idcarrito, final int idpriductogranja, final int cantidad) throws IOException, XmlPullParserException {
 
        ArrayList<String> arrayClientecarrito= new ArrayList<>();
        SoapObject soap = new SoapObject("http://Servicio/","nuevoProductoCarrito");
@@ -42,7 +42,13 @@ public class WSProductoCarrito {
                try {
                    httotrans.call("nuevoProductoCarrito",envelope);
                } catch (IOException e) {
-                   e.printStackTrace();
+                   try {
+                       nuevoProductoCarrito  (idcarrito,idpriductogranja,cantidad);
+                   } catch (IOException e1) {
+                       e1.printStackTrace();
+                   } catch (XmlPullParserException e1) {
+                       e1.printStackTrace();
+                   }
                } catch (XmlPullParserException e) {
                    e.printStackTrace();
                }

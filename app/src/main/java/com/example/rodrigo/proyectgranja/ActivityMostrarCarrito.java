@@ -210,14 +210,8 @@ public class ActivityMostrarCarrito extends AppCompatActivity implements GridVie
         SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
         idcliente = sharedpreferences.getInt("idCliente", '0');
         mnCarrito mnCarrito = new mnCarrito();
-        try {
-            mnCarrito.ComprarCarritos(idcliente);
-            Toast.makeText(this, "Todos Datos\n Se Agregaron Correctamente", Toast.LENGTH_LONG).show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        }
+        mnCarrito.ComprarCarritos(idcliente);
+        Toast.makeText(this, "Todos Datos\n Se Agregaron Correctamente", Toast.LENGTH_LONG).show();
 
         Intent ListSong = new Intent(this, ActivityMostrarCarrito.class);
         startActivity(ListSong);

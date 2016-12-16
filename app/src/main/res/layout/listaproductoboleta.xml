@@ -12,14 +12,6 @@
         android:id="@+id/textView32" />
 
     <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView32"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/txtNombreProducto" />
-
-    <TextView
         android:text="Cantidad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -54,16 +46,6 @@
         android:id="@+id/txtPrecio" />
 
     <TextView
-        android:text="Estado"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView50"
-        android:layout_alignBaseline="@+id/txtNombreProducto"
-        android:layout_alignBottom="@+id/txtNombreProducto"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="48dp" />
-
-    <TextView
         android:text="TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -87,5 +69,24 @@
         android:layout_alignBottom="@+id/textView52"
         android:layout_alignStart="@+id/txtPrecio"
         android:id="@+id/txtPreciototal" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtNombreProducto"
+        android:layout_alignBaseline="@+id/textView32"
+        android:layout_alignBottom="@+id/textView32"
+        android:layout_toStartOf="@+id/textView50" />
+
+    <TextView
+        android:text="  Estado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView50"
+        android:layout_marginEnd="30dp"
+        android:layout_alignBaseline="@+id/txtNombreProducto"
+        android:layout_alignBottom="@+id/txtNombreProducto"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

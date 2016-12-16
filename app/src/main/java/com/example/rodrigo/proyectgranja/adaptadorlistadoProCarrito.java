@@ -18,9 +18,6 @@ import android.widget.Toast;
 
 import com.example.rodrigo.proyectgranja.Logica.Granja;
 import com.example.rodrigo.proyectgranja.Manager.mnCarrito;
-import com.example.rodrigo.proyectgranja.Manager.mnGranjaProducto;
-import com.example.rodrigo.proyectgranja.WebService.WSGranja;
-import com.google.android.gms.analytics.ExceptionParser;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -30,9 +27,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Set;
-
-import static android.support.v4.app.ActivityCompat.startActivity;
 
 /**
  * Created by Rodrigo on 14/10/2016.

@@ -63,7 +63,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColorLink="@android:color/holo_red_dark"
-        android:textColor="@android:color/holo_red_dark"
         android:id="@+id/txtError2"
         android:visibility="invisible"
         android:layout_alignBottom="@+id/edtCantidad"
@@ -74,7 +73,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/errorEnt"
-        android:textColor="@android:color/holo_red_dark"
         android:textColorLink="@android:color/holo_red_dark"
         android:visibility="invisible"
         android:layout_alignBaseline="@+id/txtError2"
@@ -90,46 +88,12 @@
         android:layout_alignStart="@+id/txtNombreProducto" />
 
     <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtNombreGranja"
-        android:layout_alignBaseline="@+id/txtCalidadProducto"
-        android:layout_alignBottom="@+id/txtCalidadProducto"
-        android:layout_alignStart="@+id/textView11" />
-
-    <TextView
-        android:text="Unidad De Venta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView39"
-        android:layout_below="@+id/txtNombreGranja"
-        android:layout_alignStart="@+id/txtNombreGranja" />
-
-    <TextView
         android:text="Precio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView33"
         android:layout_below="@+id/textView39"
         android:layout_alignStart="@+id/textView39" />
-
-    <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtCalidadProducto"
-        android:layout_below="@+id/textView11"
-        android:layout_alignStart="@+id/txtUnidadVenta" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/edtCantidad"
-        android:layout_below="@+id/txtPrecio"
-        android:layout_alignParentEnd="true" />
 
     <TextView
         android:text="Cantidad"
@@ -155,5 +119,47 @@
         android:id="@+id/textView34"
         android:layout_below="@+id/btnAgregarCarrito"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="Nombre Granja"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtNombreGranja1"
+        android:layout_below="@+id/txtCalidadProducto"
+        android:layout_alignStart="@+id/textView11" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/edtCantidad"
+        android:layout_below="@+id/txtPrecio"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtCalidadProducto"
+        android:layout_below="@+id/txtTipoProducto"
+        android:layout_alignStart="@+id/txtTipoProducto" />
+
+    <TextView
+        android:text="Unidad De Venta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView39"
+        android:layout_below="@+id/txtNombreGranja1"
+        android:layout_alignStart="@+id/txtNombreGranja1"
+        android:layout_marginTop="13dp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtNombreGranja"
+        android:layout_below="@+id/txtCalidadProducto"
+        android:layout_alignStart="@+id/txtCalidadProducto" />
 
 </RelativeLayout>

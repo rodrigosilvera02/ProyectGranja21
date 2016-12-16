@@ -274,17 +274,27 @@ public class mnCarrito {
         WSProductoCarrito wsProductoCarrito = new WSProductoCarrito();
         wsProductoCarrito.modificarProdCar(getIdProdCarrito(), getCantidad());
     }
-
-    public void ComprarCarritos(int idCliente) throws IOException, XmlPullParserException {
+//recorrerlo con un debugh
+    // hacer un if cuando el carrito no tiene productos para no generar boleta
+    //ver el tema del precio total q me suma todos los precios de los productos , ver la variable
+    // y fijarme por q no agrega tosos los productos a todas las boletas cuando es necesario
+    //revizar todoel metodo por q no funciona bn
+    public void ComprarCarritos(int idCliente) {
         try {
             int resStock = 0;
-            float PrecioTotalBoleta = 0;
+
             ArrayList<String> _listaProdCarrito = new ArrayList<String>();
             ArrayList<String> _listaCarrito = new ArrayList<String>();
             WSCarrito wsCarrito = new WSCarrito();
             WSBoleta wsBoleta = new WSBoleta();
             WSProductoCarrito wsProductoCarrito = new WSProductoCarrito();
-            _listaCarrito = (ArrayList<String>) wsCarrito.listarCarrito(idCliente);
+            try {
+                _listaCarrito = (ArrayList<String>) wsCarrito.listarCarrito(idCliente);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (XmlPullParserException e) {
+                e.printStackTrace();
+            }
             WSGranjaProducto wsGranjaProducto = new WSGranjaProducto();
             int idBoleta=0;
             for (int b = 0; b < _listaCarrito.size(); b++) {
@@ -293,11 +303,20 @@ public class mnCarrito {
                 int id = Integer.parseInt(String.valueOf(_listaCarrito.get(b)));
                 Carrito.setId(id);
 
-                _listaProdCarrito = (ArrayList<String>) wsProductoCarrito.listarProductosCarrito(Carrito.getId());
-                if (_listaProdCarrito.size()>0) {
+                try {
+                    _listaProdCarrito = (ArrayList<String>) wsProductoCarrito.listarProductosCarrito(Carrito.getId());
+                } catch (IOException e) {
+                    ComprarCarritos(idCliente);
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+                }
+                if (_listaProdCarrito.size()>0)
+                {
+
+
                     wsBoleta.nuevaBoleta(id);
                     idBoleta = wsBoleta.traerUltimaBoleta();
-
+                    float PrecioTotalBoleta = 0;
                     for (int a = 0; a < _listaProdCarrito.size(); a++) {
                         Boleta bol = new Boleta();
                         BolProd producto = new BolProd();
@@ -308,7 +327,13 @@ public class mnCarrito {
                         producto.setCantidad(Integer.parseInt(String.valueOf(_listaProdCarrito.get(a + 4))));
 
                         ArrayList<String> _listaProdGran = new ArrayList<String>();
-                        _listaProdGran = (ArrayList<String>) wsGranjaProducto.informacionProductoGranja(producto.getIdProdGran());
+                        try {
+                            _listaProdGran = (ArrayList<String>) wsGranjaProducto.informacionProductoGranja(producto.getIdProdGran());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (XmlPullParserException e) {
+                            e.printStackTrace();
+                        }
 
                         setId(Integer.parseInt(String.valueOf(_listaProdGran.get(0))));
                         setStrock(Integer.parseInt(String.valueOf(_listaProdGran.get(3))));
@@ -324,8 +349,20 @@ public class mnCarrito {
                         PrecioTotalBoleta = PrecioTotalBoleta + producto.getPrecioTotal();
                         resStock = getStrock() - producto.getCantidad();
 
-                        wsBoleta.agregarProductoBoleta(idBoleta, producto.getIdProdGran(), producto.getCantidad(), producto.getPrecio(), producto.getPrecioTotal());
-                        wsProductoCarrito.eliminarProdCarrito(producto.getId());
+                        try {
+                            wsBoleta.agregarProductoBoleta(idBoleta, producto.getIdProdGran(), producto.getCantidad(), producto.getPrecio(), producto.getPrecioTotal());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (XmlPullParserException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            wsProductoCarrito.eliminarProdCarrito(producto.getId());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (XmlPullParserException e) {
+                            e.printStackTrace();
+                        }
                         wsGranjaProducto.modificarStockProdGranja(producto.getIdProdGran(), resStock);
                         a = a + 5;
                     }

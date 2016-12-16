@@ -12,15 +12,6 @@
         android:id="@+id/textView37" />
 
     <TextView
-        android:text="NombreGranja"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView37"
-        android:layout_toEndOf="@+id/textView37"
-        android:layout_marginStart="36dp"
-        android:id="@+id/txtNombreGranja" />
-
-    <TextView
         android:text="Nombre Producto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,14 +19,6 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="17dp"
         android:id="@+id/textView41" />
-
-    <TextView
-        android:text="NombreProducto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView41"
-        android:layout_alignStart="@+id/txtNombreGranja"
-        android:id="@+id/txtNombreProducto" />
 
     <TextView
         android:text="Cantidad"
@@ -50,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnEliminar"
-        android:layout_below="@+id/txtNombreGranja"
+        android:layout_below="@+id/txtNombreGranja1"
         android:layout_toEndOf="@+id/txtNombreProducto"
         android:background="@android:color/holo_red_light"
         android:textColor="@android:color/holo_red_dark"
@@ -105,5 +88,23 @@
         android:background="@android:color/holo_orange_light"
         android:layout_below="@+id/edtCantidad"
         android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="NombreProducto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtNombreProducto"
+        android:layout_alignBaseline="@+id/textView41"
+        android:layout_alignBottom="@+id/textView41"
+        android:layout_alignStart="@+id/txtNombreGranja" />
+
+    <TextView
+        android:text="NombreGranja"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:id="@+id/txtNombreGranja"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/textView41" />
 
 </RelativeLayout>

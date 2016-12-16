@@ -22,7 +22,7 @@
                 android:title="Mostrar Boletas" />
             <item
                 android:id="@+id/Ubucacion"
-                android:title="Ubicacion Granjas" />
+                android:title="Ubicación Granjas" />
 
 </menu>
     </item>

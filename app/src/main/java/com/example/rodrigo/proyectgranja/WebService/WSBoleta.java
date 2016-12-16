@@ -27,7 +27,7 @@ import java.util.Vector;
 public class WSBoleta {
     static DatosSoap dato = new DatosSoap();
     private Vector<String> a = new Vector<>();
-    public void nuevaBoleta(int idCarrito) {
+    public void nuevaBoleta(final int idCarrito) {
         SoapObject soap = new SoapObject("http://Servicio/","nuevaBoleta");
         soap.addProperty("idCarrito",idCarrito);
         final SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
@@ -40,7 +40,7 @@ public class WSBoleta {
                     httotrans.call("nuevaBoleta",envelope);
 
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    nuevaBoleta(idCarrito);
                 } catch (XmlPullParserException e) {
                     e.printStackTrace();
                 }
@@ -52,7 +52,13 @@ public class WSBoleta {
             soapFault.printStackTrace();
         }
 
-        thread4.start();
+
+        try {
+            thread4.start();
+            thread4.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -70,7 +76,7 @@ public class WSBoleta {
                 try {
                     httotrans.call("traerUltimaBoleta",envelope);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    traerUltimaBoleta();
                 } catch (XmlPullParserException e) {
                     e.printStackTrace();
                 }
@@ -94,7 +100,7 @@ public class WSBoleta {
         return idBoleta;
     }
 
-    public void agregarProductoBoleta(int idBoleta, int idProdGran, int cantidad, float precio, float precioTotal) throws IOException, XmlPullParserException {
+    public void agregarProductoBoleta(final int idBoleta, final int idProdGran, final int cantidad, final float precio, final float precioTotal) throws IOException, XmlPullParserException {
         SoapObject soap = new SoapObject("http://Servicio/","agregarProductoBoleta");
 String pre = String.valueOf(precio);
         String precioT = String.valueOf(precioTotal);
@@ -113,7 +119,19 @@ String pre = String.valueOf(precio);
                 try {
                     httotrans.call("agregarProductoBoleta",envelope);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    try {
+                        agregarProductoBoleta(idBoleta,idProdGran,cantidad,precio, precioTotal);
+                    } catch (IOException e1) {
+                        try {
+                            agregarProductoBoleta(idBoleta,idProdGran, cantidad, precio,precioTotal);
+                        } catch (IOException e2) {
+                            e2.printStackTrace();
+                        } catch (XmlPullParserException e2) {
+                            e2.printStackTrace();
+                        }
+                    } catch (XmlPullParserException e1) {
+                        e1.printStackTrace();
+                    }
                 } catch (XmlPullParserException e) {
                     e.printStackTrace();
                 }
