@@ -148,7 +148,7 @@ public class adaptadorlistadoProCarrito  extends BaseAdapter  {
 
                   try {
                       int cantidad1 = Integer.parseInt(cantidad);
-                      if(stock >= cantidad1) {
+                      if(stock >= cantidad1 && cantidad1 > 0) {
                           mnCarrito mnCarrito = new mnCarrito();
                           mnCarrito.setIdCliente(idCliente);
                           mnCarrito.setIdGranja(idGranja);
@@ -159,8 +159,14 @@ public class adaptadorlistadoProCarrito  extends BaseAdapter  {
                           Cantidad.setText("");
                       }
                       else{
-                          error1.setText("La cantidad tiene \n que ser menor a: "+stock);
-                          error1.setVisibility(View.VISIBLE);
+                          if(cantidad1 < 0){
+                              error1.setText("La cantidad tiene \n que ser mayor a: 0");
+                              error1.setVisibility(View.VISIBLE);
+                          }else{
+                              error1.setText("La cantidad tiene \n que ser menor a: "+stock);
+                              error1.setVisibility(View.VISIBLE);
+                          }
+
 
                           Cantidad.setText("");
                       }
