@@ -59,10 +59,11 @@
         android:id="@+id/txtUnidadVenta" />
 
     <TextView
-        android:text="La Cantidad Tiene \nQue ser Menor a:"
+        android:text="La cantidad tiene \n que ser menor a:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColorLink="@android:color/holo_red_dark"
+        android:textColor="@android:color/holo_red_dark"
         android:id="@+id/txtError2"
         android:visibility="invisible"
         android:layout_alignBottom="@+id/edtCantidad"
@@ -74,6 +75,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/errorEnt"
         android:textColorLink="@android:color/holo_red_dark"
+        android:textColor="@android:color/holo_red_dark"
         android:visibility="invisible"
         android:layout_alignBaseline="@+id/txtError2"
         android:layout_alignBottom="@+id/txtError2"

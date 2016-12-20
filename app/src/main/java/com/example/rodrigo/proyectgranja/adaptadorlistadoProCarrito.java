@@ -159,7 +159,6 @@ public class adaptadorlistadoProCarrito  extends BaseAdapter  {
                           Cantidad.setText("");
                       }
                       else{
-                          error1.setText("La cantidad Tiene\n Ser Menor a:  "+stock);
                           error1.setVisibility(View.VISIBLE);
 
                           Cantidad.setText("");
